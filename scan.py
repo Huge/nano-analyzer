@@ -1079,6 +1079,18 @@ IIIV                     VIII
     return logo_str
 
 
+def _get_recommended_max_chars(skipped):
+    max_size = 0
+    for _, r in skipped:
+        if "large" in r:
+            m = re.search(r'\(([\d,]+)\s+', r)
+            if m:
+                max_size = max(max_size, int(m.group(1).replace(',', '')))
+    if max_size > 0:
+        return (max_size // 100000 + 1) * 100000
+    return None
+
+
 def run_scan(args):
     max_conn = args.max_connections or (args.parallel + args.triage_parallel)
     init_api_semaphore(max_conn)
@@ -1093,16 +1105,10 @@ def run_scan(args):
         print("❌ No scannable files found.")
         skip_size_count = sum(1 for _, r in skipped if "large" in r)
         if skip_size_count > 0:
-            max_size = 0
-            for _, r in skipped:
-                if "large" in r:
-                    m = re.search(r'\(([\d,]+)\s+', r)
-                    if m:
-                        max_size = max(max_size, int(m.group(1).replace(',', '')))
-            if max_size > 0:
-                rec = (max_size // 100000 + 1) * 100000
+            rec = _get_recommended_max_chars(skipped)
+            if rec:
                 print(f"   💡 {skip_size_count} file(s) skipped because they exceed the {args.max_chars:,} character limit.")
-                print(f"   To scan them, use: --max-chars {rec}")
+                print(f"   To scan them, use: --max-chars {rec:_}")
         return
 
     total_lines = sum(f["lines"] for f in scannable)
@@ -1186,15 +1192,9 @@ def run_scan(args):
             parts.append(f"{skip_other} unreadable")
         print(f"   ⏭️  {len(skipped)} skipped ({', '.join(parts)})")
         if skip_size > 0:
-            max_size = 0
-            for _, r in skipped:
-                if "large" in r:
-                    m = re.search(r'\(([\d,]+)\s+', r)
-                    if m:
-                        max_size = max(max_size, int(m.group(1).replace(',', '')))
-            if max_size > 0:
-                rec = (max_size // 100000 + 1) * 100000
-                print(f"   💡 Tip: Use `--max-chars {rec}` to include the skipped large files.")
+            rec = _get_recommended_max_chars(skipped)
+            if rec:
+                print(f"   💡 Tip: Use `--max-chars {rec:_}` to include the skipped large files.")
     print(f"🤖 Model: {args.model}")
     print(f"⚡ Parallelism: {args.parallel} scan, {args.triage_parallel} triage")
     print(f"💾 Results → {out_dir}/")
