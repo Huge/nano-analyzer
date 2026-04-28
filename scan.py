@@ -1530,7 +1530,7 @@ def run_scan(args):
         remaining = triage_total[0] - triage_counter[0]
         if remaining > 0:
             max_conn = args.max_connections or (args.parallel + args.triage_parallel)
-            print(f"\n⏳ Scans complete. {remaining} triages remaining (full capacity: {max_conn} connections)...")
+            print(f"\n⏳ Scans complete. Verifying {remaining} remaining findings (using all {max_conn} concurrent connections)...")
         triage_executor.shutdown(wait=True)
 
     wall_time = time.time() - scan_start
