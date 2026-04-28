@@ -598,19 +598,19 @@ def discover_files(paths, extensions, max_chars):
     candidates = []
     for path in paths:
         if os.path.isfile(path):
-            candidates.append(path)
+            candidates.append((path, True))
         else:
             for root, _, fnames in os.walk(path):
                 for fn in sorted(fnames):
-                    candidates.append(os.path.join(root, fn))
+                    candidates.append((os.path.join(root, fn), False))
 
-    for filepath in candidates:
+    for filepath, is_explicit in candidates:
         if os.path.islink(filepath):
             skipped.append((filepath, "symlink"))
             continue
 
         ext = os.path.splitext(filepath)[1].lower()
-        if extensions and ext not in extensions:
+        if extensions and ext not in extensions and not is_explicit:
             skipped.append((filepath, "extension"))
             continue
 
