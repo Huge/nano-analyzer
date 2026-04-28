@@ -1242,7 +1242,7 @@ def run_scan(args):
             sc = active_scans[0]
             tc = active_triages[0]
             ts = datetime.now().strftime("%H:%M:%S")
-            load = f"[LLMs running S:{sc} T:{tc}]"
+            load = f"[LLMs running Scanning:{sc} Triaging:{tc}]"
 
             if result["status"] == "error":
                 print(f"  {ts} [file {completed:>{cw}}/{total}] ❌ {short_name}  ERROR: {result['error'][:50]}  {load}")
@@ -1329,7 +1329,7 @@ def run_scan(args):
                                 at = active_triages[0]
                                 ts = datetime.now().strftime("%H:%M:%S")
                                 short_t = t_title[:35] + "..." if len(t_title) > 35 else t_title
-                                print(f"  {ts}    R{rn}/{triage_rounds} {history} {t_short}: {short_t}  [LLMs running S:{sc} T:{at}]")
+                                print(f"  {ts}    R{rn}/{triage_rounds} {history} {t_short}: {short_t}  [LLMs running Scanning:{sc} Triaging:{at}]")
 
                         if prior is None:
                             prior = []
@@ -1494,7 +1494,7 @@ def run_scan(args):
                         sc = active_scans[0]
                         at = active_triages[0]
                         ts = datetime.now().strftime("%H:%M:%S")
-                        load = f"[LLMs running S:{sc} T:{at}]"
+                        load = f"[LLMs running Scanning:{sc} Triaging:{at}]"
                         grep_icon = " 🔎" if any_greps else ""
                         if triage_rounds > 1:
                             print(f"  {ts} 🔬 [triage {tc}/{tt}] {emoji} {conf_pct}% [{verdicts_str}]{grep_icon} {t_short}: {short_title}  {load}")
