@@ -590,18 +590,19 @@ def top_severity(sevs):
 # File discovery
 # ---------------------------------------------------------------------------
 
-def discover_files(path, extensions, max_chars):
-    """Walk a path (file or dir) and return (scannable, skipped) lists."""
+def discover_files(paths, extensions, max_chars):
+    """Walk paths (files or dirs) and return (scannable, skipped) lists."""
     scannable = []
     skipped = []
 
-    if os.path.isfile(path):
-        candidates = [path]
-    else:
-        candidates = []
-        for root, _, fnames in os.walk(path):
-            for fn in sorted(fnames):
-                candidates.append(os.path.join(root, fn))
+    candidates = []
+    for path in paths:
+        if os.path.isfile(path):
+            candidates.append(path)
+        else:
+            for root, _, fnames in os.walk(path):
+                for fn in sorted(fnames):
+                    candidates.append(os.path.join(root, fn))
 
     for filepath in candidates:
         if os.path.islink(filepath):
@@ -1086,7 +1087,7 @@ def run_scan(args):
     # Discover files
     ext_set = DEFAULT_EXTENSIONS
 
-    scannable, skipped = discover_files(args.path, ext_set, args.max_chars)
+    scannable, skipped = discover_files(args.paths, ext_set, args.max_chars)
 
     if not scannable:
         print("❌ No scannable files found.")
@@ -1096,18 +1097,36 @@ def run_scan(args):
     total_chars = sum(f["chars"] for f in scannable)
 
     # Compute display base for relative paths
-    if os.path.isdir(args.path):
-        base_path = os.path.abspath(args.path)
+    abs_paths = [os.path.abspath(p) for p in args.paths]
+    if len(abs_paths) == 1:
+        if os.path.isdir(args.paths[0]):
+            base_path = abs_paths[0]
+        else:
+            base_path = os.path.dirname(abs_paths[0])
     else:
-        base_path = os.path.dirname(os.path.abspath(args.path))
+        base_path = os.path.commonpath(abs_paths)
+        if not os.path.isdir(base_path):
+            base_path = os.path.dirname(base_path)
 
     # Resolve grep/repo directory
     if args.repo_dir:
         repo_dir = args.repo_dir
-    elif os.path.isfile(args.path):
-        repo_dir = os.path.dirname(os.path.abspath(args.path))
     else:
-        repo_dir = os.path.abspath(args.path)
+        repo_dirs = set()
+        for p in args.paths:
+            cwd = os.path.dirname(os.path.abspath(p)) if os.path.isfile(p) else os.path.abspath(p)
+            try:
+                proc = subprocess.run(["git", "rev-parse", "--show-toplevel"],
+                                      cwd=cwd, capture_output=True, text=True, check=True)
+                repo_dirs.add(proc.stdout.strip())
+            except Exception:
+                repo_dirs.add(cwd)
+        if len(repo_dirs) > 1:
+            print(f"❌ Error: The provided paths belong to different repositories or directories.")
+            print(f"   Diverging roots found: {', '.join(repo_dirs)}")
+            print("   Please scan them separately, or explicitly provide --repo-dir to force a common root.")
+            sys.exit(1)
+        repo_dir = list(repo_dirs)[0]
 
     # Timestamp for output directory
     timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
@@ -1120,7 +1139,7 @@ def run_scan(args):
     # Triage config
     triage_threshold = args.triage_threshold
     triage_rounds = args.triage_rounds
-    project_name = args.project or os.path.basename(os.path.abspath(args.path))
+    project_name = args.project or os.path.basename(repo_dir)
     if args.repo_dir:
         init_grep_index(repo_dir)
     do_triage = triage_threshold is not None
@@ -1138,7 +1157,8 @@ def run_scan(args):
     # Pre-scan summary
     print_logo()
     print("🔍 nano-analyzer vulnerability scanner")
-    print(f"📂 Target: {os.path.abspath(args.path)}")
+    target_disp = ", ".join(args.paths) if len(args.paths) <= 3 else f"{len(args.paths)} paths"
+    print(f"📂 Target: {target_disp}")
     print(f"🔎 Grep dir: {repo_dir}")
     print(f"📄 {len(scannable)} files to scan ({total_lines:,} lines, {total_chars:,} chars)")
     if skipped:
@@ -1662,7 +1682,8 @@ def run_scan(args):
         triage_md_path = os.path.join(out_dir, "triage_survivors.md")
         with open(triage_md_path, "w") as f:
             f.write(f"# nano-analyzer triage survivors\n\n")
-            f.write(f"- **Target**: `{os.path.abspath(args.path)}`\n")
+            target_disp = ", ".join(args.paths) if len(args.paths) <= 3 else f"{len(args.paths)} paths"
+            f.write(f"- **Target**: `{target_disp}`\n")
             f.write(f"- **Date**: {timestamp}\n")
             f.write(f"- **Model**: {args.model}\n")
             f.write(f"- **Threshold**: {triage_threshold}+\n")
@@ -1684,7 +1705,7 @@ def run_scan(args):
     # Save summary
     summary = {
         "timestamp": timestamp,
-        "target": os.path.abspath(args.path),
+        "target": [os.path.abspath(p) for p in args.paths],
         "model": args.model,
         "files_scanned": len(results),
         "total_lines": total_lines,
@@ -1711,7 +1732,8 @@ def run_scan(args):
     # Human-readable summary
     with open(os.path.join(out_dir, "summary.md"), "w") as f:
         f.write(f"# nano-analyzer scan results\n\n")
-        f.write(f"- **Target**: `{os.path.abspath(args.path)}`\n")
+        target_disp = ", ".join(args.paths) if len(args.paths) <= 3 else f"{len(args.paths)} paths"
+        f.write(f"- **Target**: `{target_disp}`\n")
         f.write(f"- **Date**: {timestamp}\n")
         f.write(f"- **Model**: {args.model}\n")
         f.write(f"- **Files scanned**: {len(results)} ({total_lines:,} lines)\n")
@@ -1735,7 +1757,7 @@ def main():
         prog="nano-analyzer",
         description="🔍 nano-analyzer: Minimal LLM-powered zero-day vulnerability scanner by AISLE",
     )
-    parser.add_argument("path", help="File or directory to scan")
+    parser.add_argument("paths", nargs="+", help="Files or directories to scan")
     parser.add_argument("--model", default=DEFAULT_MODEL,
                         help=f"Model for all stages (default: {DEFAULT_MODEL})")
     parser.add_argument("--parallel", type=int, default=DEFAULT_PARALLEL,
@@ -1765,9 +1787,10 @@ def main():
                         help="Show per-round triage progress")
     args = parser.parse_args()
 
-    if not os.path.exists(args.path):
-        print(f"❌ Path not found: {args.path}", file=sys.stderr)
-        sys.exit(1)
+    for p in args.paths:
+        if not os.path.exists(p):
+            print(f"❌ Path not found: {p}", file=sys.stderr)
+            sys.exit(1)
 
     run_scan(args)
 
