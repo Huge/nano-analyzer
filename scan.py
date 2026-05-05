@@ -47,7 +47,7 @@ DEFAULT_EXTENSIONS = {
     ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".hxx",
     ".java", ".py", ".go", ".rs", ".js", ".ts", ".rb",
     ".swift", ".m", ".mm", ".cs", ".php", ".pl", ".sh",
-    ".x",
+    ".x", ".scala", ".mill",
 }
 
 SEVERITY_LEVELS = ["critical", "high", "medium", "low", "informational"]
@@ -1097,7 +1097,11 @@ def run_scan(args):
     keys = load_api_keys()
 
     # Discover files
-    ext_set = DEFAULT_EXTENSIONS
+    if getattr(args, "extensions", None):
+        ext_set = {ext.strip() if ext.strip().startswith(".") else f".{ext.strip()}"
+                   for ext in args.extensions.split(",") if ext.strip()}
+    else:
+        ext_set = DEFAULT_EXTENSIONS
 
     scannable, skipped = discover_files(args.paths, ext_set, args.max_chars)
 
@@ -1786,6 +1790,8 @@ def main():
                         help=f"Max concurrent scan calls (default: {DEFAULT_PARALLEL})")
     parser.add_argument("--max-chars", type=int, default=DEFAULT_MAX_CHARS,
                         help=f"Skip files larger than this (default: {DEFAULT_MAX_CHARS:,})")
+    parser.add_argument("--extensions", default=None,
+                        help="Comma-separated list of file extensions to scan (e.g. .scala,.mill)")
     parser.add_argument("--output-dir", default=None,
                         help="Output directory (default: ~/nano-analyzer-results/<timestamp>/)")
     parser.add_argument("--triage-threshold", default="medium",
