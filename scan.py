@@ -50,6 +50,15 @@ DEFAULT_EXTENSIONS = {
     ".x", ".scala", ".mill",
 }
 
+DEFAULT_IGNORED_DIRS = {
+    ".git", ".svn", ".hg",
+    ".venv", "venv", ".env", "env", ".virtualenv", "virtualenv",
+    "node_modules", "vendor", "site-packages",
+    "__pycache__", ".pytest_cache", ".mypy_cache", ".cache",
+    "build", "dist", "out", "target", ".eggs",
+    ".idea", ".vscode", ".next", ".cargo",
+}
+
 SEVERITY_LEVELS = ["critical", "high", "medium", "low", "informational"]
 SEVERITY_EMOJI = {
     "critical": "🔴",
@@ -590,7 +599,18 @@ def top_severity(sevs):
 # File discovery
 # ---------------------------------------------------------------------------
 
-def discover_files(paths, extensions, max_chars):
+def is_ignored_dir(dirname, extra_ignored=None):
+    """Return True if dirname should be skipped during directory discovery."""
+    if dirname.startswith(".") or dirname in DEFAULT_IGNORED_DIRS:
+        return True
+    if dirname.endswith(".egg-info") or dirname.endswith(".dist-info"):
+        return True
+    if extra_ignored and dirname in extra_ignored:
+        return True
+    return False
+
+
+def discover_files(paths, extensions, max_chars, extra_ignored_dirs=None):
     """Walk paths (files or dirs) and return (scannable, skipped) lists."""
     scannable = []
     skipped = []
@@ -600,7 +620,8 @@ def discover_files(paths, extensions, max_chars):
         if os.path.isfile(path):
             candidates.append((path, True))
         else:
-            for root, _, fnames in os.walk(path):
+            for root, dirs, fnames in os.walk(path):
+                dirs[:] = [d for d in dirs if not is_ignored_dir(d, extra_ignored_dirs)]
                 for fn in sorted(fnames):
                     candidates.append((os.path.join(root, fn), False))
 
@@ -1103,7 +1124,11 @@ def run_scan(args):
     else:
         ext_set = DEFAULT_EXTENSIONS
 
-    scannable, skipped = discover_files(args.paths, ext_set, args.max_chars)
+    extra_ignored = None
+    if getattr(args, "ignore_dirs", None):
+        extra_ignored = {d.strip() for d in args.ignore_dirs.split(",") if d.strip()}
+
+    scannable, skipped = discover_files(args.paths, ext_set, args.max_chars, extra_ignored)
 
     if not scannable:
         print("❌ No scannable files found.")
@@ -1792,6 +1817,8 @@ def main():
                         help=f"Skip files larger than this (default: {DEFAULT_MAX_CHARS:,})")
     parser.add_argument("--extensions", default=None,
                         help="Comma-separated list of file extensions to scan (e.g. .scala,.mill)")
+    parser.add_argument("--ignore-dirs", default=None,
+                        help="Comma-separated list of additional directory names to ignore during scan")
     parser.add_argument("--output-dir", default=None,
                         help="Output directory (default: ~/nano-analyzer-results/<timestamp>/)")
     parser.add_argument("--triage-threshold", default="medium",
