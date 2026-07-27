@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BudgetScan | Autonomous Security & PR/MR Auction Optimization</title>
-  <meta name="description" content="BudgetScan - Advanced static analysis, zero-day vulnerability scanning, and PR/MR auction optimization for modern dev teams.">
+  <title>BudgetScan | Credit-Based Security & PR/MR Auction Optimization</title>
+  <meta name="description" content="BudgetScan - Pay-per-scan code security. Tag @budgetscan $1.50 --max-delay 5m in PR/MRs to trigger instant budget-aware SAST audits.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,21 +36,22 @@
             </linearGradient>
           </defs>
         </div>
-        <span class="brand-name">BudgetScan<span class="badge-v">v2.4 Enterprise</span></span>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
       </a>
 
       <nav class="nav-links">
         <a href="#features">Features</a>
-        <a href="#pr-auction">PR/MR Auction Bot</a>
-        <a href="#calculator">ROI Calculator</a>
+        <a href="#syntax">PR Command Syntax</a>
+        <a href="#pr-auction">Auction Engine</a>
+        <a href="#calculator">Savings Calculator</a>
         <a href="#demo">Live Demo</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#pricing">Credit Models</a>
       </nav>
 
       <div class="nav-actions">
         <a href="./cz/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
         <a href="#demo" class="btn btn-secondary">Try in PR</a>
-        <a href="#pricing" class="btn btn-primary">Deploy Enterprise</a>
+        <a href="#pricing" class="btn btn-primary">Top-Up Credits</a>
       </div>
     </div>
   </header>
@@ -60,24 +61,24 @@
     <div class="container hero-container">
       <div class="hero-badge">
         <span class="pulse-dot"></span>
-        <span>PR/MR Auction Optimization & Zero-Day Security Scanning</span>
+        <span>Zero Monthly Subscriptions • Pay-Per-Scan Credit Bidding</span>
       </div>
 
       <h1 class="hero-title">
-        Detect zero-day code vulnerabilities.<br>
-        <span class="gradient-text">Auction-optimize fixes directly in PR/MRs.</span>
+        Budget-driven code security.<br>
+        <span class="gradient-text">Set your price in PR/MR. We optimize the audit.</span>
       </h1>
 
       <p class="hero-subtitle">
-        BudgetScan combines millisecond static code analysis (C/C++, Go, Python, Rust) with an autonomous auction engine. Mention <code class="code-tag">@budgetscan</code> in any Pull Request or Merge Request to trigger real-time spot-compute reverse bidding and automated remediation workflows.
+        No seat licenses or monthly subscriptions. Simply comment <code class="code-tag">@budgetscan $1.50 --max-delay 5m</code> on any PR/MR. BudgetScan dynamically negotiates spot compute nodes, finishes on time, and deducts the exact cost from your team credit.
       </p>
 
       <div class="hero-cta-group">
-        <a href="#pr-auction" class="btn btn-primary btn-lg">
-          <span>Explore PR/MR Auctions</span>
+        <a href="#syntax" class="btn btn-primary btn-lg">
+          <span>See PR Command Syntax</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#calculator" class="btn btn-outline btn-lg">Calculate Team ROI</a>
+        <a href="#calculator" class="btn btn-outline btn-lg">Calculate Credit Savings</a>
       </div>
 
       <!-- Hero Interactive Terminal Preview -->
@@ -88,13 +89,13 @@
             <span class="control minimize"></span>
             <span class="control maximize"></span>
           </div>
-          <div class="window-title">GitLab MR #418 — @budgetscan audit & auction trigger</div>
-          <div class="window-badge">Status: Live Auction Active</div>
+          <div class="window-title">GitLab MR #418 — @budgetscan $1.50 --max-delay 5m</div>
+          <div class="window-badge">Status: Audit & Auction Complete</div>
         </div>
         <div class="terminal-body">
           <div class="terminal-line comment-line">
-            <span class="user-avatar">dev-lead</span>
-            <span class="comment-text"><strong>@dev-team</strong> Reviewing PR. <span class="highlight-mention">@budgetscan</span> analyze & optimize spot-bounty</span>
+            <span class="user-avatar">reviewer-jane</span>
+            <span class="comment-text">Looking at the C++ changes. <span class="highlight-mention">@budgetscan $1.50 --max-delay 5m</span></span>
           </div>
           <div class="terminal-divider"></div>
           <div class="terminal-line bot-response">
@@ -106,35 +107,35 @@
               <div class="scan-result-header">
                 <span class="status-icon danger">⚡</span>
                 <div>
-                  <h4>Critical Memory Vulnerability (Use-After-Free) in <code class="file-link">interpreter.cpp:142</code></h4>
-                  <p>CVSS 8.9 | Scan completed in <strong>42 ms</strong> (Tree-sitter AST engine)</p>
+                  <h4>Use-After-Free Vulnerability in <code class="file-link">interpreter.cpp:142</code></h4>
+                  <p>CVSS 8.9 | Completed in <strong>38 ms</strong> | Budget Cap: <strong>$1.50</strong> | Max Delay: <strong>5m</strong></p>
                 </div>
               </div>
 
               <!-- Live Auction Widget inside Bot Card -->
               <div class="bot-auction-box">
                 <div class="auction-box-title">
-                  <span>🏆 Autonomous Reverse Auction (Compute Nodes & Fix Remediation)</span>
-                  <span class="auction-timer" id="auction-timer">00:45s remaining</span>
+                  <span>🏆 Execution & Credit Summary</span>
+                  <span class="auction-timer">Cost: $0.161 / $1.50 Cap</span>
                 </div>
                 <div class="auction-bids">
                   <div class="bid-item winner">
-                    <span class="bid-provider">OCI Spot Agent #12</span>
-                    <span class="bid-specs">8 vCPU, 32GB RAM</span>
-                    <span class="bid-price">$0.041 / scan</span>
-                    <span class="bid-status">Lowest Bid (Selected)</span>
+                    <span class="bid-provider">OCI Spot Worker (fra-1)</span>
+                    <span class="bid-specs">8 vCPU, AST Tree-sitter</span>
+                    <span class="bid-price">$0.041</span>
+                    <span class="bid-status">Selected Spot Node</span>
+                  </div>
+                  <div class="bid-item winner">
+                    <span class="bid-provider">AI Refactor Engine</span>
+                    <span class="bid-specs">Fix diff generated</span>
+                    <span class="bid-price">$0.120</span>
+                    <span class="bid-status ready">Patch Included</span>
                   </div>
                   <div class="bid-item">
-                    <span class="bid-provider">AWS Spot Worker</span>
-                    <span class="bid-specs">8 vCPU, 16GB RAM</span>
-                    <span class="bid-price">$0.068 / scan</span>
-                    <span class="bid-status">Outbid</span>
-                  </div>
-                  <div class="bid-item fix-bid">
-                    <span class="bid-provider">AI Refactoring Agent (Auto-PR)</span>
-                    <span class="bid-specs">Patch generated in 1.4s</span>
-                    <span class="bid-price">0.002 SOL Bounty</span>
-                    <span class="bid-status ready">Ready to Merge</span>
+                    <span class="bid-provider">Team Credit Deduction</span>
+                    <span class="bid-specs">Prepaid Pool</span>
+                    <span class="bid-price">-$0.161</span>
+                    <span class="bid-status">Remaining: $248.34</span>
                   </div>
                 </div>
               </div>
@@ -145,140 +146,137 @@
     </div>
   </section>
 
+  <!-- PR Command Syntax Section -->
+  <section class="section section-dark" id="syntax">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Granular PR/MR Command Control</h2>
+        <p class="section-subtitle">Developers, reviewers, and PMs control the scan budget and deadline right from the comment thread.</p>
+      </div>
+
+      <div class="syntax-grid">
+        <div class="syntax-card">
+          <div class="syntax-badge">Basic Quick Scan</div>
+          <div class="syntax-code">@budgetscan $0.50</div>
+          <h3>Lightweight Sanity Audit</h3>
+          <p>Ideal for quick developer sanity checks. BudgetScan allocates fast AST rules and completes the scan using local cache or micro spot nodes.</p>
+          <div class="syntax-foot">Average cost: <strong>$0.03 - $0.10</strong> per PR</div>
+        </div>
+
+        <div class="syntax-card highlighted">
+          <div class="syntax-badge recommended">Most Popular</div>
+          <div class="syntax-code">@budgetscan $1.50 --max-delay 5m</div>
+          <h3>Deep Audit with SLA Constraint</h3>
+          <p>Perfect for release candidate PRs. Guarantees completion within 5 minutes while allocating up to $1.50 across spot nodes for thorough SAST & AI fix proposals.</p>
+          <div class="syntax-foot">Average cost: <strong>$0.15 - $0.45</strong> per PR</div>
+        </div>
+
+        <div class="syntax-card">
+          <div class="syntax-badge">High-Security Release</div>
+          <div class="syntax-code">@budgetscan $5.00 --bounty-autofix</div>
+          <h3>Full Zero-Day Audit & Auto-Fix Bounty</h3>
+          <p>Used for critical core changes. Runs deep semantic analysis and automatically allocates a micro-bounty for AI agents or team members to auto-patch flaws.</p>
+          <div class="syntax-foot">Average cost: <strong>$0.80 - $2.10</strong> per PR</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Features Grid Section -->
   <section class="section" id="features">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Core Pillars of BudgetScan Platform</h2>
-        <p class="section-subtitle">Combining uncompromising code security with intelligent engineering spend control.</p>
+        <h2 class="section-title">Why Credit-Based BudgetScan Outperforms Traditional SAST</h2>
+        <p class="section-subtitle">No unused per-seat subscriptions. Pay only for the exact compute your PRs actually consume.</p>
       </div>
 
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon icon-purple">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="feature-card highlight-border">
+          <div class="feature-badge">Zero Waste</div>
+          <div class="feature-icon icon-cyan">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <h3>Millisecond Zero-Day Skenning</h3>
-          <p>Tree-sitter semantic parsing and AST pattern matchers instantly detect memory leaks, buffer overflows, and insecure API calls across C/C++, Go, Python, and Rust.</p>
+          <h3>Credit Deducted Only on Execution</h3>
+          <p>Stop paying $50/user/month for inactive developers. Credits are deducted strictly when a PR scan runs, based on real compute cost.</p>
         </div>
 
-        <div class="feature-card highlight-border">
-          <div class="feature-badge">Signature Feature</div>
-          <div class="feature-icon icon-cyan">
+        <div class="feature-card">
+          <div class="feature-icon icon-purple">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
-          <h3>PR/MR Auction Optimization</h3>
-          <p>Mentioning <code class="code-tag">@budgetscan</code> in a GitHub PR or GitLab MR dynamically reverse-auctions the lowest-cost cloud spot compute nodes and generates fix micro-bounties.</p>
+          <h3>Spot Instance Reverse Auctions</h3>
+          <p>Our engine queries OCI Spot, AWS Spot, and Hetzner in real time. We bid the lowest-cost compute node to stay well below your budget cap.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-emerald">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
-          <h3>Automated Triage & Prioritization</h3>
-          <p>Smart classification eliminates 95% of false positives. Focuses engineering attention exclusively on verified, high-risk security flaws with patch recommendations.</p>
+          <h3>Strict SLA & Deadline Enforcement</h3>
+          <p>Passing <code class="code-tag">--max-delay 5m</code> ensures CI pipelines are never blocked. The auction router selects higher vCPU nodes to guarantee on-time delivery.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-amber">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
-          <h3>Zero-Cloud Memory Cache</h3>
-          <p>Embedded SQLite cache hashes AST syntax trees locally. Unchanged code blocks and previously audited commits re-evaluate with zero latency.</p>
+          <h3>Smart SQLite AST Caching</h3>
+          <p>Unchanged code modules are cached locally. Re-scans cost $0.00 and complete in less than 5 milliseconds.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-rose">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
-          <h3>Multi-Platform CI/CD Native</h3>
-          <p>Seamless integrations for GitLab CI, GitHub Actions, Jenkins, and developer terminals via interactive Bubble Tea TUI.</p>
+          <h3>GitLab & GitHub Native Bot</h3>
+          <p>Works right inside PR/MR comments. Zero extra browser tabs or complex UI dashboards required for reviewers.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-indigo">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3>FinOps & Spend Transparency</h3>
-          <p>Detailed audit logging of auction savings. Track dollar values and engineering hours saved through automated spot bidding in real-time.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PR/MR Auction Engine Detailed Workflow -->
-  <section class="section section-dark" id="pr-auction">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">How PR/MR Auction Optimization Works</h2>
-        <p class="section-subtitle">Turn routine pull request reviews into an efficient, autonomous compute & fix marketplace.</p>
-      </div>
-
-      <div class="workflow-steps">
-        <div class="step-card">
-          <div class="step-num">01</div>
-          <h3>Tag `@budgetscan` in PR/MR</h3>
-          <p>Comment <code class="code-tag">@budgetscan</code> or <code class="code-tag">@budgetscan auction</code> directly on any pull request or merge request thread.</p>
-          <div class="step-mock">
-            <span class="mock-tag">PR #104</span> "@budgetscan run full security audit"
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-num">02</div>
-          <h3>Infrastructure Reverse Auction</h3>
-          <p>BudgetScan bids across connected cloud spot providers (Oracle OCI, AWS Spot, Hetzner) to select the lowest-cost compute nodes for deep SAST/DAST runs.</p>
-          <div class="step-mock text-success">
-            ✓ Matched OCI Spot Node: -$0.12/hr vs standard $0.55/hr (-78% savings)
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-num">03</div>
-          <h3>Micro-Bounty & AI Patch Auction</h3>
-          <p>For detected vulnerabilities, BudgetScan auto-generates AI refactoring patches or opens a micro-bounty for your senior engineers.</p>
-          <div class="step-mock text-accent">
-            ⚡ AI Fix Ready: Auto-generated diff available in 1.4s
-          </div>
+          <h3>Shared Team Credit Pools</h3>
+          <p>Set custom monthly credit caps for team members or projects. PMs retain full FinOps control over engineering spend.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Interactive Demo Simulator Section -->
-  <section class="section" id="demo">
+  <section class="section section-dark" id="demo">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Interactive PR/MR Auction Simulator</h2>
-        <p class="section-subtitle">Experience live @budgetscan command execution and real-time reverse spot bidding!</p>
+        <h2 class="section-title">Interactive Budget-Scan Simulator</h2>
+        <p class="section-subtitle">Select a PR scenario and test budget caps like @budgetscan $1.50 --max-delay 5m in real time!</p>
       </div>
 
       <div class="interactive-demo-card">
         <div class="demo-controls-panel">
-          <label for="demo-pr-select">Select a sample Pull Request:</label>
+          <label for="demo-pr-select">Select PR Command Scenario:</label>
           <select id="demo-pr-select" class="form-select">
-            <option value="c-memory">PR #204: C++ Memory Leak & Buffer Overflow (Critical)</option>
-            <option value="go-concurrency">PR #189: Go Race Condition & SQL Injection (High)</option>
-            <option value="py-security">PR #312: Python Unsanitized Input Exec (Medium)</option>
+            <option value="c-memory">@budgetscan $1.50 --max-delay 5m (C++ UAF & Memory Audit)</option>
+            <option value="go-concurrency">@budgetscan $0.75 --max-delay 2m (Go Concurrency & Race Check)</option>
+            <option value="py-security">@budgetscan $0.30 (Python Quick Sanity Audit)</option>
           </select>
           <button id="run-demo-btn" class="btn btn-primary">
-            <span>Run @budgetscan Scan & Auction</span>
+            <span>Execute PR Command</span>
           </button>
         </div>
 
         <div class="demo-output-terminal" id="demo-terminal">
-          <div class="term-line prompt">> Select a scenario or click "Run @budgetscan Scan & Auction"...</div>
+          <div class="term-line prompt">> Click "Execute PR Command" to test credit bidding and SLA enforcement...</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ROI Calculator Section -->
-  <section class="section section-dark" id="calculator">
+  <section class="section" id="calculator">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">ROI & Engineering Savings Calculator</h2>
-        <p class="section-subtitle">Quantify your team's savings achieved through automated PR triage and spot-compute auctions.</p>
+        <h2 class="section-title">Pay-Per-Scan Credit Savings Calculator</h2>
+        <p class="section-subtitle">Compare your actual PR scanning costs against rigid $50+/user/month enterprise seat subscriptions.</p>
       </div>
 
       <div class="calculator-wrapper">
@@ -289,35 +287,35 @@
           </div>
 
           <div class="calc-field">
-            <label for="input-devs">Engineering team size: <span id="val-devs" class="calc-val">15</span></label>
+            <label for="input-devs">Team developers (Traditional Seat Licenses): <span id="val-devs" class="calc-val">15</span></label>
             <input type="range" id="input-devs" min="2" max="200" step="1" value="15">
           </div>
 
           <div class="calc-field">
-            <label for="input-rate">Developer hourly rate ($/hr): <span id="val-rate" class="calc-val">65</span>$</label>
-            <input type="range" id="input-rate" min="20" max="200" step="5" value="65">
+            <label for="input-rate">Average budget cap per PR ($): <span id="val-rate" class="calc-val">1.50</span>$</label>
+            <input type="range" id="input-rate" min="0.25" max="5.00" step="0.25" value="1.50">
           </div>
         </div>
 
         <div class="calc-results">
           <div class="result-box primary-result">
-            <span class="result-label">Estimated Annual Savings</span>
-            <span class="result-number" id="res-total-savings">$42,500</span>
-            <span class="result-sub">Prevented zero-days + spot compute optimization</span>
+            <span class="result-label">Annual Savings vs Flat Subscriptions</span>
+            <span class="result-number" id="res-total-savings">$6,750</span>
+            <span class="result-sub">Based on actual execution vs $50/dev/mo seat fees</span>
           </div>
 
           <div class="results-grid">
             <div class="sub-result">
-              <span class="sub-label">Developer Time Saved</span>
-              <span class="sub-val" id="res-hours">480 hrs / year</span>
+              <span class="sub-label">Actual Monthly Spend</span>
+              <span class="sub-val" id="res-hours">$225 / month</span>
             </div>
             <div class="sub-result">
-              <span class="sub-label">Cloud Spot Infrastructure Savings</span>
-              <span class="sub-val" id="res-cloud-savings">74% (-$6,200)</span>
+              <span class="sub-label">Traditional SAST Seat Cost</span>
+              <span class="sub-val" id="res-cloud-savings">$750 / month</span>
             </div>
             <div class="sub-result">
-              <span class="sub-label">Prevented PR Vulnerabilities</span>
-              <span class="sub-val" id="res-vulns">~38 critical</span>
+              <span class="sub-label">Effective Cost Savings</span>
+              <span class="sub-val" id="res-vulns">70% saved</span>
             </div>
           </div>
         </div>
@@ -325,65 +323,67 @@
     </div>
   </section>
 
-  <!-- Pricing Section -->
-  <section class="section" id="pricing">
+  <!-- Pricing Section (Credit Packs - No Subscriptions) -->
+  <section class="section section-dark" id="pricing">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Transparent Pricing for Teams of All Sizes</h2>
-        <p class="section-subtitle">Start for free or unlock full PR/MR auction engine capabilities.</p>
+        <h2 class="section-title">Transparent Credit Packs • Zero Subscription Fees</h2>
+        <p class="section-subtitle">Prepay credits for your individual or team pool. Credits never expire.</p>
       </div>
 
       <div class="pricing-grid">
         <div class="pricing-card">
           <div class="plan-header">
-            <h3>Community</h3>
-            <p>For open-source projects & individual devs</p>
+            <h3>Developer Starter</h3>
+            <p>For individuals & open-source contributors</p>
             <div class="plan-price">
-              <span class="currency">$</span><span class="amount">0</span><span class="period">/ forever</span>
+              <span class="currency">$</span><span class="amount">25</span><span class="period">/ prepaid credit</span>
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ Local CLI scanner (C/C++, Go, Python, Rust)</li>
-            <li>✓ Core AST vulnerability rules</li>
-            <li>✓ Embedded SQLite memory cache</li>
-            <li>✓ Community support</li>
+            <li>✓ <strong>$0 Monthly Subscription Fee</strong></li>
+            <li>✓ ~150 - 300 PR scans (@ $0.10-$0.25 avg)</li>
+            <li>✓ Support for <code class="code-tag">@budgetscan $X</code> syntax</li>
+            <li>✓ SQLite local AST cache</li>
+            <li>✓ Credits never expire</li>
           </ul>
-          <a href="#" class="btn btn-outline btn-block">Download CLI</a>
+          <a href="#" class="btn btn-outline btn-block">Buy $25 Credit Pack</a>
         </div>
 
         <div class="pricing-card featured">
           <div class="popular-tag">Most Popular</div>
           <div class="plan-header">
-            <h3>Team Pro</h3>
-            <p>For growing engineering teams</p>
+            <h3>Team Shared Pool</h3>
+            <p>Shared credit balance for engineering teams</p>
             <div class="plan-price">
-              <span class="currency">$</span><span class="amount">49</span><span class="period">/ developer / month</span>
+              <span class="currency">$</span><span class="amount">250</span><span class="period">/ prepaid credit</span>
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ Everything in Community</li>
-            <li>✓ <strong>PR/MR Bot Interface (@budgetscan)</strong></li>
-            <li>✓ <strong>Infrastructure Spot Reverse Auction Engine</strong></li>
-            <li>✓ Native CI/CD Integration (GitLab CI, GitHub Actions)</li>
-            <li>✓ AI Security Triage & Auto-Patch Generation</li>
+            <li>✓ <strong>$0 Monthly Platform / Seat Fees</strong></li>
+            <li>✓ ~1,500 - 3,000 PR scans across team</li>
+            <li>✓ Support for <code class="code-tag">--max-delay</code> SLA flags</li>
+            <li>✓ Shared team budget caps & auto-top-up</li>
+            <li>✓ GitLab CI & GitHub Actions bot integration</li>
+            <li>✓ AI auto-fix patch generation</li>
           </ul>
-          <a href="#" class="btn btn-primary btn-block">Start 14-Day Free Trial</a>
+          <a href="#" class="btn btn-primary btn-block">Buy $250 Team Credit Pool</a>
         </div>
 
         <div class="pricing-card">
           <div class="plan-header">
-            <h3>Enterprise Custom</h3>
-            <p>For large engineering organizations & FinTech</p>
+            <h3>Enterprise Private Nodes</h3>
+            <p>Bring your own spot infrastructure</p>
             <div class="plan-price">
-              <span class="amount">Custom</span>
+              <span class="amount">Custom Pool</span>
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ Everything in Team Pro</li>
-            <li>✓ Internal Micro-Bounty Auction Routing</li>
-            <li>✓ On-Premise & Private Cloud Deployment</li>
-            <li>✓ Custom Tree-sitter Security Rule Engines</li>
-            <li>✓ Dedicated Support & SOC2 Compliance</li>
+            <li>✓ Everything in Team Shared Pool</li>
+            <li>✓ Connect your own OCI / AWS / Hetzner spot nodes</li>
+            <li>✓ Zero compute markup (Pay raw cloud spot rates)</li>
+            <li>✓ Dedicated SOC2 & On-Premise Runners</li>
+            <li>✓ Custom credit invoicing & SLA controls</li>
           </ul>
           <a href="#" class="btn btn-outline btn-block">Contact Sales</a>
         </div>
@@ -396,16 +396,16 @@
     <div class="container footer-container">
       <div class="footer-brand">
         <span class="brand-name">BudgetScan</span>
-        <p>Autonomous security scanner and PR auction optimizer built for modern software development.</p>
+        <p>Credit-based security scanner and PR auction optimizer built for modern software development.</p>
       </div>
 
       <div class="footer-links">
         <div class="footer-col">
           <h4>Product</h4>
           <a href="#features">Features</a>
-          <a href="#pr-auction">PR/MR Auction Engine</a>
-          <a href="#calculator">ROI Calculator</a>
-          <a href="#pricing">Pricing</a>
+          <a href="#syntax">PR Syntax</a>
+          <a href="#calculator">Savings Calculator</a>
+          <a href="#pricing">Credit Packs</a>
         </div>
 
         <div class="footer-col">

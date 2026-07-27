@@ -1,6 +1,6 @@
 /**
  * BudgetScan - Interactive Web Logic & Auction Engine Simulator
- * Supports dual-language (EN / CS) terminal output detection.
+ * Supports dual-language (EN / CS) terminal output & credit-based pay-per-scan calculations.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,7 +31,7 @@ function initAuctionTimer() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 2. Interactive Calculator (ROI & Cloud Spot Savings)                      */
+/* 2. Interactive Calculator (Pay-Per-Scan Credit vs Seat Subscriptions)     */
 /* -------------------------------------------------------------------------- */
 function initCalculator() {
   const inputPRs = document.getElementById('input-prs');
@@ -54,30 +54,39 @@ function initCalculator() {
   function updateCalc() {
     const prs = parseInt(inputPRs.value, 10);
     const devs = parseInt(inputDevs.value, 10);
-    const rate = parseInt(inputRate.value, 10);
+    const avgBudget = parseFloat(inputRate.value);
 
     valPRs.textContent = prs;
     valDevs.textContent = devs;
-    valRate.textContent = rate;
+    valRate.textContent = avgBudget.toFixed(2);
 
-    // Calculation formulas:
-    const hoursSavedPerYear = Math.round((prs * 12 * 2.2));
-    const devCostSaved = hoursSavedPerYear * rate;
-
-    const cloudSaved = Math.round((prs * 12 * 0.42 * 10));
-    const vulnsPrevented = Math.round(prs * 12 * 0.022);
-
-    const totalSavings = devCostSaved + cloudSaved;
-
-    resTotal.textContent = `$${totalSavings.toLocaleString()}`;
-    resHours.textContent = isCs 
-      ? `${hoursSavedPerYear.toLocaleString()} hod / rok` 
-      : `${hoursSavedPerYear.toLocaleString()} hrs / year`;
+    // Pay-per-scan actual spend (avg actual scan cost is ~25% of the max budget cap due to spot bidding & SQLite cache)
+    const actualCostPerPR = avgBudget * 0.28;
+    const monthlyCreditSpend = Math.round(prs * actualCostPerPR);
     
-    resCloud.textContent = `74% (-$${cloudSaved.toLocaleString()})`;
+    // Traditional Enterprise SAST Seat Cost ($50 / dev / month)
+    const traditionalSeatSpend = devs * 50;
+
+    // Monthly savings vs seat subscriptions
+    const monthlySavings = Math.max(0, traditionalSeatSpend - monthlyCreditSpend);
+    const annualSavings = monthlySavings * 12;
+
+    const savingsPercent = traditionalSeatSpend > 0 
+      ? Math.round((monthlySavings / traditionalSeatSpend) * 100)
+      : 0;
+
+    resTotal.textContent = `$${annualSavings.toLocaleString()}`;
+    resHours.textContent = isCs 
+      ? `$${monthlyCreditSpend.toLocaleString()} / měsíc` 
+      : `$${monthlyCreditSpend.toLocaleString()} / month`;
+    
+    resCloud.textContent = isCs
+      ? `$${traditionalSeatSpend.toLocaleString()} / měsíc`
+      : `$${traditionalSeatSpend.toLocaleString()} / month`;
+
     resVulns.textContent = isCs 
-      ? `~${vulnsPrevented} kritických` 
-      : `~${vulnsPrevented} critical`;
+      ? `${savingsPercent}% úspora` 
+      : `${savingsPercent}% saved`;
   }
 
   inputPRs.addEventListener('input', updateCalc);
@@ -101,79 +110,89 @@ function initDemoTerminal() {
 
   const scenariosEn = {
     'c-memory': {
-      prName: 'PR #204 (C++ Engine Refactor)',
+      cmd: '@budgetscan $1.50 --max-delay 5m',
       vuln: 'Use-After-Free & Buffer Overflow in buffer_allocator.cpp:88',
       scanTime: '38 ms',
-      astNodes: '14,290 nodes scanned',
-      spotBids: [
-        { provider: 'Oracle OCI Spot (fra-1)', cost: '$0.038', time: '1.2s', status: 'WINNER (Lowest Price)' },
-        { provider: 'AWS EC2 Spot (c6i.xlarge)', cost: '$0.065', time: '1.4s', status: 'Outbid' },
-        { provider: 'Hetzner Dedicated Spot', cost: '$0.042', time: '1.8s', status: 'Outbid' }
+      budgetCap: '$1.50',
+      maxDelay: '5m',
+      actualCost: '$0.161',
+      bids: [
+        { provider: 'OCI Spot Node (fra-1)', cost: '$0.041', time: '1.2s', status: 'SELECTED (Within SLA & Budget)' },
+        { provider: 'AI Patch Engine', cost: '$0.120', time: '0.8s', status: 'DIFF INCLUDED' }
       ],
-      aiFix: 'Auto-generated patch with std::unique_ptr & bounds checking.',
-      bounty: '0.005 ETH / AI Auto-Merge'
+      aiFix: 'Generated patch with std::unique_ptr & bounds check sanitization.',
+      creditRem: '$248.34'
     },
     'go-concurrency': {
-      prName: 'PR #189 (Go API Gateway)',
-      vuln: 'Data Race in session_store.go & Potential SQL Injection in query_builder.go',
+      cmd: '@budgetscan $0.75 --max-delay 2m',
+      vuln: 'Data Race in session_store.go & Potential SQL Injection',
       scanTime: '24 ms',
-      astNodes: '8,410 nodes scanned',
-      spotBids: [
-        { provider: 'Hetzner Cloud Spot (nbg1)', cost: '$0.021', time: '0.9s', status: 'WINNER (Fastest Node)' },
-        { provider: 'AWS Spot (t4g.medium)', cost: '$0.035', time: '1.1s', status: 'Outbid' }
+      budgetCap: '$0.75',
+      maxDelay: '2m',
+      actualCost: '$0.085',
+      bids: [
+        { provider: 'Hetzner Spot Node (nbg1)', cost: '$0.025', time: '0.5s', status: 'SELECTED (Fastest Spot Node)' },
+        { provider: 'AST Security Matcher', cost: '$0.060', time: '0.3s', status: 'ANALYSIS COMPLETED' }
       ],
-      aiFix: 'Parameterized SQL query + added sync.RWMutex lock to SessionStore struct.',
-      bounty: '0.002 SOL / Verified'
+      aiFix: 'Parameterized SQL query & added sync.RWMutex lock to SessionStore.',
+      creditRem: '$248.41'
     },
     'py-security': {
-      prName: 'PR #312 (Python Data Pipeline)',
+      cmd: '@budgetscan $0.30',
       vuln: 'Unsanitized eval() input in data_loader.py:42',
       scanTime: '18 ms',
-      astNodes: '5,120 nodes scanned',
-      spotBids: [
-        { provider: 'Oracle OCI Spot (prg-1)', cost: '$0.015', time: '0.6s', status: 'WINNER' }
+      budgetCap: '$0.30',
+      maxDelay: 'None',
+      actualCost: '$0.032',
+      bids: [
+        { provider: 'Local AST Cache / Spot Micro', cost: '$0.032', time: '0.2s', status: 'SELECTED' }
       ],
       aiFix: 'Replaced eval() with safe ast.literal_eval() execution.',
-      bounty: 'Auto-Fix Ready'
+      creditRem: '$248.46'
     }
   };
 
   const scenariosCs = {
     'c-memory': {
-      prName: 'PR #204 (C++ Engine Refactor)',
+      cmd: '@budgetscan $1.50 --max-delay 5m',
       vuln: 'Use-After-Free & Buffer Overflow v buffer_allocator.cpp:88',
       scanTime: '38 ms',
-      astNodes: '14 290 uzlů vyskenováno',
-      spotBids: [
-        { provider: 'Oracle OCI Spot (fra-1)', cost: '$0.038', time: '1.2s', status: 'VÍTĚZ (Nejnižší cena)' },
-        { provider: 'AWS EC2 Spot (c6i.xlarge)', cost: '$0.065', time: '1.4s', status: 'Překročeno' },
-        { provider: 'Hetzner Dedicated Spot', cost: '$0.042', time: '1.8s', status: 'Překročeno' }
+      budgetCap: '$1.50',
+      maxDelay: '5m',
+      actualCost: '$0.161',
+      bids: [
+        { provider: 'OCI Spot Uzel (fra-1)', cost: '$0.041', time: '1.2s', status: 'VYBRÁNO (V rámci SLA & Rozpočtu)' },
+        { provider: 'AI Patch Engine', cost: '$0.120', time: '0.8s', status: 'DIFF PŘIPOJEN' }
       ],
-      aiFix: 'Vytvořen auto-patch s std::unique_ptr & sanitizací mezí.',
-      bounty: '0.005 ETH / AI Auto-Merge'
+      aiFix: 'Vytvořen patch s std::unique_ptr & kontrolou mezí.',
+      creditRem: '$248.34'
     },
     'go-concurrency': {
-      prName: 'PR #189 (Go API Gateway)',
-      vuln: 'Data Race v session_store.go & Potenciální SQL Injection v query_builder.go',
+      cmd: '@budgetscan $0.75 --max-delay 2m',
+      vuln: 'Data Race v session_store.go & Potenciální SQL Injection',
       scanTime: '24 ms',
-      astNodes: '8 410 uzlů vyskenováno',
-      spotBids: [
-        { provider: 'Hetzner Cloud Spot (nbg1)', cost: '$0.021', time: '0.9s', status: 'VÍTĚZ (Nejrychlejší uzel)' },
-        { provider: 'AWS Spot (t4g.medium)', cost: '$0.035', time: '1.1s', status: 'Překročeno' }
+      budgetCap: '$0.75',
+      maxDelay: '2m',
+      actualCost: '$0.085',
+      bids: [
+        { provider: 'Hetzner Spot Uzel (nbg1)', cost: '$0.025', time: '0.5s', status: 'VYBRÁNO (Nejrychlejší Spot Uzel)' },
+        { provider: 'AST Security Matcher', cost: '$0.060', time: '0.3s', status: 'ANALÝZA DOKONČENA' }
       ],
-      aiFix: 'Parametrizován SQL dotaz + přidán sync.RWMutex zámek do SessionStore.',
-      bounty: '0.002 SOL / Ověřeno'
+      aiFix: 'Parametrizován SQL dotaz & přidán sync.RWMutex zámek do SessionStore.',
+      creditRem: '$248.41'
     },
     'py-security': {
-      prName: 'PR #312 (Python Data Pipeline)',
+      cmd: '@budgetscan $0.30',
       vuln: 'Neošetřený eval() vstup v data_loader.py:42',
       scanTime: '18 ms',
-      astNodes: '5 120 uzlů vyskenováno',
-      spotBids: [
-        { provider: 'Oracle OCI Spot (prg-1)', cost: '$0.015', time: '0.6s', status: 'VÍTĚZ' }
+      budgetCap: '$0.30',
+      maxDelay: 'Není',
+      actualCost: '$0.032',
+      bids: [
+        { provider: 'Lokální AST Cache / Spot Mikro', cost: '$0.032', time: '0.2s', status: 'VYBRÁNO' }
       ],
       aiFix: 'Nahrazeno ast.literal_eval() pro bezpečné zpracování dat.',
-      bounty: 'Připraveno k Auto-Fixu'
+      creditRem: '$248.46'
     }
   };
 
@@ -184,39 +203,38 @@ function initDemoTerminal() {
     const data = scenarios[key];
 
     terminal.innerHTML = '';
-    appendTerminalLine(`> @budgetscan audit --auction-mode --pr=${data.prName}`, 'prompt');
+    appendTerminalLine(`> reviewer: ${data.cmd}`, 'prompt');
 
     setTimeout(() => {
       appendTerminalLine(isCs 
-        ? `[1/4] 🔍 Inicializace Tree-sitter AST Skenování... (${data.astNodes})` 
-        : `[1/4] 🔍 Initializing Tree-sitter AST Parsing... (${data.astNodes})`, 'info');
+        ? `[1/4] ⚙️  Zpracování příkazu... Limit rozpočtu: ${data.budgetCap} | Garance času (SLA): ${data.maxDelay}` 
+        : `[1/4] ⚙️  Processing PR command... Budget Cap: ${data.budgetCap} | SLA Limit: ${data.maxDelay}`, 'info');
     }, 300);
 
     setTimeout(() => {
       appendTerminalLine(isCs
         ? `[2/4] ⚠️  DETEKOVÁNA ZRANITELNOST: ${data.vuln} (Čas skenování: ${data.scanTime})`
-        : `[2/4] ⚠️  VULNERABILITY DETECTED: ${data.vuln} (Scan time: ${data.scanTime})`, 'danger');
+        : `[2/4] ⚠️  VULNERABILITY DETECTED: ${data.vuln} (Scan duration: ${data.scanTime})`, 'danger');
     }, 700);
 
     setTimeout(() => {
       appendTerminalLine(isCs
-        ? `[3/4] 🏆 Otevřena reverzní aukce výpočetního výkonu pro hloubkovou analýzu:`
-        : `[3/4] 🏆 Opened reverse infrastructure spot-auction for deep analysis:`, 'warning');
+        ? `[3/4] 🏆 Výsledek aukce a alokace výkonu:`
+        : `[3/4] 🏆 Spot Auction & Resource Allocation Summary:`, 'warning');
       
-      data.spotBids.forEach(bid => {
-        const isWinner = bid.status.includes('WINNER') || bid.status.includes('VÍTĚZ');
-        appendTerminalLine(`   • ${bid.provider} -> ${bid.cost} (Time: ${bid.time}) [${bid.status}]`, isWinner ? 'success' : 'prompt');
+      data.bids.forEach(bid => {
+        appendTerminalLine(`   • ${bid.provider} -> ${bid.cost} (${bid.time}) [${bid.status}]`, 'success');
       });
     }, 1200);
 
     setTimeout(() => {
       appendTerminalLine(isCs
-        ? `[4/4] ⚡ AUKČNÍ NÁVRH OPRAVY: ${data.aiFix}`
-        : `[4/4] ⚡ AUCTION REMEDIATION PROPOSAL: ${data.aiFix}`, 'success');
+        ? `[4/4] ⚡ OPRAVNÝ PATCH: ${data.aiFix}`
+        : `[4/4] ⚡ REMEDIATION PATCH: ${data.aiFix}`, 'success');
       
       appendTerminalLine(isCs
-        ? `   👉 Mikrobounty alokováno: ${data.bounty}. Připraveno k automatickému schválení u PR/MR.`
-        : `   👉 Micro-bounty allocated: ${data.bounty}. Ready for PR/MR auto-merge approval.`, 'info');
+        ? `   💰 Odečteno z týmového kreditu: ${data.actualCost} (Úspora oproti limitu ${data.budgetCap}). Zbývající kredit: ${data.creditRem}`
+        : `   💰 Deducted from team credit: ${data.actualCost} (Saved under ${data.budgetCap} cap). Remaining credit: ${data.creditRem}`, 'info');
     }, 1800);
   });
 
