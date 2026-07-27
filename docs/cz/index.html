@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BudgetScan | Autonomous Security & PR/MR Auction Optimization</title>
-  <meta name="description" content="BudgetScan - Advanced static analysis, zero-day vulnerability scanning, and PR/MR auction optimization for modern dev teams.">
+  <title>BudgetScan | Autonomní Bezpečnost & PR/MR Aukční Optimalizace</title>
+  <meta name="description" content="BudgetScan - Pokročilá statická analýza kódu, zero-day skenování a aukční optimalizace oprav při označení v PR/MR.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <!-- Background Glow & Grid FX -->
@@ -40,17 +40,17 @@
       </a>
 
       <nav class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#pr-auction">PR/MR Auction Bot</a>
-        <a href="#calculator">ROI Calculator</a>
-        <a href="#demo">Live Demo</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#features">Vlastnosti</a>
+        <a href="#pr-auction">Aukční Bot pro PR/MR</a>
+        <a href="#calculator">Kalkulačka úspor</a>
+        <a href="#demo">Živá ukázka</a>
+        <a href="#pricing">Ceník</a>
       </nav>
 
       <div class="nav-actions">
-        <a href="./cz/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
-        <a href="#demo" class="btn btn-secondary">Try in PR</a>
-        <a href="#pricing" class="btn btn-primary">Deploy Enterprise</a>
+        <a href="../" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="#demo" class="btn btn-secondary">Vyzkoušet v PR</a>
+        <a href="#pricing" class="btn btn-primary">Aktivovat Enterprise</a>
       </div>
     </div>
   </header>
@@ -60,24 +60,24 @@
     <div class="container hero-container">
       <div class="hero-badge">
         <span class="pulse-dot"></span>
-        <span>PR/MR Auction Optimization & Zero-Day Security Scanning</span>
+        <span>Aukční optimalizace PR/MR & Zero-Day Security Skenování</span>
       </div>
 
       <h1 class="hero-title">
-        Detect zero-day code vulnerabilities.<br>
-        <span class="gradient-text">Auction-optimize fixes directly in PR/MRs.</span>
+        Najděte zranitelnosti v kódu.<br>
+        <span class="gradient-text">Aukčně optimalizujte opravy přímo v PR/MR.</span>
       </h1>
 
       <p class="hero-subtitle">
-        BudgetScan combines millisecond static code analysis (C/C++, Go, Python, Rust) with an autonomous auction engine. Mention <code class="code-tag">@budgetscan</code> in any Pull Request or Merge Request to trigger real-time spot-compute reverse bidding and automated remediation workflows.
+        BudgetScan spojuje ultra-rychlou statickou analýzu (C/C++, Go, Python, Rust) s autonomním aukčním engine. Označte <code class="code-tag">@budgetscan</code> v Pull Requestu nebo Merge Requestu a automaticky vysoutěžte spotový výpočetní výkon i alokaci vývojářů/AI agentů na opravu.
       </p>
 
       <div class="hero-cta-group">
         <a href="#pr-auction" class="btn btn-primary btn-lg">
-          <span>Explore PR/MR Auctions</span>
+          <span>Objevit PR/MR Aukce</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#calculator" class="btn btn-outline btn-lg">Calculate Team ROI</a>
+        <a href="#calculator" class="btn btn-outline btn-lg">Spočítat ROI firmy</a>
       </div>
 
       <!-- Hero Interactive Terminal Preview -->
@@ -100,41 +100,41 @@
           <div class="terminal-line bot-response">
             <div class="bot-header">
               <span class="bot-badge">BudgetScan Bot</span>
-              <span class="bot-time">just now</span>
+              <span class="bot-time">právě teď</span>
             </div>
             <div class="bot-card">
               <div class="scan-result-header">
                 <span class="status-icon danger">⚡</span>
                 <div>
-                  <h4>Critical Memory Vulnerability (Use-After-Free) in <code class="file-link">interpreter.cpp:142</code></h4>
-                  <p>CVSS 8.9 | Scan completed in <strong>42 ms</strong> (Tree-sitter AST engine)</p>
+                  <h4>Detekována kritická chyba paměti (Use-After-Free) v <code class="file-link">interpreter.cpp:142</code></h4>
+                  <p>CVSS 8.9 | Skenování dokončeno za <strong>42 ms</strong> (Tree-sitter AST engine)</p>
                 </div>
               </div>
 
               <!-- Live Auction Widget inside Bot Card -->
               <div class="bot-auction-box">
                 <div class="auction-box-title">
-                  <span>🏆 Autonomous Reverse Auction (Compute Nodes & Fix Remediation)</span>
-                  <span class="auction-timer" id="auction-timer">00:45s remaining</span>
+                  <span>🏆 Probíhá autonomní reverzní aukce výpočetního výkonu a opravy</span>
+                  <span class="auction-timer" id="auction-timer">00:45s zbývá</span>
                 </div>
                 <div class="auction-bids">
                   <div class="bid-item winner">
                     <span class="bid-provider">OCI Spot Agent #12</span>
                     <span class="bid-specs">8 vCPU, 32GB RAM</span>
                     <span class="bid-price">$0.041 / scan</span>
-                    <span class="bid-status">Lowest Bid (Selected)</span>
+                    <span class="bid-status">Nejlepší nabídka (Vybráno)</span>
                   </div>
                   <div class="bid-item">
                     <span class="bid-provider">AWS Spot Worker</span>
                     <span class="bid-specs">8 vCPU, 16GB RAM</span>
                     <span class="bid-price">$0.068 / scan</span>
-                    <span class="bid-status">Outbid</span>
+                    <span class="bid-status">Překročeno</span>
                   </div>
                   <div class="bid-item fix-bid">
                     <span class="bid-provider">AI Refactoring Agent (Auto-PR)</span>
                     <span class="bid-specs">Patch generated in 1.4s</span>
                     <span class="bid-price">0.002 SOL Bounty</span>
-                    <span class="bid-status ready">Ready to Merge</span>
+                    <span class="bid-status ready">Připraven k mergi</span>
                   </div>
                 </div>
               </div>
@@ -149,8 +149,8 @@
   <section class="section" id="features">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Core Pillars of BudgetScan Platform</h2>
-        <p class="section-subtitle">Combining uncompromising code security with intelligent engineering spend control.</p>
+        <h2 class="section-title">Klíčové piliere platformy BudgetScan</h2>
+        <p class="section-subtitle">Spojení nekompromisní bezpečnosti a inteligentního řízení nákladů na vývoj.</p>
       </div>
 
       <div class="features-grid">
@@ -158,25 +158,25 @@
           <div class="feature-icon icon-purple">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3>Millisecond Zero-Day Skenning</h3>
-          <p>Tree-sitter semantic parsing and AST pattern matchers instantly detect memory leaks, buffer overflows, and insecure API calls across C/C++, Go, Python, and Rust.</p>
+          <h3>Zero-Day Skenování v milisekundách</h3>
+          <p>Tree-sitter sémantické skenování a AST vzory okamžitě odhalují paměťové chyby, buffer overflow a nebezpečné API volání v C/C++, Go, Pythonu i Rustu.</p>
         </div>
 
         <div class="feature-card highlight-border">
-          <div class="feature-badge">Signature Feature</div>
+          <div class="feature-badge">Unikátní funkčnost</div>
           <div class="feature-icon icon-cyan">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
-          <h3>PR/MR Auction Optimization</h3>
-          <p>Mentioning <code class="code-tag">@budgetscan</code> in a GitHub PR or GitLab MR dynamically reverse-auctions the lowest-cost cloud spot compute nodes and generates fix micro-bounties.</p>
+          <h3>Aukční optimalizace při označení v PR/MR</h3>
+          <p>Když v GitLab MR nebo GitHub PR napíšete <code class="code-tag">@budgetscan</code>, systém v reálném čase vydraží nejlevnější spotový cloudový výkon pro hloubkový test a vypíše mikrobounty pro nejrychlejší opravu.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-emerald">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
-          <h3>Automated Triage & Prioritization</h3>
-          <p>Smart classification eliminates 95% of false positives. Focuses engineering attention exclusively on verified, high-risk security flaws with patch recommendations.</p>
+          <h3>Automatická prioritizace a Triage</h3>
+          <p>Inteligentní klasifikace nálezů eliminuje 95 % falešně pozitivních hlášení. Zobrazuje pouze skutečné hrozby s přesným doporučením patchů.</p>
         </div>
 
         <div class="feature-card">
@@ -184,23 +184,23 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
           <h3>Zero-Cloud Memory Cache</h3>
-          <p>Embedded SQLite cache hashes AST syntax trees locally. Unchanged code blocks and previously audited commits re-evaluate with zero latency.</p>
+          <p>Lokální SQLite cache ukládá haše AST stromů. Identické soubory a již prověřené commit objekty se re-skenují s nulovou latencí.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-rose">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
-          <h3>Multi-Platform CI/CD Native</h3>
-          <p>Seamless integrations for GitLab CI, GitHub Actions, Jenkins, and developer terminals via interactive Bubble Tea TUI.</p>
+          <h3>Multi-Platform Integration</h3>
+          <p>Přímá podpora pro GitLab CI, GitHub Actions, Jenkins i CLI terminálové rozhraní s podporou TUI (Bubble Tea).</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-indigo">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <h3>FinOps & Spend Transparency</h3>
-          <p>Detailed audit logging of auction savings. Track dollar values and engineering hours saved through automated spot bidding in real-time.</p>
+          <h3>Fakturační transparentnost & FinOps</h3>
+          <p>Detailní auditní logy úspor z aukcí. Sledujte v reálném čase, kolik dolarů a vývojářského času ušetřila aukční optimalizace.</p>
         </div>
       </div>
     </div>
@@ -210,15 +210,15 @@
   <section class="section section-dark" id="pr-auction">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">How PR/MR Auction Optimization Works</h2>
-        <p class="section-subtitle">Turn routine pull request reviews into an efficient, autonomous compute & fix marketplace.</p>
+        <h2 class="section-title">Jak funguje PR/MR Aukční Optimalizace?</h2>
+        <p class="section-subtitle">Převeďte rutinní revizi kódu na efektivní autonomní tržiště výpočetního výkonu a oprav.</p>
       </div>
 
       <div class="workflow-steps">
         <div class="step-card">
           <div class="step-num">01</div>
-          <h3>Tag `@budgetscan` in PR/MR</h3>
-          <p>Comment <code class="code-tag">@budgetscan</code> or <code class="code-tag">@budgetscan auction</code> directly on any pull request or merge request thread.</p>
+          <h3>Označení v komentáři PR/MR</h3>
+          <p>Napište <code class="code-tag">@budgetscan</code> nebo <code class="code-tag">@budgetscan auction</code> přímo do diskuse v GitLabu nebo GitHubu.</p>
           <div class="step-mock">
             <span class="mock-tag">PR #104</span> "@budgetscan run full security audit"
           </div>
@@ -226,17 +226,17 @@
 
         <div class="step-card">
           <div class="step-num">02</div>
-          <h3>Infrastructure Reverse Auction</h3>
-          <p>BudgetScan bids across connected cloud spot providers (Oracle OCI, AWS Spot, Hetzner) to select the lowest-cost compute nodes for deep SAST/DAST runs.</p>
+          <h3>Reverzní aukce infrastruktury</h3>
+          <p>BudgetScan kontaktuje připojené cloudové providery (OCI, AWS Spot, Hetzner, GCP) a vybere nejvýhodnější výpočetní uzly pro analýzu.</p>
           <div class="step-mock text-success">
-            ✓ Matched OCI Spot Node: -$0.12/hr vs standard $0.55/hr (-78% savings)
+            ✓ Nalezen OCI Spot node: -$0.12/hod vs standard $0.55/hod (-78 %)
           </div>
         </div>
 
         <div class="step-card">
           <div class="step-num">03</div>
-          <h3>Micro-Bounty & AI Patch Auction</h3>
-          <p>For detected vulnerabilities, BudgetScan auto-generates AI refactoring patches or opens a micro-bounty for your senior engineers.</p>
+          <h3>Aukce mikrobounty za patch</h3>
+          <p>Pro nalezené bezpečnostní díry vygeneruje BudgetScan návrh automatické opravy (AI Patch) nebo vypíše mikrobounty pro vývojářský tým.</p>
           <div class="step-mock text-accent">
             ⚡ AI Fix Ready: Auto-generated diff available in 1.4s
           </div>
@@ -249,25 +249,25 @@
   <section class="section" id="demo">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Interactive PR/MR Auction Simulator</h2>
-        <p class="section-subtitle">Experience live @budgetscan command execution and real-time reverse spot bidding!</p>
+        <h2 class="section-title">Interaktivní simulátor PR/MR aukce</h2>
+        <p class="section-subtitle">Vyzkoušejte si odeslání příkazu @budgetscan v reálném čase!</p>
       </div>
 
       <div class="interactive-demo-card">
         <div class="demo-controls-panel">
-          <label for="demo-pr-select">Select a sample Pull Request:</label>
+          <label for="demo-pr-select">Vyberte ukázkový Pull Request:</label>
           <select id="demo-pr-select" class="form-select">
-            <option value="c-memory">PR #204: C++ Memory Leak & Buffer Overflow (Critical)</option>
-            <option value="go-concurrency">PR #189: Go Race Condition & SQL Injection (High)</option>
-            <option value="py-security">PR #312: Python Unsanitized Input Exec (Medium)</option>
+            <option value="c-memory">PR #204: C++ Memory Leak & Buffer Overflow (Kritické)</option>
+            <option value="go-concurrency">PR #189: Go Race Condition & SQL Injection (Vysoké)</option>
+            <option value="py-security">PR #312: Python Unsanitized Input Exec (Střední)</option>
           </select>
           <button id="run-demo-btn" class="btn btn-primary">
-            <span>Run @budgetscan Scan & Auction</span>
+            <span>Spustit @budgetscan Sken & Aukci</span>
           </button>
         </div>
 
         <div class="demo-output-terminal" id="demo-terminal">
-          <div class="term-line prompt">> Select a scenario or click "Run @budgetscan Scan & Auction"...</div>
+          <div class="term-line prompt">> Zadejte příkaz nebo klikněte na "Spustit @budgetscan Sken & Aukci"...</div>
         </div>
       </div>
     </div>
@@ -277,47 +277,47 @@
   <section class="section section-dark" id="calculator">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">ROI & Engineering Savings Calculator</h2>
-        <p class="section-subtitle">Quantify your team's savings achieved through automated PR triage and spot-compute auctions.</p>
+        <h2 class="section-title">Kalkulačka úspor a návratnosti (ROI)</h2>
+        <p class="section-subtitle">Spočítejte si, kolik vaše firma ušetří díky aukční optimalizaci a rychlému skenování.</p>
       </div>
 
       <div class="calculator-wrapper">
         <div class="calc-inputs">
           <div class="calc-field">
-            <label for="input-prs">Pull/Merge Requests per month: <span id="val-prs" class="calc-val">150</span></label>
+            <label for="input-prs">Počet Pull/Merge Requestů za měsíc: <span id="val-prs" class="calc-val">150</span></label>
             <input type="range" id="input-prs" min="10" max="1000" step="10" value="150">
           </div>
 
           <div class="calc-field">
-            <label for="input-devs">Engineering team size: <span id="val-devs" class="calc-val">15</span></label>
+            <label for="input-devs">Počet vývojářů v týmu: <span id="val-devs" class="calc-val">15</span></label>
             <input type="range" id="input-devs" min="2" max="200" step="1" value="15">
           </div>
 
           <div class="calc-field">
-            <label for="input-rate">Developer hourly rate ($/hr): <span id="val-rate" class="calc-val">65</span>$</label>
+            <label for="input-rate">Průměrná hodinová sazba vývojáře ($/hod): <span id="val-rate" class="calc-val">65</span>$</label>
             <input type="range" id="input-rate" min="20" max="200" step="5" value="65">
           </div>
         </div>
 
         <div class="calc-results">
           <div class="result-box primary-result">
-            <span class="result-label">Estimated Annual Savings</span>
+            <span class="result-label">Odhadované roční úspory</span>
             <span class="result-number" id="res-total-savings">$42,500</span>
-            <span class="result-sub">Prevented zero-days + spot compute optimization</span>
+            <span class="result-sub">Díky prevenci zero-day chyb a spot aukcím</span>
           </div>
 
           <div class="results-grid">
             <div class="sub-result">
-              <span class="sub-label">Developer Time Saved</span>
-              <span class="sub-val" id="res-hours">480 hrs / year</span>
+              <span class="sub-label">Ušetřený čas vývojářů</span>
+              <span class="sub-val" id="res-hours">480 hod / rok</span>
             </div>
             <div class="sub-result">
-              <span class="sub-label">Cloud Spot Infrastructure Savings</span>
-              <span class="sub-val" id="res-cloud-savings">74% (-$6,200)</span>
+              <span class="sub-label">Úspora na spotovém výpočetním výkonu</span>
+              <span class="sub-val" id="res-cloud-savings">74 % (-$6,200)</span>
             </div>
             <div class="sub-result">
-              <span class="sub-label">Prevented PR Vulnerabilities</span>
-              <span class="sub-val" id="res-vulns">~38 critical</span>
+              <span class="sub-label">Zranitelností zachycených v PR</span>
+              <span class="sub-val" id="res-vulns">~38 kritických</span>
             </div>
           </div>
         </div>
@@ -329,63 +329,63 @@
   <section class="section" id="pricing">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Transparent Pricing for Teams of All Sizes</h2>
-        <p class="section-subtitle">Start for free or unlock full PR/MR auction engine capabilities.</p>
+        <h2 class="section-title">Transparentní ceník pro týmy všech velikostí</h2>
+        <p class="section-subtitle">Začněte zdarma nebo využijte plnou sílu aukčního bot engine.</p>
       </div>
 
       <div class="pricing-grid">
         <div class="pricing-card">
           <div class="plan-header">
             <h3>Community</h3>
-            <p>For open-source projects & individual devs</p>
+            <p>Pro open-source a jednotlivce</p>
             <div class="plan-price">
-              <span class="currency">$</span><span class="amount">0</span><span class="period">/ forever</span>
+              <span class="currency">$</span><span class="amount">0</span><span class="period">/ navždy</span>
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ Local CLI scanner (C/C++, Go, Python, Rust)</li>
-            <li>✓ Core AST vulnerability rules</li>
-            <li>✓ Embedded SQLite memory cache</li>
-            <li>✓ Community support</li>
+            <li>✓ CLI skener (C/C++, Go, Python)</li>
+            <li>✓ Základní AST zranitelnosti</li>
+            <li>✓ Lokální SQLite cache</li>
+            <li>✓ Komunitní podpora</li>
           </ul>
-          <a href="#" class="btn btn-outline btn-block">Download CLI</a>
+          <a href="#" class="btn btn-outline btn-block">Stáhnout CLI</a>
         </div>
 
         <div class="pricing-card featured">
-          <div class="popular-tag">Most Popular</div>
+          <div class="popular-tag">Nejoblíbenější</div>
           <div class="plan-header">
             <h3>Team Pro</h3>
-            <p>For growing engineering teams</p>
+            <p>Pro rostoucí vývojové týmy</p>
             <div class="plan-price">
-              <span class="currency">$</span><span class="amount">49</span><span class="period">/ developer / month</span>
+              <span class="currency">$</span><span class="amount">49</span><span class="period">/ vývojář / měsíc</span>
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ Everything in Community</li>
-            <li>✓ <strong>PR/MR Bot Interface (@budgetscan)</strong></li>
-            <li>✓ <strong>Infrastructure Spot Reverse Auction Engine</strong></li>
-            <li>✓ Native CI/CD Integration (GitLab CI, GitHub Actions)</li>
-            <li>✓ AI Security Triage & Auto-Patch Generation</li>
+            <li>✓ Vše z verze Community</li>
+            <li>✓ <strong>PR/MR Bot rozhraní (@budgetscan)</strong></li>
+            <li>✓ <strong>Reverzní aukce spotového výkonu</strong></li>
+            <li>✓ CI/CD Integrace (GitLab CI, GitHub Actions)</li>
+            <li>✓ AI Triage & Návrhy oprav</li>
           </ul>
-          <a href="#" class="btn btn-primary btn-block">Start 14-Day Free Trial</a>
+          <a href="#" class="btn btn-primary btn-block">Aktivovat 14 dnů zdarma</a>
         </div>
 
         <div class="pricing-card">
           <div class="plan-header">
             <h3>Enterprise Custom</h3>
-            <p>For large engineering organizations & FinTech</p>
+            <p>Pro velké organizace a FinTech</p>
             <div class="plan-price">
-              <span class="amount">Custom</span>
+              <span class="amount">Individuální</span>
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ Everything in Team Pro</li>
-            <li>✓ Internal Micro-Bounty Auction Routing</li>
-            <li>✓ On-Premise & Private Cloud Deployment</li>
-            <li>✓ Custom Tree-sitter Security Rule Engines</li>
-            <li>✓ Dedicated Support & SOC2 Compliance</li>
+            <li>✓ Vše z verze Team Pro</li>
+            <li>✓ Pokročilé aukční mikrobounty pro interní vývojáře</li>
+            <li>✓ On-Premise / Private Cloud nasazení</li>
+            <li>✓ Vlastní Tree-sitter pravidla a SLA</li>
+            <li>✓ Dedikovaná podpora & SOC2 compliance</li>
           </ul>
-          <a href="#" class="btn btn-outline btn-block">Contact Sales</a>
+          <a href="#" class="btn btn-outline btn-block">Kontaktovat obchodníka</a>
         </div>
       </div>
     </div>
@@ -396,20 +396,20 @@
     <div class="container footer-container">
       <div class="footer-brand">
         <span class="brand-name">BudgetScan</span>
-        <p>Autonomous security scanner and PR auction optimizer built for modern software development.</p>
+        <p>Autonomní bezpečnostní skener a aukční optimalizátor pro moderní softwarový vývoj.</p>
       </div>
 
       <div class="footer-links">
         <div class="footer-col">
-          <h4>Product</h4>
-          <a href="#features">Features</a>
-          <a href="#pr-auction">PR/MR Auction Engine</a>
-          <a href="#calculator">ROI Calculator</a>
-          <a href="#pricing">Pricing</a>
+          <h4>Produkt</h4>
+          <a href="#features">Vlastnosti</a>
+          <a href="#pr-auction">PR/MR Aukční Engine</a>
+          <a href="#calculator">Kalkulačka ROI</a>
+          <a href="#pricing">Ceník</a>
         </div>
 
         <div class="footer-col">
-          <h4>Docs & Repositories</h4>
+          <h4>Dokumentace & Repozitáře</h4>
           <a href="https://github.com/Huge/nano-analyzer" target="_blank">GitHub Repository</a>
           <a href="https://gitlab.com/Huge1/BudgetScan" target="_blank">GitLab BudgetScan</a>
           <a href="#">Security Profiles</a>
@@ -417,15 +417,15 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan / nano-analyzer. All rights reserved.</p>
+      <p>&copy; 2026 BudgetScan / nano-analyzer. Všechna práva vyhrazena.</p>
       <div class="system-status">
         <span class="status-dot"></span>
-        <span>Auction Engine: Operational (OCI / AWS Active)</span>
+        <span>Aukční Engine: Provozní (OCI / AWS Active)</span>
       </div>
     </div>
   </footer>
 
   <!-- Script -->
-  <script src="app.js"></script>
+  <script src="../app.js"></script>
 </body>
 </html>

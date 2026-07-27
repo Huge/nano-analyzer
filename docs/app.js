@@ -1,5 +1,6 @@
 /**
  * BudgetScan - Interactive Web Logic & Auction Engine Simulator
+ * Supports dual-language (EN / CS) terminal output detection.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,13 +17,16 @@ function initAuctionTimer() {
   const timerEl = document.getElementById('auction-timer');
   if (!timerEl) return;
 
+  const isCs = document.documentElement.lang === 'cs';
+  const labelSuffix = isCs ? 'zbývá' : 'remaining';
+
   setInterval(() => {
     seconds--;
     if (seconds <= 0) {
       seconds = 60;
     }
     const secsStr = seconds < 10 ? `0${seconds}` : seconds;
-    timerEl.textContent = `00:${secsStr}s zbývá`;
+    timerEl.textContent = `00:${secsStr}s ${labelSuffix}`;
   }, 1000);
 }
 
@@ -45,6 +49,8 @@ function initCalculator() {
 
   if (!inputPRs || !inputDevs || !inputRate) return;
 
+  const isCs = document.documentElement.lang === 'cs';
+
   function updateCalc() {
     const prs = parseInt(inputPRs.value, 10);
     const devs = parseInt(inputDevs.value, 10);
@@ -54,24 +60,24 @@ function initCalculator() {
     valDevs.textContent = devs;
     valRate.textContent = rate;
 
-    // Calculation formulas based on benchmark data:
-    // 1. Time saved per PR = 2.5 hours of manual security review saved
+    // Calculation formulas:
     const hoursSavedPerYear = Math.round((prs * 12 * 2.2));
     const devCostSaved = hoursSavedPerYear * rate;
 
-    // 2. Cloud Spot Reverse Auction savings: ~$45 saved per 100 scans vs fixed instances
     const cloudSaved = Math.round((prs * 12 * 0.42 * 10));
-
-    // 3. Prevented critical zero-day bugs: ~0.025 per PR
     const vulnsPrevented = Math.round(prs * 12 * 0.022);
 
     const totalSavings = devCostSaved + cloudSaved;
 
-    // Format output
     resTotal.textContent = `$${totalSavings.toLocaleString()}`;
-    resHours.textContent = `${hoursSavedPerYear.toLocaleString()} hod / rok`;
-    resCloud.textContent = `74 % (-$${cloudSaved.toLocaleString()})`;
-    resVulns.textContent = `~${vulnsPrevented} kritických`;
+    resHours.textContent = isCs 
+      ? `${hoursSavedPerYear.toLocaleString()} hod / rok` 
+      : `${hoursSavedPerYear.toLocaleString()} hrs / year`;
+    
+    resCloud.textContent = `74% (-$${cloudSaved.toLocaleString()})`;
+    resVulns.textContent = isCs 
+      ? `~${vulnsPrevented} kritických` 
+      : `~${vulnsPrevented} critical`;
   }
 
   inputPRs.addEventListener('input', updateCalc);
@@ -91,30 +97,32 @@ function initDemoTerminal() {
 
   if (!selectPR || !btnRun || !terminal) return;
 
-  const scenarios = {
+  const isCs = document.documentElement.lang === 'cs';
+
+  const scenariosEn = {
     'c-memory': {
       prName: 'PR #204 (C++ Engine Refactor)',
-      vuln: 'Use-After-Free & Buffer Overflow v buffer_allocator.cpp:88',
+      vuln: 'Use-After-Free & Buffer Overflow in buffer_allocator.cpp:88',
       scanTime: '38 ms',
       astNodes: '14,290 nodes scanned',
       spotBids: [
-        { provider: 'Oracle OCI Spot (fra-1)', cost: '$0.038', time: '1.2s', status: 'WYGRAŁ (Najniższa cena)' },
-        { provider: 'AWS EC2 Spot (c6i.xlarge)', cost: '$0.065', time: '1.4s', status: 'Překročeno' },
-        { provider: 'Hetzner Dedicated Spot', cost: '$0.042', time: '1.8s', status: 'Překročeno' }
+        { provider: 'Oracle OCI Spot (fra-1)', cost: '$0.038', time: '1.2s', status: 'WINNER (Lowest Price)' },
+        { provider: 'AWS EC2 Spot (c6i.xlarge)', cost: '$0.065', time: '1.4s', status: 'Outbid' },
+        { provider: 'Hetzner Dedicated Spot', cost: '$0.042', time: '1.8s', status: 'Outbid' }
       ],
-      aiFix: 'Vytvořen auto-patch s std::unique_ptr & bounds check sanitizací.',
+      aiFix: 'Auto-generated patch with std::unique_ptr & bounds checking.',
       bounty: '0.005 ETH / AI Auto-Merge'
     },
     'go-concurrency': {
       prName: 'PR #189 (Go API Gateway)',
-      vuln: 'Data Race v session_store.go & Potenciální SQL Injection v query_builder.go',
+      vuln: 'Data Race in session_store.go & Potential SQL Injection in query_builder.go',
       scanTime: '24 ms',
       astNodes: '8,410 nodes scanned',
       spotBids: [
-        { provider: 'Hetzner Cloud Spot (nbg1)', cost: '$0.021', time: '0.9s', status: 'WYGRAŁ (Nejrychlejší)' },
-        { provider: 'AWS Spot (t4g.medium)', cost: '$0.035', time: '1.1s', status: 'Překročeno' }
+        { provider: 'Hetzner Cloud Spot (nbg1)', cost: '$0.021', time: '0.9s', status: 'WINNER (Fastest Node)' },
+        { provider: 'AWS Spot (t4g.medium)', cost: '$0.035', time: '1.1s', status: 'Outbid' }
       ],
-      aiFix: 'Parametrizován SQL dotaz + přidán sync.RWMutex do struktury SessionStore.',
+      aiFix: 'Parameterized SQL query + added sync.RWMutex lock to SessionStore struct.',
       bounty: '0.002 SOL / Verified'
     },
     'py-security': {
@@ -123,12 +131,53 @@ function initDemoTerminal() {
       scanTime: '18 ms',
       astNodes: '5,120 nodes scanned',
       spotBids: [
-        { provider: 'Oracle OCI Spot (prg-1)', cost: '$0.015', time: '0.6s', status: 'WYGRAŁ' }
+        { provider: 'Oracle OCI Spot (prg-1)', cost: '$0.015', time: '0.6s', status: 'WINNER' }
       ],
-      aiFix: 'Nahrazeno ast.literal_eval() pro bezpečné zpracování dat.',
+      aiFix: 'Replaced eval() with safe ast.literal_eval() execution.',
       bounty: 'Auto-Fix Ready'
     }
   };
+
+  const scenariosCs = {
+    'c-memory': {
+      prName: 'PR #204 (C++ Engine Refactor)',
+      vuln: 'Use-After-Free & Buffer Overflow v buffer_allocator.cpp:88',
+      scanTime: '38 ms',
+      astNodes: '14 290 uzlů vyskenováno',
+      spotBids: [
+        { provider: 'Oracle OCI Spot (fra-1)', cost: '$0.038', time: '1.2s', status: 'VÍTĚZ (Nejnižší cena)' },
+        { provider: 'AWS EC2 Spot (c6i.xlarge)', cost: '$0.065', time: '1.4s', status: 'Překročeno' },
+        { provider: 'Hetzner Dedicated Spot', cost: '$0.042', time: '1.8s', status: 'Překročeno' }
+      ],
+      aiFix: 'Vytvořen auto-patch s std::unique_ptr & sanitizací mezí.',
+      bounty: '0.005 ETH / AI Auto-Merge'
+    },
+    'go-concurrency': {
+      prName: 'PR #189 (Go API Gateway)',
+      vuln: 'Data Race v session_store.go & Potenciální SQL Injection v query_builder.go',
+      scanTime: '24 ms',
+      astNodes: '8 410 uzlů vyskenováno',
+      spotBids: [
+        { provider: 'Hetzner Cloud Spot (nbg1)', cost: '$0.021', time: '0.9s', status: 'VÍTĚZ (Nejrychlejší uzel)' },
+        { provider: 'AWS Spot (t4g.medium)', cost: '$0.035', time: '1.1s', status: 'Překročeno' }
+      ],
+      aiFix: 'Parametrizován SQL dotaz + přidán sync.RWMutex zámek do SessionStore.',
+      bounty: '0.002 SOL / Ověřeno'
+    },
+    'py-security': {
+      prName: 'PR #312 (Python Data Pipeline)',
+      vuln: 'Neošetřený eval() vstup v data_loader.py:42',
+      scanTime: '18 ms',
+      astNodes: '5 120 uzlů vyskenováno',
+      spotBids: [
+        { provider: 'Oracle OCI Spot (prg-1)', cost: '$0.015', time: '0.6s', status: 'VÍTĚZ' }
+      ],
+      aiFix: 'Nahrazeno ast.literal_eval() pro bezpečné zpracování dat.',
+      bounty: 'Připraveno k Auto-Fixu'
+    }
+  };
+
+  const scenarios = isCs ? scenariosCs : scenariosEn;
 
   btnRun.addEventListener('click', () => {
     const key = selectPR.value;
@@ -138,23 +187,36 @@ function initDemoTerminal() {
     appendTerminalLine(`> @budgetscan audit --auction-mode --pr=${data.prName}`, 'prompt');
 
     setTimeout(() => {
-      appendTerminalLine(`[1/4] 🔍 Inicielizace Tree-sitter AST Skenování... (${data.astNodes})`, 'info');
+      appendTerminalLine(isCs 
+        ? `[1/4] 🔍 Inicializace Tree-sitter AST Skenování... (${data.astNodes})` 
+        : `[1/4] 🔍 Initializing Tree-sitter AST Parsing... (${data.astNodes})`, 'info');
     }, 300);
 
     setTimeout(() => {
-      appendTerminalLine(`[2/4] ⚠️  DETEKOVÁNA ZRANITELNOST: ${data.vuln} (Čas skenování: ${data.scanTime})`, 'danger');
+      appendTerminalLine(isCs
+        ? `[2/4] ⚠️  DETEKOVÁNA ZRANITELNOST: ${data.vuln} (Čas skenování: ${data.scanTime})`
+        : `[2/4] ⚠️  VULNERABILITY DETECTED: ${data.vuln} (Scan time: ${data.scanTime})`, 'danger');
     }, 700);
 
     setTimeout(() => {
-      appendTerminalLine(`[3/4] 🏆 Otevřena reverzní aukce výpočetního výkonu pro hloubkovou analýzu:`, 'warning');
+      appendTerminalLine(isCs
+        ? `[3/4] 🏆 Otevřena reverzní aukce výpočetního výkonu pro hloubkovou analýzu:`
+        : `[3/4] 🏆 Opened reverse infrastructure spot-auction for deep analysis:`, 'warning');
+      
       data.spotBids.forEach(bid => {
-        appendTerminalLine(`   • ${bid.provider} -> ${bid.cost} (Čas: ${bid.time}) [${bid.status}]`, bid.status.includes('WYGRAŁ') ? 'success' : 'prompt');
+        const isWinner = bid.status.includes('WINNER') || bid.status.includes('VÍTĚZ');
+        appendTerminalLine(`   • ${bid.provider} -> ${bid.cost} (Time: ${bid.time}) [${bid.status}]`, isWinner ? 'success' : 'prompt');
       });
     }, 1200);
 
     setTimeout(() => {
-      appendTerminalLine(`[4/4] ⚡ AUKČNÍ NÁVRH OPRAVY: ${data.aiFix}`, 'success');
-      appendTerminalLine(`   👉 Mikrobounty alokováno: ${data.bounty}. Připraveno k automatickému schválení u PR/MR.`, 'info');
+      appendTerminalLine(isCs
+        ? `[4/4] ⚡ AUKČNÍ NÁVRH OPRAVY: ${data.aiFix}`
+        : `[4/4] ⚡ AUCTION REMEDIATION PROPOSAL: ${data.aiFix}`, 'success');
+      
+      appendTerminalLine(isCs
+        ? `   👉 Mikrobounty alokováno: ${data.bounty}. Připraveno k automatickému schválení u PR/MR.`
+        : `   👉 Micro-bounty allocated: ${data.bounty}. Ready for PR/MR auto-merge approval.`, 'info');
     }, 1800);
   });
 
