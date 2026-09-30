@@ -4,6 +4,10 @@
 
 ![aisle-nano-analyzer-diagram](aisle-nano-analyzer.png)
 
+> **About this repository.** This is the open-source core of nano-analyzer (Apache-2.0), kept public and minimal. Our team also maintains a much more advanced, private and proprietary codebase, the BudgetScan product, which adds CI integrations for GitLab merge requests and GitHub, support for more LLM backends, re-triage of earlier runs and, in development, budget- and deadline-capped scans. That code is not published here.
+>
+> **Homepage:** <https://huge.github.io/nano-analyzer/> (the GitHub Pages site is now the project's home). **Questions or early access:** dev@ehlas.cz, safeAIwork@gmail.com
+
 > **Research prototype for demonstration purposes.** This is a simple, single-file harness that is able to detect real zero-day vulnerabilities. Note that it is a prototype, biased towards C/C++ memory safety bugs, and will produce false positives. We are sharing it as-is in the spirit of open research — expect sharp corners.
 
 ## What it does
@@ -38,7 +42,7 @@ This is a v0.1 prototype. Please keep the following in mind:
 ### Install
 
 ```bash
-git clone https://github.com/weareaisle/nano-analyzer.git
+git clone https://github.com/Huge/nano-analyzer.git
 cd nano-analyzer
 # No dependency installation needed. Run directly:
 python3 scan.py --help
