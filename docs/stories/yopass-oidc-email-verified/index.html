@@ -69,7 +69,7 @@
       <h1>Yopass: unverified emails could pass OIDC domain restrictions</h1>
       <p>BudgetScan flagged a missing <code class="code-tag">email_verified</code> check in the login of <a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a>, an open-source tool for sharing secrets, passwords and files. Our patch became the first commit of the maintainer's merged fix.</p>
 
-      <p class="status-note"><strong>This page is a stub.</strong> More detail will follow. Everything here is taken from public pull requests you can check yourself; the sources are listed at the bottom.</p>
+      <!-- Internal note: the visible "stub" notice was removed on purpose, the story is settled. Original wording: "This page is a stub. More detail will follow. Everything here is taken from public pull requests you can check yourself; the sources are listed at the bottom." Re-add it if the page ever needs a caveat again. -->
 
       <h2 id="problem">What was wrong</h2>
       <p>In an OIDC login, the identity provider returns claims about the user: the email address and, optionally, <code class="code-tag">email_verified</code>, which says whether the provider actually checked that address. Yopass used the email to enforce its list of allowed email domains (the <code class="code-tag">AllowedEmailDomains</code> setting) but did not look at <code class="code-tag">email_verified</code>. OIDC is an optional, licensed feature of Yopass; when it is configured, a Sign in button appears in the navbar.</p>
@@ -101,6 +101,11 @@
           <text class="flow-note" x="450" y="236">before</text><text class="flow-note" x="450" y="252">the fix</text>
         </svg>
         <figcaption>A simplified sketch of the login flow, not a screenshot. Before the fix, the email went straight from the callback to the domain check (dashed line).</figcaption>
+      </figure>
+
+      <figure class="shot">
+        <div class="shot-scroll"><img src="yopass-oidc-illustration.svg" width="1200" height="922" loading="lazy" alt="Illustration of Yopass: a Sign in link in the navbar when OIDC is enabled, and, before the fix, a user whose email the provider reported as unverified being signed in anyway."></div>
+        <figcaption><strong>Illustration of the finding</strong> (not a screenshot). (1) With OIDC configured, a Sign in link appears in the navbar. (2) Before the fix, a login whose email the provider had not verified was still accepted.</figcaption>
       </figure>
 
       <h2 id="fix">How it was fixed</h2>

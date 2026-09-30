@@ -69,7 +69,7 @@
       <h1>Yopass: neověřené e-maily mohly projít omezením domén v OIDC</h1>
       <p>BudgetScan upozornil na chybějící kontrolu <code class="code-tag">email_verified</code> v přihlášení do <a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a>, open-source nástroje pro sdílení tajemství, hesel a souborů. Naše záplata se stala prvním commitem správcovy začleněné opravy.</p>
 
-      <p class="status-note"><strong>Tato stránka je zatím náčrt.</strong> Podrobnosti doplníme. Vše zde vychází z veřejných pull requestů, které si můžete sami ověřit; zdroje jsou uvedené dole.</p>
+      <!-- Interní poznámka: viditelné upozornění, že jde o náčrt, jsme záměrně odstranili, příběh je jistý. Původní znění: "Tato stránka je zatím náčrt. Podrobnosti doplníme. Vše zde vychází z veřejných pull requestů, které si můžete sami ověřit; zdroje jsou uvedené dole." Kdyby stránka někdy potřebovala výhradu, stačí ho vrátit. -->
 
       <h2 id="problem">Co bylo špatně</h2>
       <p>Při OIDC přihlášení vrací poskytovatel identity údaje o uživateli: e-mailovou adresu a volitelně <code class="code-tag">email_verified</code>, které říká, zda poskytovatel adresu skutečně ověřil. Yopass podle e-mailu vynucoval seznam povolených e-mailových domén (nastavení <code class="code-tag">AllowedEmailDomains</code>), ale <code class="code-tag">email_verified</code> nekontroloval. OIDC je v Yopass volitelná licencovaná funkce; když je nastavené, objeví se v navigační liště tlačítko Sign in.</p>
@@ -101,6 +101,11 @@
           <text class="flow-note" x="450" y="236">před</text><text class="flow-note" x="450" y="252">opravou</text>
         </svg>
         <figcaption>Zjednodušený nákres přihlašování, ne screenshot. Před opravou šel e-mail z callbacku rovnou do kontroly domén (čárkovaná čára).</figcaption>
+      </figure>
+
+      <figure class="shot">
+        <div class="shot-scroll"><img src="../../../stories/yopass-oidc-email-verified/yopass-oidc-illustration.svg" width="1200" height="922" loading="lazy" alt="Ilustrace Yopass: odkaz Sign in v navigační liště při zapnutém OIDC a před opravou uživatel, jehož e-mail poskytovatel označil za neověřený, který byl přesto přihlášen."></div>
+        <figcaption><strong>Ilustrace objevu</strong> (ne screenshot). (1) Když je OIDC nastavené, v liště se objeví odkaz Sign in. (2) Před opravou se přihlášení s neověřeným e-mailem přesto přijalo.</figcaption>
       </figure>
 
       <h2 id="fix">Jak to bylo opraveno</h2>
