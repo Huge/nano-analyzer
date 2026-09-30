@@ -261,6 +261,34 @@
     </div>
   </section>
 
+  <!-- Success Stories Section -->
+  <section class="section section-dark" id="stories">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Success Stories</h2>
+        <p class="section-subtitle">Real results on real open-source projects, with links you can check. Right now that is one; we will add more as they happen.</p>
+      </div>
+
+      <article class="story-card">
+        <span class="story-badge">First hit on open source &bull; September 2026</span>
+        <h3>Yopass: unverified emails could pass OIDC domain restrictions</h3>
+        <p><a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a> is an open-source tool (over 3,000 GitHub stars) for securely sharing secrets, passwords and files. When it is set to allow logins only from certain email domains, its OIDC login trusted the email address returned by the identity provider without checking the <code class="code-tag">email_verified</code> claim. Someone with an unverified account at an identity provider under an allowed domain could therefore get past the domain restriction.</p>
+        <ul class="story-timeline">
+          <li><strong>23 Sep 2026.</strong> BudgetScan flagged the missing check. We opened a pull request with a fix and tests.</li>
+          <li><strong>24 Sep.</strong> An automated review asked for stronger tests, which we added. The maintainer pointed out that <code class="code-tag">email_verified</code> is an optional claim, so enforcing it blindly could break existing setups.</li>
+          <li><strong>25 Sep.</strong> Maintainer Johan Haals built on our patch in a new pull request: he kept our commit as the first one, with its authorship, and added an explicit opt-out for providers that omit the claim, a startup warning, configuration validation, tests and documentation.</li>
+          <li><strong>26 Sep.</strong> Merged into Yopass. By default, OIDC logins now require a verified email.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Our original pull request (#3966)</a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">The merged pull request (#3973)</a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Our patch as its first commit</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> Thanks to Johan Haals for the quick, careful handling. The scanner found the problem and a human maintainer decided how to fix it safely, which is how we want it to work: findings are leads for people, not verdicts. It is one data point, not a benchmark. We will publish measured results once we have them.</p>
+      </article>
+    </div>
+  </section>
+
   <!-- Interactive Demo Simulator Section -->
   <section class="section section-dark" id="demo">
     <div class="container">
@@ -458,6 +486,7 @@
           <a href="#calculator">Savings Calculator</a>
           <a href="#pricing">Credit Packs</a>
           <a href="#privacy">Your Code &amp; Privacy</a>
+          <a href="#stories">Success Stories</a>
         </div>
 
         <div class="footer-col">

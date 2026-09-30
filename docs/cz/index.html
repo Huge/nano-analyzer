@@ -261,6 +261,34 @@
     </div>
   </section>
 
+  <!-- Success Stories Section -->
+  <section class="section section-dark" id="stories">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Příběhy úspěchu</h2>
+        <p class="section-subtitle">Skutečné výsledky na skutečných open-source projektech, s odkazy, které si můžete ověřit. Zatím je jeden; další přidáme, jakmile přijdou.</p>
+      </div>
+
+      <article class="story-card">
+        <span class="story-badge">První zásah v open source &bull; září 2026</span>
+        <h3>Yopass: neověřené e-maily mohly projít omezením domén v OIDC</h3>
+        <p><a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a> je open-source nástroj (přes 3 000 hvězdiček na GitHubu) pro bezpečné sdílení tajemství, hesel a souborů. Když je nastavený tak, že pustí jen přihlášení z vybraných e-mailových domén, jeho OIDC přihlášení věřilo e-mailové adrese od poskytovatele identity, aniž ověřilo claim <code class="code-tag">email_verified</code>. Kdo měl u poskytovatele identity s povolenou doménou neověřený účet, mohl tak omezení domén obejít.</p>
+        <ul class="story-timeline">
+          <li><strong>23. 9. 2026.</strong> BudgetScan upozornil na chybějící kontrolu. Otevřeli jsme pull request s opravou a testy.</li>
+          <li><strong>24. 9.</strong> Automatická revize chtěla silnější testy, které jsme doplnili. Správce upozornil, že <code class="code-tag">email_verified</code> je nepovinný claim, takže jeho slepé vynucení by mohlo rozbít stávající nasazení.</li>
+          <li><strong>25. 9.</strong> Správce Johan Haals na naší záplatě postavil nový pull request: náš commit ponechal jako první, s naším autorstvím, a přidal výslovnou výjimku pro poskytovatele, kteří claim neposílají, upozornění při startu, validaci konfigurace, testy a dokumentaci.</li>
+          <li><strong>26. 9.</strong> Začleněno do Yopass. Ve výchozím nastavení teď OIDC přihlášení vyžaduje ověřený e-mail.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Náš původní pull request (#3966)</a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">Začleněný pull request (#3973)</a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Naše záplata jako jeho první commit</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Díky Johanu Haalsovi za rychlé a pečlivé zpracování. Skener problém našel a člověk, správce projektu, rozhodl, jak ho bezpečně opravit. Přesně takhle to chceme mít: nálezy jsou podněty pro lidi, ne rozsudky. Je to jeden příklad, ne benchmark. Naměřené výsledky zveřejníme, až je budeme mít.</p>
+      </article>
+    </div>
+  </section>
+
   <!-- Interactive Demo Simulator Section -->
   <section class="section section-dark" id="demo">
     <div class="container">
@@ -458,6 +486,7 @@
           <a href="#calculator">Kalkulačka Úspor</a>
           <a href="#pricing">Kreditní Balíčky</a>
           <a href="#privacy">Váš kód a soukromí</a>
+          <a href="#stories">Příběhy úspěchu</a>
         </div>
 
         <div class="footer-col">
