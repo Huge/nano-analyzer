@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BudgetScan | Budget-Capped Security Scans for PRs & MRs</title>
-  <meta name="description" content="BudgetScan - pay-per-scan code security for PRs and MRs. Early access: set a budget and deadline with @budgetscan $1.50 --max-delay 5m and get a scan that fits your cap.">
+  <meta name="description" content="BudgetScan - pay-per-scan code security for PRs and MRs. Early access: set a budget and deadline with @budgetscan $0.50 --max-delay 5m and get a scan that fits your cap.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        No seat licenses or monthly subscriptions. Simply comment <code class="code-tag">@budgetscan $1.50 --max-delay 5m</code> on any PR/MR. That is what we are building: BudgetScan plans how deep to scan so it fits your cap and deadline, then deducts only what the scan actually cost.
+        No seat licenses or monthly subscriptions. Simply comment <code class="code-tag">@budgetscan $0.50 --max-delay 5m</code> on any PR/MR. That is what we are building: BudgetScan plans how deep to scan so it fits your cap and deadline, then deducts only what the scan actually cost.
       </p>
 
       <div class="hero-cta-group">
@@ -91,13 +91,13 @@
             <span class="control minimize"></span>
             <span class="control maximize"></span>
           </div>
-          <div class="window-title">GitLab MR #418 — @budgetscan $1.50 --max-delay 5m</div>
+          <div class="window-title">GitLab MR #418 — @budgetscan $0.50 --max-delay 5m</div>
           <div class="window-badge">Example</div>
         </div>
         <div class="terminal-body">
           <div class="terminal-line comment-line">
             <span class="user-avatar">reviewer-jane</span>
-            <span class="comment-text">Looking at the C++ changes. <span class="highlight-mention">@budgetscan $1.50 --max-delay 5m</span></span>
+            <span class="comment-text">Looking at the C++ changes. <span class="highlight-mention">@budgetscan $0.50 --max-delay 5m</span></span>
           </div>
           <div class="terminal-divider"></div>
           <div class="terminal-line bot-response">
@@ -110,7 +110,7 @@
                 <span class="status-icon danger">⚡</span>
                 <div>
                   <h4>Use-After-Free Vulnerability in <code class="file-link">interpreter.cpp:142</code></h4>
-                  <p>Severity: High | Budget Cap: <strong>$1.50</strong> | Max Delay: <strong>5m</strong></p>
+                  <p>Severity: High | Budget Cap: <strong>$0.50</strong> | Max Delay: <strong>5m</strong></p>
                 </div>
               </div>
 
@@ -118,7 +118,7 @@
               <div class="bot-auction-box">
                 <div class="auction-box-title">
                   <span>🏆 Execution & Credit Summary</span>
-                  <span class="auction-timer">Cost: $0.161 / $1.50 Cap</span>
+                  <span class="auction-timer">Cost: $0.161 / $0.50 Cap</span>
                 </div>
                 <div class="auction-bids">
                   <div class="bid-item winner">
@@ -159,7 +159,7 @@
       <div class="syntax-grid">
         <div class="syntax-card">
           <div class="syntax-badge">Basic Quick Scan</div>
-          <div class="syntax-code">@budgetscan $0.50</div>
+          <div class="syntax-code">@budgetscan $0.25</div>
           <h3>Lightweight Sanity Audit</h3>
           <p>Ideal for quick developer sanity checks. BudgetScan scans the changed files with a single, fast triage pass.</p>
           <div class="syntax-foot">Real per-scan costs: <strong>published after benchmarks</strong></div>
@@ -167,9 +167,9 @@
 
         <div class="syntax-card highlighted">
           <div class="syntax-badge recommended">Recommended</div>
-          <div class="syntax-code">@budgetscan $1.50 --max-delay 5m</div>
+          <div class="syntax-code">@budgetscan $0.50 --max-delay 5m</div>
           <h3>Deep Audit with a Deadline</h3>
-          <p>Perfect for release candidate PRs. Aims to finish within 5 minutes while spending up to $1.50 on deeper context, scanning and multi-round triage. If time runs out, you get a partial report instead of a stuck pipeline.</p>
+          <p>Perfect for release candidate PRs. Aims to finish within 5 minutes while spending up to $0.50 on deeper context, scanning and multi-round triage. If time runs out, you get a partial report instead of a stuck pipeline.</p>
           <div class="syntax-foot">Real per-scan costs: <strong>published after benchmarks</strong></div>
         </div>
 
@@ -199,7 +199,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <h3>Credit Deducted Only on Execution</h3>
-          <p>No seat licenses for developers who rarely open a PR. Credits are deducted only when a scan runs, based on what it actually cost.</p>
+          <p>No seat licenses for developers who rarely open a PR. Credits are deducted only when a scan runs, based on what it actually cost. Failures are rare, and when one happens, nothing is charged.</p>
         </div>
 
         <div class="feature-card">
@@ -207,7 +207,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
           <h3>Bring Your Own LLM Backend</h3>
-          <p>Scans run on the LLM backend you choose: OpenRouter, OpenAI, Google Gemini / Vertex AI, or any OpenAI-compatible endpoint (KosCompute, vLLM, Ollama). Automatic routing to the cheapest backend is on the roadmap, not live yet. Your code is sent to the provider you configure, so choose one that fits your data policy.</p>
+          <p>By default, hosted scans run on our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, zero data retention). You can also choose OpenRouter, OpenAI, Google Gemini / Vertex AI, or any OpenAI-compatible endpoint such as vLLM or Ollama. Your code goes only to the provider you pick. Automatic routing to the cheapest backend is on the roadmap, not live yet. <a href="#privacy">Where does my code go?</a></p>
         </div>
 
         <div class="feature-card">
@@ -250,14 +250,14 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Interactive Budget-Scan Simulator</h2>
-        <p class="section-subtitle">Select a PR scenario and test budget caps like @budgetscan $1.50 --max-delay 5m &mdash; a conceptual simulation with mock numbers, not a live scan.</p>
+        <p class="section-subtitle">Select a PR scenario and test budget caps like @budgetscan $0.50 --max-delay 5m &mdash; a conceptual simulation with mock numbers, not a live scan.</p>
       </div>
 
       <div class="interactive-demo-card">
         <div class="demo-controls-panel">
           <label for="demo-pr-select">Select PR Command Scenario:</label>
           <select id="demo-pr-select" class="form-select">
-            <option value="c-memory">@budgetscan $1.50 --max-delay 5m (C++ UAF & Memory Audit)</option>
+            <option value="c-memory">@budgetscan $0.50 --max-delay 5m (C++ UAF & Memory Audit)</option>
             <option value="go-concurrency">@budgetscan $0.75 --max-delay 2m (Go Concurrency & Race Check)</option>
             <option value="py-security">@budgetscan $0.30 (Python Quick Sanity Audit)</option>
           </select>
@@ -294,22 +294,22 @@
           </div>
 
           <div class="calc-field">
-            <label for="input-rate">Average budget cap per PR ($): <span id="val-rate" class="calc-val">1.50</span>$</label>
-            <input type="range" id="input-rate" min="0.25" max="5.00" step="0.25" value="1.50">
+            <label for="input-rate">Average budget cap per PR ($): <span id="val-rate" class="calc-val">0.50</span>$</label>
+            <input type="range" id="input-rate" min="0.25" max="5.00" step="0.25" value="0.50">
           </div>
         </div>
 
         <div class="calc-results">
           <div class="result-box primary-result">
             <span class="result-label">Annual Savings vs Flat Subscriptions</span>
-            <span class="result-number" id="res-total-savings">$6,750</span>
+            <span class="result-number" id="res-total-savings">$8,748</span>
             <span class="result-sub">Estimate: ~28% of cap per PR vs $50/dev/mo seat fees</span>
           </div>
 
           <div class="results-grid">
             <div class="sub-result">
               <span class="sub-label">Actual Monthly Spend</span>
-              <span class="sub-val" id="res-hours">$225 / month</span>
+              <span class="sub-val" id="res-hours">$21 / month</span>
             </div>
             <div class="sub-result">
               <span class="sub-label">Traditional SAST Seat Cost</span>
@@ -317,7 +317,7 @@
             </div>
             <div class="sub-result">
               <span class="sub-label">Effective Cost Savings</span>
-              <span class="sub-val" id="res-vulns">70% saved</span>
+              <span class="sub-val" id="res-vulns">97% saved</span>
             </div>
           </div>
         </div>
@@ -331,7 +331,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Transparent Credit Packs • Zero Subscription Fees</h2>
-        <p class="section-subtitle">Planned prepaid credit packs: no subscription, no seat fees. Prices and terms are a draft and may change before launch.</p>
+        <p class="section-subtitle">Planned prepaid credit packs: no subscription, no seat fees. Prices and terms are a draft and may change before launch. Scans rarely fail, and a failed scan is never charged.</p>
       </div>
 
       <div class="pricing-grid">
@@ -390,6 +390,42 @@
     </div>
   </section>
 
+  <!-- Data Handling Section -->
+  <section class="section" id="privacy">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Where Does My Code Go?</h2>
+        <p class="section-subtitle">Short answer: to EU-hosted inference with zero data retention, or nowhere outside your own infrastructure.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon icon-emerald">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Zero Data Retention by Default</h3>
+          <p>Hosted BudgetScan scans run on inference from our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a>, which operates with zero data retention: prompts and outputs are not stored and are never used to train models. Only operational metadata (such as request logs) is kept, for up to 30 days. <a href="https://koscompute.com/#privacy" target="_blank" rel="noopener">Their privacy details</a>.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon icon-cyan">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+          </div>
+          <h3>Hosted in the EU</h3>
+          <p>Kosmik&rsquo;s servers are in Prague and the operator is a Czech company under GDPR. The inference API is OpenAI-compatible: see the <a href="https://api.koscompute.com/docs/" target="_blank" rel="noopener">API docs</a>.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon icon-amber">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
+          </div>
+          <h3>Or Keep It On-Prem</h3>
+          <p>The scanner is open source (Apache-2.0) and can run on your own infrastructure against your own LLM endpoint (vLLM, Ollama or any OpenAI-compatible server), so your code never leaves your network.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container footer-container">
@@ -405,6 +441,7 @@
           <a href="#syntax">PR Syntax</a>
           <a href="#calculator">Savings Calculator</a>
           <a href="#pricing">Credit Packs</a>
+          <a href="#privacy">Your Code &amp; Privacy</a>
         </div>
 
         <div class="footer-col">

@@ -88,9 +88,9 @@ function initDemoTerminal() {
 
   const scenariosEn = {
     'c-memory': {
-      cmd: '@budgetscan $1.50 --max-delay 5m',
+      cmd: '@budgetscan $0.50 --max-delay 5m',
       vuln: 'Use-After-Free & Buffer Overflow in buffer_allocator.cpp:88',
-      budgetCap: '$1.50',
+      budgetCap: '$0.50',
       maxDelay: '5m',
       actualCost: '$0.161',
       bids: [
@@ -129,9 +129,9 @@ function initDemoTerminal() {
 
   const scenariosCs = {
     'c-memory': {
-      cmd: '@budgetscan $1.50 --max-delay 5m',
+      cmd: '@budgetscan $0.50 --max-delay 5m',
       vuln: 'Use-After-Free & Buffer Overflow v buffer_allocator.cpp:88',
-      budgetCap: '$1.50',
+      budgetCap: '$0.50',
       maxDelay: '5m',
       actualCost: '$0.161',
       bids: [

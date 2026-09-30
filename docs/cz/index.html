@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BudgetScan | Bezpečnostní skeny PR/MR s pevným rozpočtem</title>
-  <meta name="description" content="BudgetScan – bezpečnostní sken kódu s platbou za sken. Ve fázi raného přístupu: v komentáři PR/MR nastavíte rozpočet a termín příkazem @budgetscan $1.50 --max-delay 5m.">
+  <meta name="description" content="BudgetScan – bezpečnostní sken kódu s platbou za sken. Ve fázi raného přístupu: v komentáři PR/MR nastavíte rozpočet a termín příkazem @budgetscan $0.50 --max-delay 5m.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        Žádné paušály ani licence na vývojáře. Stačí napsat <code class="code-tag">@budgetscan $1.50 --max-delay 5m</code> do komentáře PR/MR. Na tom právě pracujeme: BudgetScan naplánuje hloubku skenu tak, aby se vešel do limitu i termínu, a z kreditu odečte jen to, co sken skutečně stál.
+        Žádné paušály ani licence na vývojáře. Stačí napsat <code class="code-tag">@budgetscan $0.50 --max-delay 5m</code> do komentáře PR/MR. Na tom právě pracujeme: BudgetScan naplánuje hloubku skenu tak, aby se vešel do limitu i termínu, a z kreditu odečte jen to, co sken skutečně stál.
       </p>
 
       <div class="hero-cta-group">
@@ -91,13 +91,13 @@
             <span class="control minimize"></span>
             <span class="control maximize"></span>
           </div>
-          <div class="window-title">GitLab MR #418 — @budgetscan $1.50 --max-delay 5m</div>
+          <div class="window-title">GitLab MR #418 — @budgetscan $0.50 --max-delay 5m</div>
           <div class="window-badge">Příklad</div>
         </div>
         <div class="terminal-body">
           <div class="terminal-line comment-line">
             <span class="user-avatar">reviewer-jan</span>
-            <span class="comment-text">Kontroluji změny v C++. <span class="highlight-mention">@budgetscan $1.50 --max-delay 5m</span></span>
+            <span class="comment-text">Kontroluji změny v C++. <span class="highlight-mention">@budgetscan $0.50 --max-delay 5m</span></span>
           </div>
           <div class="terminal-divider"></div>
           <div class="terminal-line bot-response">
@@ -110,7 +110,7 @@
                 <span class="status-icon danger">⚡</span>
                 <div>
                   <h4>Zranitelnost Use-After-Free v <code class="file-link">interpreter.cpp:142</code></h4>
-                  <p>Závažnost: vysoká | Limit rozpočtu: <strong>$1.50</strong> | Max zpoždění: <strong>5m</strong></p>
+                  <p>Závažnost: vysoká | Limit rozpočtu: <strong>$0.50</strong> | Max zpoždění: <strong>5m</strong></p>
                 </div>
               </div>
 
@@ -118,7 +118,7 @@
               <div class="bot-auction-box">
                 <div class="auction-box-title">
                   <span>🏆 Přehled Běhu & Odečtu Kreditu</span>
-                  <span class="auction-timer">Cena: $0.161 / $1.50 Limit</span>
+                  <span class="auction-timer">Cena: $0.161 / $0.50 Limit</span>
                 </div>
                 <div class="auction-bids">
                   <div class="bid-item winner">
@@ -159,7 +159,7 @@
       <div class="syntax-grid">
         <div class="syntax-card">
           <div class="syntax-badge">Rychlá Kontrola</div>
-          <div class="syntax-code">@budgetscan $0.50</div>
+          <div class="syntax-code">@budgetscan $0.25</div>
           <h3>Základní Bezpečnostní Audit</h3>
           <p>Ideální pro průběžnou kontrolu vývojáře. BudgetScan projde změněné soubory s jedním rychlým kolem triáže.</p>
           <div class="syntax-foot">Skutečné ceny za sken: <strong>zveřejníme po změření</strong></div>
@@ -167,9 +167,9 @@
 
         <div class="syntax-card highlighted">
           <div class="syntax-badge recommended">Doporučujeme</div>
-          <div class="syntax-code">@budgetscan $1.50 --max-delay 5m</div>
+          <div class="syntax-code">@budgetscan $0.50 --max-delay 5m</div>
           <h3>Hloubkový audit s časovým limitem</h3>
-          <p>Vhodné pro release kandidáty. Snaží se dokončit do 5 minut a utratit nejvýše $1.50 za hlubší kontext, sken a vícekolovou triáž. Když čas vyprší, dostanete částečný report místo zaseknuté pipeline.</p>
+          <p>Vhodné pro release kandidáty. Snaží se dokončit do 5 minut a utratit nejvýše $0.50 za hlubší kontext, sken a vícekolovou triáž. Když čas vyprší, dostanete částečný report místo zaseknuté pipeline.</p>
           <div class="syntax-foot">Skutečné ceny za sken: <strong>zveřejníme po změření</strong></div>
         </div>
 
@@ -199,7 +199,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <h3>Odečet Kreditu Pouze Při Skenu</h3>
-          <p>Žádné licence pro vývojáře, kteří PR otevřou jednou za čas. Kredit se odečte jen tehdy, když sken proběhne, a to podle toho, kolik skutečně stál.</p>
+          <p>Žádné licence pro vývojáře, kteří PR otevřou jednou za čas. Kredit se odečte jen tehdy, když sken proběhne, a to podle toho, kolik skutečně stál. Selhání jsou vzácná, a když už k nějakému dojde, nic vám nestrhneme.</p>
         </div>
 
         <div class="feature-card">
@@ -207,7 +207,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
           <h3>Vlastní LLM backend</h3>
-          <p>Skeny běží na LLM backendu dle vaší volby: OpenRouter, OpenAI, Google Gemini / Vertex AI nebo libovolný OpenAI-kompatibilní endpoint (KosCompute, vLLM, Ollama). Automatické směrování na nejlevnější backend je v plánu, zatím není spuštěno. Váš kód se odesílá poskytovateli, kterého si nastavíte, proto zvolte takového, který vyhovuje vašim pravidlům pro práci s daty.</p>
+          <p>Hostované skeny ve výchozím nastavení běží u našeho partnera <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, nulová retence dat). Můžete zvolit i OpenRouter, OpenAI, Google Gemini / Vertex AI nebo libovolný endpoint kompatibilní s OpenAI, třeba vLLM či Ollama. Váš kód putuje jen k poskytovateli, kterého si vyberete. Automatické směrování na nejlevnější backend je v plánu, zatím není spuštěno. <a href="#privacy">Kam putuje můj kód?</a></p>
         </div>
 
         <div class="feature-card">
@@ -250,14 +250,14 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Interaktivní Simulátor Budget-Skenu</h2>
-        <p class="section-subtitle">Vyberte si scénář a vyzkoušejte nastavení rozpočtu a termínu jako @budgetscan $1.50 --max-delay 5m &mdash; jde o koncepční simulaci s ukázkovými čísly, ne o živý sken.</p>
+        <p class="section-subtitle">Vyberte si scénář a vyzkoušejte nastavení rozpočtu a termínu jako @budgetscan $0.50 --max-delay 5m &mdash; jde o koncepční simulaci s ukázkovými čísly, ne o živý sken.</p>
       </div>
 
       <div class="interactive-demo-card">
         <div class="demo-controls-panel">
           <label for="demo-pr-select">Vyberte Příkazový Scénář:</label>
           <select id="demo-pr-select" class="form-select">
-            <option value="c-memory">@budgetscan $1.50 --max-delay 5m (C++ UAF & Paměťový Audit)</option>
+            <option value="c-memory">@budgetscan $0.50 --max-delay 5m (C++ UAF & Paměťový Audit)</option>
             <option value="go-concurrency">@budgetscan $0.75 --max-delay 2m (Go Race Condition & Souběžnost)</option>
             <option value="py-security">@budgetscan $0.30 (Python Rychlá Kontrola Vstupů)</option>
           </select>
@@ -294,22 +294,22 @@
           </div>
 
           <div class="calc-field">
-            <label for="input-rate">Průměrný limit rozpočtu na 1 PR ($): <span id="val-rate" class="calc-val">1.50</span>$</label>
-            <input type="range" id="input-rate" min="0.25" max="5.00" step="0.25" value="1.50">
+            <label for="input-rate">Průměrný limit rozpočtu na 1 PR ($): <span id="val-rate" class="calc-val">0.50</span>$</label>
+            <input type="range" id="input-rate" min="0.25" max="5.00" step="0.25" value="0.50">
           </div>
         </div>
 
         <div class="calc-results">
           <div class="result-box primary-result">
             <span class="result-label">Odhadovaná Roční Úspora oproti Paušálům</span>
-            <span class="result-number" id="res-total-savings">$6,750</span>
+            <span class="result-number" id="res-total-savings">$8,748</span>
             <span class="result-sub">Odhad: ~28 % limitu na PR vs $50/dev/měsíc za licenci</span>
           </div>
 
           <div class="results-grid">
             <div class="sub-result">
               <span class="sub-label">Reálný Měsíční Účet</span>
-              <span class="sub-val" id="res-hours">$225 / měsíc</span>
+              <span class="sub-val" id="res-hours">$21 / měsíc</span>
             </div>
             <div class="sub-result">
               <span class="sub-label">Cena Tradičních SAST Licencí</span>
@@ -317,7 +317,7 @@
             </div>
             <div class="sub-result">
               <span class="sub-label">Ušetřeno na Nákladech</span>
-              <span class="sub-val" id="res-vulns">70 % úspora</span>
+              <span class="sub-val" id="res-vulns">97 % úspora</span>
             </div>
           </div>
         </div>
@@ -331,7 +331,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Transparentní Kreditní Balíčky • Nulové Měsíční Paušály</h2>
-        <p class="section-subtitle">Plánované předplacené kreditní balíčky: bez předplatného a bez poplatků za licence. Ceny a podmínky jsou zatím návrh a před spuštěním se mohou změnit.</p>
+        <p class="section-subtitle">Plánované předplacené kreditní balíčky: bez předplatného a bez poplatků za licence. Ceny a podmínky jsou zatím návrh a před spuštěním se mohou změnit. Skeny selhávají zřídka a za selhaný sken se neplatí.</p>
       </div>
 
       <div class="pricing-grid">
@@ -390,6 +390,42 @@
     </div>
   </section>
 
+  <!-- Data Handling Section -->
+  <section class="section" id="privacy">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Kam putuje můj kód?</h2>
+        <p class="section-subtitle">Stručně: do evropské inference s nulovou retencí dat, nebo nikam mimo vaši vlastní infrastrukturu.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon icon-emerald">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Nulová retence dat ve výchozím nastavení</h3>
+          <p>Hostovaný BudgetScan spouští skeny na inferenci našeho partnera <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a>, který pracuje s nulovou retencí dat: prompty a výstupy se neukládají a nikdy se nepoužívají k trénování modelů. Uchovávají se jen provozní metadata (například záznamy požadavků), nejdéle 30 dní. <a href="https://koscompute.com/#privacy" target="_blank" rel="noopener">Jejich zásady soukromí</a>.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon icon-cyan">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+          </div>
+          <h3>Servery v Praze, pod GDPR</h3>
+          <p>Servery Kosmiku stojí v Praze a provozuje je česká společnost podléhající GDPR. Inferenční API je kompatibilní s OpenAI: viz <a href="https://api.koscompute.com/docs/" target="_blank" rel="noopener">dokumentace API</a>.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon icon-amber">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
+          </div>
+          <h3>Nebo celé u vás (on-prem)</h3>
+          <p>Skener je open source (Apache-2.0) a můžete ho provozovat na vlastní infrastruktuře s vlastním LLM endpointem (vLLM, Ollama nebo jiný server kompatibilní s OpenAI). Váš kód pak vaši síť vůbec neopustí.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container footer-container">
@@ -405,6 +441,7 @@
           <a href="#syntax">Syntaxe Příkazů</a>
           <a href="#calculator">Kalkulačka Úspor</a>
           <a href="#pricing">Kreditní Balíčky</a>
+          <a href="#privacy">Váš kód a soukromí</a>
         </div>
 
         <div class="footer-col">
