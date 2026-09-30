@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Předběžný návod k nastavení a použití | BudgetScan</title>
+  <meta name="description" content="Předběžný návod k BudgetScan / nano-analyzer: jak už dnes spustit open-source skener, plus první poznámky k integraci s GitLabem a GitHubem a k připravovanému příkazu @budgetscan.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/how-to/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/how-to/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/how-to/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/how-to/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Předběžný návod k nastavení a použití | BudgetScan">
+  <meta property="og:description" content="Jak už dnes spustit open-source skener, plus první poznámky k integraci s GitLabem a GitHubem a k připravovanému příkazu @budgetscan.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/how-to/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../">Přehled</a>
+        <a href="../#privacy">Váš kód a soukromí</a>
+        <a href="../#pricing">Ceník</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../how-to/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../" class="btn btn-primary">Zpět na přehled</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <h1>Předběžný návod k nastavení a použití</h1>
+      <p>Raný a záměrně nedoladěný návod, sepsaný 30. 9. 2026 podle toho, jak kód funguje dnes. Bude se rozrůstat. Každá část má štítek se stavem, takže hned vidíte, co je skutečné:</p>
+      <ul>
+        <li><span class="tag-status tag-available">Funguje</span> funguje už dnes a je veřejné.</li>
+        <li><span class="tag-status tag-untested">Netestováno</span> existuje v našem privátním kódu, ale zatím ho nikdo neprošel od začátku do konce.</li>
+        <li><span class="tag-status tag-draft">Koncept</span> zapojeno jen zčásti, se známými mezerami.</li>
+        <li><span class="tag-status tag-planned">Plánováno</span> ještě nestojí; popisujeme to, abyste věděli, kam směřujeme.</li>
+      </ul>
+
+      <nav class="toc" aria-label="Obsah">
+        <ol>
+          <li><a href="#status">Co dnes existuje</a></li>
+          <li><a href="#cli">Rychlý start z příkazové řádky</a></li>
+          <li><a href="#results">Jak číst výsledky</a></li>
+          <li><a href="#gitlab">Integrace s merge requesty v GitLabu</a></li>
+          <li><a href="#github">GitHub pull requesty</a></li>
+          <li><a href="#budgetscan">Připravovaný příkaz <code class="code-tag">@budgetscan</code></a></li>
+          <li><a href="#data">Kam putuje váš kód</a></li>
+          <li><a href="#limits">Omezení</a></li>
+          <li><a href="#help">Dotazy a raný přístup</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="status">1. Co dnes existuje</h2>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Součást</th><th>Stav</th><th>Kde</th></tr></thead>
+          <tbody>
+            <tr><td>Jádro skeneru: kontext, sken a skeptická vícekolová triáž</td><td><span class="tag-status tag-available">Funguje</span></td><td>Open source: <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">github.com/Huge/nano-analyzer</a></td></tr>
+            <tr><td>Úloha pro merge requesty v GitLabu, která přidá jeden komentář s reportem</td><td><span class="tag-status tag-untested">Netestováno</span></td><td>Privátní kód, sdílíme v rámci raného přístupu</td></tr>
+            <tr><td>GitHub Action</td><td><span class="tag-status tag-draft">Koncept</span></td><td>Privátní kód, sdílíme v rámci raného přístupu</td></tr>
+            <tr><td>Příkaz <code class="code-tag">@budgetscan</code> v komentáři s limitem rozpočtu a termínu</td><td><span class="tag-status tag-planned">Plánováno</span></td><td>&mdash;</td></tr>
+            <tr><td>Předplacené kredity a hostované skeny na inferenci s nulovou retencí dat</td><td><span class="tag-status tag-planned">Plánováno</span></td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Veřejný repozitář je open-source jádro. Kromě něj udržujeme mnohem pokročilejší privátní kód; integrace do CI popsané níže žijí právě tam.</p>
+
+      <h2 id="cli">2. Rychlý start z příkazové řádky <span class="tag-status tag-available">Funguje</span></h2>
+      <p>Potřebujete Python 3.8+ a API klíč: OpenAI (výchozí model je <code class="code-tag">gpt-5.4-nano</code>) nebo OpenRouter (názvy modelů s lomítkem, například <code class="code-tag">qwen/qwen3-32b</code>). Volitelně si nainstalujte <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">ripgrep</a> (<code class="code-tag">rg</code>), aby triáž mohla prohledávat váš kód. Žádné další závislosti nejsou.</p>
+<pre><code>git clone https://github.com/Huge/nano-analyzer.git
+cd nano-analyzer
+
+# modely OpenAI (název modelu bez lomítka)
+export OPENAI_API_KEY=sk-...
+# nebo modely přes OpenRouter (název modelu s lomítkem)
+export OPENROUTER_API_KEY=sk-or-...
+
+# sken jednoho souboru nebo celého adresáře
+python3 scan.py ./cesta/ke/zdrojakum</code></pre>
+      <p>Každá fáze volá LLM, takže cena roste s množstvím kódu a počtem kol triáže. Začněte jedním adresářem a podívejte se, kolik to stojí, než skener pustíte na celý repozitář.</p>
+
+      <h3>Nejčastější volby</h3>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Volba</th><th>Co dělá</th></tr></thead>
+          <tbody>
+            <tr><td><code class="code-tag">--model</code></td><td>Model pro všechny fáze, např. <code class="code-tag">--model qwen/qwen3-32b</code></td></tr>
+            <tr><td><code class="code-tag">--parallel N</code></td><td>Celkový počet souběžných volání API</td></tr>
+            <tr><td><code class="code-tag">--triage-rounds N</code></td><td>Počet skeptických kol na jeden nález (výchozí 5)</td></tr>
+            <tr><td><code class="code-tag">--triage-threshold</code></td><td>Nejnižší závažnost, která se triáží (výchozí <code class="code-tag">medium</code>)</td></tr>
+            <tr><td><code class="code-tag">--min-confidence 0.7</code></td><td>Zobrazí jen nálezy s alespoň touto jistotou</td></tr>
+            <tr><td><code class="code-tag">--repo-dir ./</code></td><td>Kořen repozitáře, který triáž prohledává; hodí se, když skenujete jen podadresář</td></tr>
+            <tr><td><code class="code-tag">--extensions</code>, <code class="code-tag">--ignore-dirs</code></td><td>Zúžení množiny skenovaných souborů</td></tr>
+            <tr><td><code class="code-tag">--output-dir</code></td><td>Kam se uloží výsledky (výchozí <code class="code-tag">~/nano-analyzer-results/&lt;časové razítko&gt;/</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="results">3. Jak číst výsledky</h2>
+<pre><code>&lt;časové razítko&gt;/
+├── summary.md              # začněte tady
+├── findings/               # nálezy, které triáž přežily
+│   └── VULN-001_&lt;soubor&gt;.md
+├── triage_survivors.md     # souhrn potvrzených nálezů
+├── triage.json             # všechny verdikty
+├── triages/                # zdůvodnění u každého nálezu
+└── &lt;soubor&gt;.md / .json / .context.md   # surový výstup po souborech</code></pre>
+      <p>Jistota typu <code class="code-tag">80% [VVIVV→V]</code> je podíl kol triáže, která nález uznala za platný; poslední písmeno je konečné rozhodnutí arbitra. Než podle nějakého nálezu začnete jednat, vždy si ho ověřte ručně.</p>
+
+      <h2 id="gitlab">4. Integrace s merge requesty v GitLabu <span class="tag-status tag-untested">Netestováno</span></h2>
+      <p>CI úloha, která proskenuje soubory změněné v merge requestu a udržuje na něm <strong>jednu</strong> aktuální diskusi s reportem. Existuje v našem privátním kódu a zatím nebyla vyzkoušena od začátku do konce, takže počítejte s drobnými nedodělky. Soubory vám rádi pošleme v rámci raného přístupu (viz <a href="#help">Dotazy</a>).</p>
+      <ol>
+        <li><strong>Sestavte a publikujte image.</strong> Dockerfile nainstaluje git, ripgrep a volitelné nástroje pro vyhledávání v kódu:
+<pre><code>docker build -f gitlab/Dockerfile -t registry.gitlab.com/&lt;skupina&gt;/&lt;projekt&gt;/nano-analyzer:latest .
+docker push registry.gitlab.com/&lt;skupina&gt;/&lt;projekt&gt;/nano-analyzer:latest</code></pre>
+        </li>
+        <li><strong>Přidejte úlohu.</strong> Zkopírujte <code class="code-tag">scan.py</code> a složku <code class="code-tag">gitlab/</code> do projektu, který chcete skenovat (wrapper zatím spouští <code class="code-tag">scan.py</code> z kořene toho projektu; toto balení se pravděpodobně změní), pak vložte šablonu a nastavte image:
+<pre><code>include:
+  - local: gitlab/.gitlab-ci.yml
+
+variables:
+  NANO_GITLAB_IMAGE: registry.gitlab.com/&lt;skupina&gt;/&lt;projekt&gt;/nano-analyzer:latest</code></pre>
+        </li>
+        <li><strong>Nastavte CI/CD proměnné</strong> (masked): <code class="code-tag">NANO_GITLAB_API_TOKEN</code>, tedy token, který smí zapisovat poznámky k merge requestu, a váš klíč k LLM, například <code class="code-tag">OPENROUTER_API_KEY</code>.</li>
+        <li><strong>Otevřete merge request.</strong> Úloha běží jen v pipelinech merge requestů. Nejdřív upraví report na „This analysis is being updated...“, potom ho nahradí tabulkou s počty nálezů podle závažnosti pro každý soubor, stavem, časem a SHA commitu.</li>
+      </ol>
+      <h3>Jak se chová</h3>
+      <ul>
+        <li>Skenuje jen změněné soubory se známou příponou zdrojáků (výchozí režim <code class="code-tag">changed</code>); pro každý soubor jeden proces <code class="code-tag">scan.py</code>, spouštěné postupně.</li>
+        <li>Commit, který už analyzovala, přeskočí, a pokud někdo diskusi s reportem označí za vyřešenou, znovu ji otevře.</li>
+        <li>Komentář ukazuje jen počty; úplné nálezy jsou v artefaktech úlohy ve složce <code class="code-tag">.nano-analyzer/gitlab/</code> (uchovávají se týden).</li>
+      </ul>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Proměnná</th><th>K čemu slouží</th></tr></thead>
+          <tbody>
+            <tr><td><code class="code-tag">NANO_GITLAB_SCAN_MODE</code></td><td><code class="code-tag">changed</code> (výchozí) nebo <code class="code-tag">all</code></td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_SCAN_TARGET</code></td><td>Co skenovat v režimu <code class="code-tag">all</code> (výchozí <code class="code-tag">.</code>)</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_CHANGED_BASE</code></td><td>Výslovný základní commit nebo větev pro diff</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_ENFORCE_ONCE_PER_COMMIT</code></td><td>Přeskočí už reportované commity (výchozí <code class="code-tag">true</code>)</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_REOPEN_RESOLVED_THREAD</code></td><td>Znovu otevře vyřešenou diskusi s reportem (výchozí <code class="code-tag">true</code>)</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_RESOURCE_GROUP</code></td><td>Klíč zámku, který zajistí, že skeny běží jeden po druhém</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_MODEL</code>, <code class="code-tag">NANO_GITLAB_PARALLEL</code>, <code class="code-tag">NANO_GITLAB_TRIAGE_ROUNDS</code></td><td>Předávají se skeneru</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Bezpečnostní poznámka: API tokeny i klíče k LLM držte masked a chráněné a nezpřístupňujte je pipelinům z nedůvěryhodných forků.</p>
+
+      <h2 id="github">5. GitHub pull requesty <span class="tag-status tag-draft">Koncept</span></h2>
+      <p>V našem privátním kódu je definice GitHub Action, která spustí skener a udržuje na pull requestu jeden aktuální komentář. Je to koncept: vstupy pro cíl, model, paralelismus, limit velikosti, nastavení triáže, práh jistoty a adresář repozitáře jsou se skenerem propojené, ale několik dalších je zatím jen deklarováno a <strong>nezapojeno</strong>: <code class="code-tag">format</code>, <code class="code-tag">scope</code>, <code class="code-tag">provider</code>, nahrávání SARIF, nahrávání artefaktů a politika <code class="code-tag">fail-*</code>. Navíc spouští <code class="code-tag">scan.py</code> z pracovního prostoru volajícího, takže ji zatím nejde použít jako hotovou akci z jiného repozitáře.</p>
+      <p>Než to doladíme, nejjednodušší je pustit skener z příkazové řádky ve vlastním workflow. Je to <strong>netestovaná ukázka</strong>:</p>
+<pre><code>name: nano-analyzer
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: Huge/nano-analyzer
+          path: .nano-analyzer
+      - name: Scan changed source files
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          git diff --name-only --diff-filter=AMRT "origin/${{ github.base_ref }}...HEAD" \
+            | grep -E '\.(c|h|cc|cpp|go|py|js|ts|rs|java)$' > changed.txt || true
+          [ -s changed.txt ] || { echo "No source changes"; exit 0; }
+          xargs -a changed.txt python3 .nano-analyzer/scan.py \
+            --model qwen/qwen3-32b --repo-dir . --output-dir scan-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nano-analyzer-results
+          path: scan-results</code></pre>
+      <p>Pull requesty z forků ve výchozím stavu nedostanou tajné proměnné repozitáře. To je záměr: neobcházejte to přes <code class="code-tag">pull_request_target</code> spojené s checkoutem kódu z pull requestu.</p>
+
+      <h2 id="budgetscan">6. Připravovaný příkaz <code class="code-tag">@budgetscan</code> <span class="tag-status tag-planned">Plánováno</span></h2>
+      <p>Myšlenka: reviewer napíše komentář k pull nebo merge requestu a BudgetScan naplánuje sken, který se vejde do limitu i termínu. Nic z níže uvedeného zatím neběží a syntaxe se ještě může změnit.</p>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Komentář</th><th>Záměr</th></tr></thead>
+          <tbody>
+            <tr><td><code class="code-tag">@budgetscan $0.25</code></td><td>Rychlý průchod změněnými soubory s limitem $0.25</td></tr>
+            <tr><td><code class="code-tag">@budgetscan $0.50 --max-delay 5m</code></td><td>Hlubší průchod, který se blížícím pětiminutovým termínem přestane pouštět do nové práce a zveřejní částečný report s tím, co pokryl</td></tr>
+            <tr><td><code class="code-tag">@budgetscan $5.00 --depth deep</code></td><td>Vyšší limit se investuje do širšího kontextu a více kol triáže</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li>Částky jsou v amerických dolarech; <code class="code-tag">$0.50</code> a <code class="code-tag">.5</code> znamenají totéž. Termíny vypadají třeba <code class="code-tag">90s</code>, <code class="code-tag">5m</code> nebo <code class="code-tag">1h</code>.</li>
+        <li>Sken by nikdy neměl přesáhnout limit. Pokud limit nestačí ani na jediný soubor, dostanete srozumitelný report „nedostatečný rozpočet“ a nic se neúčtuje.</li>
+        <li>Selhání jsou vzácná a za selhaný sken se neplatí. Úplné obchodní podmínky zveřejníme před spuštěním.</li>
+        <li>Skutečné ceny za sken zveřejníme, až je změříme na benchmarcích.</li>
+      </ul>
+
+      <h2 id="data">7. Kam putuje váš kód</h2>
+      <p>Stručně: hostované skeny běží u našeho partnera <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (Praha, nulová retence dat), nebo si open-source skener pustíte proti vlastnímu endpointu na vlastní infrastruktuře. Podrobnosti jsou v části <a href="../#privacy">Kam putuje můj kód?</a></p>
+
+      <h2 id="limits">8. Omezení</h2>
+      <ul>
+        <li><strong>Falešné poplachy.</strong> Skenery s AI označí i věci, které se ukážou jako neškodné. Vícekolová triáž pomáhá a velmi si dáváme záležet na tom, aby falešných poplachů bylo co nejméně, přesto nálezy vždy ověřte ručně.</li>
+        <li><strong>Přehlédnuté chyby.</strong> Celé třídy problémů (logické chyby, race conditions, chyby v kryptografii a autentizaci) může skener minout. Čistý sken neznamená, že je kód bezpečný.</li>
+        <li><strong>Soubor po souboru.</strong> Každý soubor se skenuje samostatně, takže chyby vzniklé až souhrou více souborů se pravděpodobně přehlédnou.</li>
+        <li><strong>Závislost na modelu.</strong> Různé modely najdou různé věci a dělají různé chyby.</li>
+      </ul>
+
+      <h2 id="help">9. Dotazy a raný přístup</h2>
+      <p>Chcete privátní integrace, máte dotaz, nebo jste v návodu našli chybu? <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20ran%C3%BD%20p%C5%99%C3%ADstup">Napište nám</a> (dev@ehlas.cz a safeAIwork@gmail.com).</p>
+      <p><a href="../">&larr; Zpět na přehled</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na open-source projektu nano-analyzer (Apache-2.0).</p>
+    </div>
+  </footer>
+</body>
+</html>

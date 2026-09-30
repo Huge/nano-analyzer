@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BudgetScan | Bezpečnostní skeny PR/MR s pevným rozpočtem</title>
   <meta name="description" content="BudgetScan – bezpečnostní sken kódu s platbou za sken. Ve fázi raného přístupu: v komentáři PR/MR nastavíte rozpočet a termín příkazem @budgetscan $0.50 --max-delay 5m.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="BudgetScan | Bezpečnostní skeny PR/MR s pevným rozpočtem">
+  <meta property="og:description" content="BudgetScan – bezpečnostní sken kódu s platbou za sken. Ve fázi raného přístupu: v komentáři PR/MR nastavíte rozpočet a termín příkazem @budgetscan $0.50 --max-delay 5m.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,13 +41,13 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
             <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
           <defs>
             <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
               <stop stop-color="#6366f1"/>
               <stop offset="1" stop-color="#06b6d4"/>
             </linearGradient>
           </defs>
+          </svg>
         </div>
         <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
       </a>
@@ -80,7 +93,7 @@
         <a href="#calculator" class="btn btn-outline btn-lg">Spočítat Úsporu Kreditu</a>
       </div>
 
-      <p class="status-note"><strong>Raný přístup, na kterém ještě pracujeme.</strong> Open-source skener nano-analyzer už dnes funguje jako CLI, GitHub Action i úloha v GitLab CI. Příkaz <code class="code-tag">@budgetscan</code> v komentáři, limity rozpočtu a termínu i předplacené kredity, které tu vidíte, teprve stavíme. Zatím si tedy nic koupit nelze a všechny příklady i čísla jsou jen ilustrační. Děkujeme, že jste se přišli podívat.</p>
+      <p class="status-note"><strong>Raný přístup, na kterém ještě pracujeme.</strong> Open-source skener nano-analyzer už dnes funguje jako CLI, GitHub Action i úloha v GitLab CI. Příkaz <code class="code-tag">@budgetscan</code> v komentáři, limity rozpočtu a termínu i předplacené kredity, které tu vidíte, teprve stavíme. Zatím si tedy nic koupit nelze a všechny příklady i čísla jsou jen ilustrační. Máte dotaz nebo zájem o raný přístup? <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20ran%C3%BD%20p%C5%99%C3%ADstup">Napište nám</a>. Děkujeme, že jste se přišli podívat.</p>
 
       <!-- Hero Interactive Terminal Preview -->
       <p class="example-label">Ilustrativní příklad &mdash; ukázkový výstup znázorňující zamýšlený průběh, nejde o skutečný výsledek skenu.</p>
@@ -115,29 +128,29 @@
               </div>
 
               <!-- Cost summary inside bot card -->
-              <div class="bot-auction-box">
-                <div class="auction-box-title">
+              <div class="bot-cost-box">
+                <div class="cost-box-title">
                   <span>🏆 Přehled Běhu & Odečtu Kreditu</span>
-                  <span class="auction-timer">Cena: $0.161 / $0.50 Limit</span>
+                  <span class="cost-total">Cena: $0.161 / $0.50 Limit</span>
                 </div>
-                <div class="auction-bids">
-                  <div class="bid-item winner">
-                    <span class="bid-provider">LLM kontext + sken</span>
-                    <span class="bid-specs">Změněné soubory</span>
-                    <span class="bid-price">$0.041</span>
-                    <span class="bid-status">V rámci limitu</span>
+                <div class="cost-items">
+                  <div class="cost-item winner">
+                    <span class="cost-provider">LLM kontext + sken</span>
+                    <span class="cost-specs">Změněné soubory</span>
+                    <span class="cost-price">$0.041</span>
+                    <span class="cost-status">V rámci limitu</span>
                   </div>
-                  <div class="bid-item winner">
-                    <span class="bid-provider">Skeptická triáž</span>
-                    <span class="bid-specs">5 kol</span>
-                    <span class="bid-price">$0.120</span>
-                    <span class="bid-status ready">Dokončeno</span>
+                  <div class="cost-item winner">
+                    <span class="cost-provider">Skeptická triáž</span>
+                    <span class="cost-specs">5 kol</span>
+                    <span class="cost-price">$0.120</span>
+                    <span class="cost-status ready">Dokončeno</span>
                   </div>
-                  <div class="bid-item">
-                    <span class="bid-provider">Odečet z Týmového Kreditu</span>
-                    <span class="bid-specs">Předplacený Pool</span>
-                    <span class="bid-price">-$0.161</span>
-                    <span class="bid-status">Zbývá: $248.34</span>
+                  <div class="cost-item">
+                    <span class="cost-provider">Odečet z Týmového Kreditu</span>
+                    <span class="cost-specs">Předplacený Pool</span>
+                    <span class="cost-price">-$0.161</span>
+                    <span class="cost-status">Zbývá: $248.34</span>
                   </div>
                 </div>
               </div>
@@ -181,6 +194,7 @@
           <div class="syntax-foot">Skutečné ceny za sken: <strong>zveřejníme po změření</strong></div>
         </div>
       </div>
+      <p class="howto-link">Začínáte? Přečtěte si <a href="how-to/">Předběžný návod k nastavení a použití</a>.</p>
     </div>
   </section>
 
@@ -242,6 +256,8 @@
           <p>Dobijete si předplacený zůstatek a každý sken odečte jen svou skutečnou cenu. Týmové rozpočtové limity možná doplníme později.</p>
         </div>
       </div>
+
+      <p class="status-note"><strong>Poznámka k přesnosti.</strong> Skenery založené na AI někdy označí něco, co je ve skutečnosti neškodné (falešné poplachy), a naopak mohou skutečný problém přehlédnout. Nálezy se střední závažností a vyšší procházejí skeptickou vícekolovou triáží a velmi si dáváme záležet na tom, aby falešných poplachů bylo co nejméně. Berte výsledky jako silná vodítka pro lidského revidenta, ne jako rozsudek.</p>
     </div>
   </section>
 
@@ -348,7 +364,7 @@
             <li>✓ Počet skenů na balíček závisí na zvolených limitech; skutečné ceny zveřejníme po změření</li>
             <li>✓ Podpora syntaxe <code class="code-tag">@budgetscan $X</code></li>
           </ul>
-          <span class="btn btn-outline btn-block btn-disabled" aria-disabled="true">Balíček $25: brzy</span>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20ran%C3%BD%20p%C5%99%C3%ADstup%3A%20kreditn%C3%AD%20bal%C3%AD%C4%8Dek%20%2425" class="btn btn-outline btn-block">Požádat o raný přístup</a>
         </div>
 
         <div class="pricing-card featured">
@@ -366,7 +382,7 @@
             <li>✓ Podpora parametru <code class="code-tag">--max-delay</code> pro časový limit</li>
             <li>✓ Integrace s GitLab CI i GitHub Actions</li>
           </ul>
-          <span class="btn btn-primary btn-block btn-disabled" aria-disabled="true">Týmový kredit $250: brzy</span>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20ran%C3%BD%20p%C5%99%C3%ADstup%3A%20t%C3%BDmov%C3%BD%20kredit%20%24250" class="btn btn-primary btn-block">Požádat o raný přístup</a>
         </div>
 
         <div class="pricing-card">
@@ -384,7 +400,7 @@
             <li>✓ On-premise runnery</li>
             <li>✓ Vlastní fakturace</li>
           </ul>
-          <span class="btn btn-outline btn-block btn-disabled" aria-disabled="true">Dotazy pro firmy: brzy</span>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%3A%20dotaz%20pro%20firmy%20/%20vlastn%C3%AD%20hosting" class="btn btn-outline btn-block">Napište nám</a>
         </div>
       </div>
     </div>
@@ -447,6 +463,8 @@
         <div class="footer-col">
           <h4>Dokumentace & Repozitáře</h4>
           <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">GitHub Repository</a>
+          <a href="how-to/">Předběžný návod</a>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com">Napište nám</a>
         </div>
       </div>
     </div>

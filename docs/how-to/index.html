@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preliminary How-to Setup and Use Guide | BudgetScan</title>
+  <meta name="description" content="Preliminary how-to guide for BudgetScan / nano-analyzer: run the open-source scanner today, plus early notes on the GitLab and GitHub integrations and the planned @budgetscan command.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/how-to/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/how-to/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/how-to/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/how-to/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Preliminary How-to Setup and Use Guide | BudgetScan">
+  <meta property="og:description" content="Run the open-source scanner today; early notes on the GitLab and GitHub integrations and the planned @budgetscan command.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/how-to/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../">Overview</a>
+        <a href="../#privacy">Your Code &amp; Privacy</a>
+        <a href="../#pricing">Pricing</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../cz/how-to/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../" class="btn btn-primary">Back to overview</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <h1>Preliminary How-to Setup and Use Guide</h1>
+      <p>An early, deliberately unpolished guide, written on 2026-09-30 from how the code works today. It will grow. Every part carries a status tag, so you can see what is real:</p>
+      <ul>
+        <li><span class="tag-status tag-available">Available</span> works today and is public.</li>
+        <li><span class="tag-status tag-untested">Untested</span> exists in our private codebase but has not been run end to end yet.</li>
+        <li><span class="tag-status tag-draft">Draft</span> partly wired, with known gaps.</li>
+        <li><span class="tag-status tag-planned">Planned</span> not built yet; described so you know where we are heading.</li>
+      </ul>
+
+      <nav class="toc" aria-label="Contents">
+        <ol>
+          <li><a href="#status">What exists today</a></li>
+          <li><a href="#cli">Quick start with the command line</a></li>
+          <li><a href="#results">Reading the results</a></li>
+          <li><a href="#gitlab">GitLab merge-request integration</a></li>
+          <li><a href="#github">GitHub pull requests</a></li>
+          <li><a href="#budgetscan">The planned <code class="code-tag">@budgetscan</code> command</a></li>
+          <li><a href="#data">Where your code goes</a></li>
+          <li><a href="#limits">Limitations</a></li>
+          <li><a href="#help">Questions and early access</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="status">1. What exists today</h2>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Piece</th><th>Status</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td>Core scanner: context, scan, then skeptical multi-round triage</td><td><span class="tag-status tag-available">Available</span></td><td>Open source: <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">github.com/Huge/nano-analyzer</a></td></tr>
+            <tr><td>GitLab merge-request job that posts one report comment</td><td><span class="tag-status tag-untested">Untested</span></td><td>Private codebase, shared during early access</td></tr>
+            <tr><td>GitHub Action</td><td><span class="tag-status tag-draft">Draft</span></td><td>Private codebase, shared during early access</td></tr>
+            <tr><td><code class="code-tag">@budgetscan</code> comment command with budget and deadline caps</td><td><span class="tag-status tag-planned">Planned</span></td><td>&mdash;</td></tr>
+            <tr><td>Prepaid credits and hosted scans on zero-data-retention inference</td><td><span class="tag-status tag-planned">Planned</span></td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The public repository is the open-source core. We also maintain a much more advanced private codebase; the CI integrations below live there.</p>
+
+      <h2 id="cli">2. Quick start with the command line <span class="tag-status tag-available">Available</span></h2>
+      <p>You need Python 3.8+ and an API key: OpenAI (the default model is <code class="code-tag">gpt-5.4-nano</code>) or OpenRouter (model names with a slash, such as <code class="code-tag">qwen/qwen3-32b</code>). Optionally install <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">ripgrep</a> (<code class="code-tag">rg</code>) so the triage step can search your code. There are no other dependencies.</p>
+<pre><code>git clone https://github.com/Huge/nano-analyzer.git
+cd nano-analyzer
+
+# OpenAI models (no slash in the model name)
+export OPENAI_API_KEY=sk-...
+# or OpenRouter models (slash in the model name)
+export OPENROUTER_API_KEY=sk-or-...
+
+# scan a file or a whole directory
+python3 scan.py ./path/to/src</code></pre>
+      <p>Every stage calls an LLM, so cost grows with the amount of code and the number of triage rounds. Start with one directory and see what it costs before pointing it at a whole repository.</p>
+
+      <h3>Common options</h3>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code class="code-tag">--model</code></td><td>Model for all stages, e.g. <code class="code-tag">--model qwen/qwen3-32b</code></td></tr>
+            <tr><td><code class="code-tag">--parallel N</code></td><td>Total concurrent API calls</td></tr>
+            <tr><td><code class="code-tag">--triage-rounds N</code></td><td>Skeptical review rounds per finding (default 5)</td></tr>
+            <tr><td><code class="code-tag">--triage-threshold</code></td><td>Lowest severity that gets triaged (default <code class="code-tag">medium</code>)</td></tr>
+            <tr><td><code class="code-tag">--min-confidence 0.7</code></td><td>Only show findings with at least this confidence</td></tr>
+            <tr><td><code class="code-tag">--repo-dir ./</code></td><td>Repository root the triage step searches; useful when you scan only a subfolder</td></tr>
+            <tr><td><code class="code-tag">--extensions</code>, <code class="code-tag">--ignore-dirs</code></td><td>Narrow the set of files scanned</td></tr>
+            <tr><td><code class="code-tag">--output-dir</code></td><td>Where results are written (default <code class="code-tag">~/nano-analyzer-results/&lt;timestamp&gt;/</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="results">3. Reading the results</h2>
+<pre><code>&lt;timestamp&gt;/
+├── summary.md              # start here
+├── findings/               # findings that survived triage
+│   └── VULN-001_&lt;file&gt;.md
+├── triage_survivors.md     # summary of validated findings
+├── triage.json             # every verdict
+├── triages/                # per-finding reasoning
+└── &lt;file&gt;.md / .json / .context.md   # raw output per file</code></pre>
+      <p>A confidence such as <code class="code-tag">80% [VVIVV→V]</code> is the share of triage rounds that judged the finding valid; the last letter is the arbiter's final call. Always verify a finding by hand before acting on it.</p>
+
+      <h2 id="gitlab">4. GitLab merge-request integration <span class="tag-status tag-untested">Untested</span></h2>
+      <p>A CI job that scans the files changed in a merge request and keeps <strong>one</strong> report discussion up to date on that MR. It exists in our private codebase and has not been run end to end yet, so expect rough edges. Ask us for the files during early access (see <a href="#help">Questions</a>).</p>
+      <ol>
+        <li><strong>Build and publish the image.</strong> The Dockerfile installs git, ripgrep and the optional code-search tools:
+<pre><code>docker build -f gitlab/Dockerfile -t registry.gitlab.com/&lt;group&gt;/&lt;project&gt;/nano-analyzer:latest .
+docker push registry.gitlab.com/&lt;group&gt;/&lt;project&gt;/nano-analyzer:latest</code></pre>
+        </li>
+        <li><strong>Add the job.</strong> Copy <code class="code-tag">scan.py</code> and the <code class="code-tag">gitlab/</code> folder into the project you want to scan (the wrapper currently runs <code class="code-tag">scan.py</code> from that project's root; this packaging will probably change), then include the template and set the image:
+<pre><code>include:
+  - local: gitlab/.gitlab-ci.yml
+
+variables:
+  NANO_GITLAB_IMAGE: registry.gitlab.com/&lt;group&gt;/&lt;project&gt;/nano-analyzer:latest</code></pre>
+        </li>
+        <li><strong>Set CI/CD variables</strong> (masked): <code class="code-tag">NANO_GITLAB_API_TOKEN</code>, a token that may write merge-request notes, and your LLM key, for example <code class="code-tag">OPENROUTER_API_KEY</code>.</li>
+        <li><strong>Open a merge request.</strong> The job runs on merge-request pipelines only. It first updates the report with "This analysis is being updated...", then replaces it with a table of severity counts per file, the status, the time taken and the commit SHA.</li>
+      </ol>
+      <h3>How it behaves</h3>
+      <ul>
+        <li>Scans only changed files with known source extensions (default mode <code class="code-tag">changed</code>); one <code class="code-tag">scan.py</code> process per file, run serially.</li>
+        <li>Skips a commit it has already analysed, and reopens the report discussion if someone resolved it.</li>
+        <li>The comment shows counts only; the full findings are in the job artifacts under <code class="code-tag">.nano-analyzer/gitlab/</code> (kept one week).</li>
+      </ul>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code class="code-tag">NANO_GITLAB_SCAN_MODE</code></td><td><code class="code-tag">changed</code> (default) or <code class="code-tag">all</code></td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_SCAN_TARGET</code></td><td>What to scan in <code class="code-tag">all</code> mode (default <code class="code-tag">.</code>)</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_CHANGED_BASE</code></td><td>Explicit base commit or branch for the diff</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_ENFORCE_ONCE_PER_COMMIT</code></td><td>Skip commits already reported (default <code class="code-tag">true</code>)</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_REOPEN_RESOLVED_THREAD</code></td><td>Reopen a resolved report discussion (default <code class="code-tag">true</code>)</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_RESOURCE_GROUP</code></td><td>Lock key that keeps scans one-at-a-time</td></tr>
+            <tr><td><code class="code-tag">NANO_GITLAB_MODEL</code>, <code class="code-tag">NANO_GITLAB_PARALLEL</code>, <code class="code-tag">NANO_GITLAB_TRIAGE_ROUNDS</code></td><td>Passed through to the scanner</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Security note: keep the API and LLM keys masked and protected, and do not expose them to pipelines from untrusted forks.</p>
+
+      <h2 id="github">5. GitHub pull requests <span class="tag-status tag-draft">Draft</span></h2>
+      <p>Our private codebase contains a GitHub Action definition that runs the scanner and keeps one comment up to date on the pull request. It is a draft: the inputs for target, model, parallelism, size limit, triage settings, confidence threshold and repo directory are wired to the scanner, but several others are declared and <strong>not wired yet</strong>: <code class="code-tag">format</code>, <code class="code-tag">scope</code>, <code class="code-tag">provider</code>, SARIF upload, artifact upload and the <code class="code-tag">fail-*</code> policy. It also runs <code class="code-tag">scan.py</code> from the caller's workspace, so it is not yet usable as a drop-in action from another repository.</p>
+      <p>Until that is tidied up, the simplest route is to run the command-line scanner in your own workflow. This is an <strong>untested sketch</strong>:</p>
+<pre><code>name: nano-analyzer
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: Huge/nano-analyzer
+          path: .nano-analyzer
+      - name: Scan changed source files
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          git diff --name-only --diff-filter=AMRT "origin/${{ github.base_ref }}...HEAD" \
+            | grep -E '\.(c|h|cc|cpp|go|py|js|ts|rs|java)$' > changed.txt || true
+          [ -s changed.txt ] || { echo "No source changes"; exit 0; }
+          xargs -a changed.txt python3 .nano-analyzer/scan.py \
+            --model qwen/qwen3-32b --repo-dir . --output-dir scan-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nano-analyzer-results
+          path: scan-results</code></pre>
+      <p>Pull requests from forks do not receive repository secrets by default. That is a feature: do not work around it with <code class="code-tag">pull_request_target</code> plus a checkout of the pull request's code.</p>
+
+      <h2 id="budgetscan">6. The planned <code class="code-tag">@budgetscan</code> command <span class="tag-status tag-planned">Planned</span></h2>
+      <p>The idea: a reviewer comments on a pull or merge request and BudgetScan plans a scan that fits the cap and deadline. Nothing below is live yet; the syntax may change.</p>
+      <div class="doc-table-wrap">
+        <table>
+          <thead><tr><th>Comment</th><th>Intent</th></tr></thead>
+          <tbody>
+            <tr><td><code class="code-tag">@budgetscan $0.25</code></td><td>Quick pass over the changed files with a cap of $0.25</td></tr>
+            <tr><td><code class="code-tag">@budgetscan $0.50 --max-delay 5m</code></td><td>Deeper pass that stops starting new work as the 5-minute deadline nears and posts a partial report of what was covered</td></tr>
+            <tr><td><code class="code-tag">@budgetscan $5.00 --depth deep</code></td><td>Spend a larger cap on wider context and more triage rounds</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li>Amounts are in US dollars; <code class="code-tag">$0.50</code> and <code class="code-tag">.5</code> mean the same. Deadlines look like <code class="code-tag">90s</code>, <code class="code-tag">5m</code> or <code class="code-tag">1h</code>.</li>
+        <li>The scan should never cost more than the cap. If the cap is too small for even one file, you get a clear "insufficient budget" report and nothing is charged.</li>
+        <li>Failures are rare, and a failed scan is never charged. Full billing terms will be published before launch.</li>
+        <li>Real per-scan costs will be published after we have measured them on benchmarks.</li>
+      </ul>
+
+      <h2 id="data">7. Where your code goes</h2>
+      <p>The short version: hosted scans run on our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (Prague, zero data retention), or you run the open-source scanner against your own endpoint on your own infrastructure. The details are in <a href="../#privacy">Where does my code go?</a></p>
+
+      <h2 id="limits">8. Limitations</h2>
+      <ul>
+        <li><strong>False positives.</strong> AI scanners flag things that turn out to be harmless. Multi-round triage helps, and we work hard on keeping false positives to a minimum, but always verify findings by hand.</li>
+        <li><strong>False negatives.</strong> Entire classes of problems (logic bugs, race conditions, cryptographic and authentication flaws) can be missed. A clean scan does not mean the code is safe.</li>
+        <li><strong>One file at a time.</strong> Each file is scanned on its own, so bugs that depend on interactions between files are likely to be missed.</li>
+        <li><strong>Model-dependent.</strong> Different models find different things and make different mistakes.</li>
+      </ul>
+
+      <h2 id="help">9. Questions and early access</h2>
+      <p>Want the private integrations, have a question, or found something wrong in this guide? <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access">Email us</a> (dev@ehlas.cz and safeAIwork@gmail.com).</p>
+      <p><a href="../">&larr; Back to the overview</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on the open-source nano-analyzer (Apache-2.0).</p>
+    </div>
+  </footer>
+</body>
+</html>

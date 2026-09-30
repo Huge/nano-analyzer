@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BudgetScan | Budget-Capped Security Scans for PRs & MRs</title>
   <meta name="description" content="BudgetScan - pay-per-scan code security for PRs and MRs. Early access: set a budget and deadline with @budgetscan $0.50 --max-delay 5m and get a scan that fits your cap.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="BudgetScan | Budget-Capped Security Scans for PRs & MRs">
+  <meta property="og:description" content="BudgetScan - pay-per-scan code security for PRs and MRs. Early access: set a budget and deadline with @budgetscan $0.50 --max-delay 5m and get a scan that fits your cap.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,13 +41,13 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
             <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
           <defs>
             <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
               <stop stop-color="#6366f1"/>
               <stop offset="1" stop-color="#06b6d4"/>
             </linearGradient>
           </defs>
+          </svg>
         </div>
         <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
       </a>
@@ -80,7 +93,7 @@
         <a href="#calculator" class="btn btn-outline btn-lg">Calculate Credit Savings</a>
       </div>
 
-      <p class="status-note"><strong>Early access, still in development.</strong> The open-source scanner (nano-analyzer) works today as a CLI, a GitHub Action and a GitLab CI job. The <code class="code-tag">@budgetscan</code> comment command, budget and deadline caps, and prepaid credits shown on this page are what we are building next. Nothing here can be purchased yet, and all examples and numbers are illustrative. Thanks for taking a look.</p>
+      <p class="status-note"><strong>Early access, still in development.</strong> The open-source scanner (nano-analyzer) works today as a CLI, a GitHub Action and a GitLab CI job. The <code class="code-tag">@budgetscan</code> comment command, budget and deadline caps, and prepaid credits shown on this page are what we are building next. Nothing here can be purchased yet, and all examples and numbers are illustrative. Questions or want early access? <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access">Email us</a>. Thanks for taking a look.</p>
 
       <!-- Hero Interactive Terminal Preview -->
       <p class="example-label">Illustrative example &mdash; mock output showing the intended flow, not a real scan result.</p>
@@ -115,29 +128,29 @@
               </div>
 
               <!-- Cost summary inside bot card -->
-              <div class="bot-auction-box">
-                <div class="auction-box-title">
+              <div class="bot-cost-box">
+                <div class="cost-box-title">
                   <span>🏆 Execution & Credit Summary</span>
-                  <span class="auction-timer">Cost: $0.161 / $0.50 Cap</span>
+                  <span class="cost-total">Cost: $0.161 / $0.50 Cap</span>
                 </div>
-                <div class="auction-bids">
-                  <div class="bid-item winner">
-                    <span class="bid-provider">LLM Context + Scan</span>
-                    <span class="bid-specs">Changed files</span>
-                    <span class="bid-price">$0.041</span>
-                    <span class="bid-status">Within Cap</span>
+                <div class="cost-items">
+                  <div class="cost-item winner">
+                    <span class="cost-provider">LLM Context + Scan</span>
+                    <span class="cost-specs">Changed files</span>
+                    <span class="cost-price">$0.041</span>
+                    <span class="cost-status">Within Cap</span>
                   </div>
-                  <div class="bid-item winner">
-                    <span class="bid-provider">Skeptical Triage</span>
-                    <span class="bid-specs">5 rounds</span>
-                    <span class="bid-price">$0.120</span>
-                    <span class="bid-status ready">Completed</span>
+                  <div class="cost-item winner">
+                    <span class="cost-provider">Skeptical Triage</span>
+                    <span class="cost-specs">5 rounds</span>
+                    <span class="cost-price">$0.120</span>
+                    <span class="cost-status ready">Completed</span>
                   </div>
-                  <div class="bid-item">
-                    <span class="bid-provider">Team Credit Deduction</span>
-                    <span class="bid-specs">Prepaid Pool</span>
-                    <span class="bid-price">-$0.161</span>
-                    <span class="bid-status">Remaining: $248.34</span>
+                  <div class="cost-item">
+                    <span class="cost-provider">Team Credit Deduction</span>
+                    <span class="cost-specs">Prepaid Pool</span>
+                    <span class="cost-price">-$0.161</span>
+                    <span class="cost-status">Remaining: $248.34</span>
                   </div>
                 </div>
               </div>
@@ -181,6 +194,7 @@
           <div class="syntax-foot">Real per-scan costs: <strong>published after benchmarks</strong></div>
         </div>
       </div>
+      <p class="howto-link">New to this? Read the <a href="how-to/">Preliminary How-to Setup and Use Guide</a>.</p>
     </div>
   </section>
 
@@ -242,6 +256,8 @@
           <p>Top up a prepaid balance and each scan deducts only its actual cost. Team-level budget caps may come later.</p>
         </div>
       </div>
+
+      <p class="status-note"><strong>A note on accuracy.</strong> AI-based scanners can flag things that turn out to be harmless (false positives) and can miss real issues (false negatives). Findings of medium severity and above go through a skeptical, multi-round triage step, and we work hard on keeping false positives to a minimum. Please treat results as strong leads for a human reviewer, not as verdicts.</p>
     </div>
   </section>
 
@@ -348,7 +364,7 @@
             <li>✓ Scans per pack depend on the caps you set; real costs published after benchmarks</li>
             <li>✓ Support for <code class="code-tag">@budgetscan $X</code> syntax</li>
           </ul>
-          <span class="btn btn-outline btn-block btn-disabled" aria-disabled="true">$25 pack: coming soon</span>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access%3A%20%2425%20credit%20pack" class="btn btn-outline btn-block">Request early access</a>
         </div>
 
         <div class="pricing-card featured">
@@ -366,7 +382,7 @@
             <li>✓ Support for the <code class="code-tag">--max-delay</code> deadline flag</li>
             <li>✓ GitLab CI & GitHub Actions integration</li>
           </ul>
-          <span class="btn btn-primary btn-block btn-disabled" aria-disabled="true">$250 team pool: coming soon</span>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access%3A%20%24250%20team%20pool" class="btn btn-primary btn-block">Request early access</a>
         </div>
 
         <div class="pricing-card">
@@ -384,7 +400,7 @@
             <li>✓ On-premise runners</li>
             <li>✓ Custom invoicing</li>
           </ul>
-          <span class="btn btn-outline btn-block btn-disabled" aria-disabled="true">Enterprise inquiries: coming soon</span>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20enterprise%20/%20self-hosted%20inquiry" class="btn btn-outline btn-block">Contact us</a>
         </div>
       </div>
     </div>
@@ -447,6 +463,8 @@
         <div class="footer-col">
           <h4>Docs & Repositories</h4>
           <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">GitHub Repository</a>
+          <a href="how-to/">Preliminary How-to Guide</a>
+          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com">Email us</a>
         </div>
       </div>
     </div>
