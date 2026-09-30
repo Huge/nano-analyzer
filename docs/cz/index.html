@@ -271,7 +271,7 @@
 
       <article class="story-card">
         <span class="story-badge">První zásah v open source &bull; září 2026</span>
-        <h3>Yopass: neověřené e-maily mohly projít omezením domén v OIDC</h3>
+        <h3><a href="stories/yopass-oidc-email-verified/">Yopass: neověřené e-maily mohly projít omezením domén v OIDC</a></h3>
         <p><a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a> je open-source nástroj (přes 3 000 hvězdiček na GitHubu) pro bezpečné sdílení tajemství, hesel a souborů. Když je nastavený tak, že pustí jen přihlášení z vybraných e-mailových domén, jeho OIDC přihlášení věřilo e-mailové adrese od poskytovatele identity, aniž ověřilo claim <code class="code-tag">email_verified</code>. Kdo měl u poskytovatele identity s povolenou doménou neověřený účet, mohl tak omezení domén obejít.</p>
         <ul class="story-timeline">
           <li><strong>23. 9. 2026.</strong> BudgetScan upozornil na chybějící kontrolu. Otevřeli jsme pull request s opravou a testy.</li>
@@ -280,6 +280,7 @@
           <li><strong>26. 9.</strong> Začleněno do Yopass. Ve výchozím nastavení teď OIDC přihlášení vyžaduje ověřený e-mail.</li>
         </ul>
         <ul class="story-links">
+          <li><a href="stories/yopass-oidc-email-verified/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
           <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Náš původní pull request (#3966)</a></li>
           <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">Začleněný pull request (#3973)</a></li>
           <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Naše záplata jako jeho první commit</a></li>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yopass: neověřené e-maily mohly projít omezením domén v OIDC | BudgetScan</title>
+  <meta name="description" content="BudgetScan upozornil na chybějící kontrolu email_verified v OIDC přihlášení Yopass. Naše záplata se stala prvním commitem správcovy začleněné opravy. Příběh úspěchu na skutečném open source.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/yopass-oidc-email-verified/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/yopass-oidc-email-verified/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/yopass-oidc-email-verified/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/yopass-oidc-email-verified/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Yopass: neověřené e-maily mohly projít omezením domén v OIDC">
+  <meta property="og:description" content="BudgetScan upozornil na chybějící kontrolu email_verified v OIDC přihlášení Yopass. Naše záplata se stala prvním commitem správcovy začleněné opravy.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/yopass-oidc-email-verified/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Návod</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/yopass-oidc-email-verified/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Začleněno 26. 9. 2026</span> &nbsp;První zásah v open source</p>
+      <h1>Yopass: neověřené e-maily mohly projít omezením domén v OIDC</h1>
+      <p>BudgetScan upozornil na chybějící kontrolu <code class="code-tag">email_verified</code> v přihlášení do <a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a>, open-source nástroje pro sdílení tajemství, hesel a souborů. Naše záplata se stala prvním commitem správcovy začleněné opravy.</p>
+
+      <p class="status-note"><strong>Tato stránka je zatím náčrt.</strong> Podrobnosti doplníme. Vše zde vychází z veřejných pull requestů, které si můžete sami ověřit; zdroje jsou uvedené dole.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>Při OIDC přihlášení vrací poskytovatel identity údaje o uživateli: e-mailovou adresu a volitelně <code class="code-tag">email_verified</code>, které říká, zda poskytovatel adresu skutečně ověřil. Yopass podle e-mailu vynucoval seznam povolených e-mailových domén (nastavení <code class="code-tag">AllowedEmailDomains</code>), ale <code class="code-tag">email_verified</code> nekontroloval. OIDC je v Yopass volitelná licencovaná funkce; když je nastavené, objeví se v navigační liště tlačítko Sign in.</p>
+      <p>Kdo tedy měl u poskytovatele identity s povolenou doménou neověřený účet, mohl omezení domén obejít. Zda je to v praxi možné, záleží na konkrétním poskytovateli identity.</p>
+
+      <figure class="flow">
+        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="flow-title">Zjednodušený tok OIDC přihlášení v Yopass</title>
+          <desc id="flow-desc">Poskytovatel identity vrací e-mail a volitelně email_verified. Před opravou šel e-mail rovnou do kontroly povolených domén. Nyní je mezi tím kontrola ověřeného e-mailu.</desc>
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#818cf8"/></marker>
+            <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f59e0b"/></marker>
+          </defs>
+          <rect class="flow-box" x="20" y="10" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="37">Poskytovatel identity</text><text class="flow-s" x="200" y="57">vrací e-mail a volitelně email_verified</text>
+          <rect class="flow-box" x="20" y="110" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="137">Přihlašovací callback v Yopass</text><text class="flow-s" x="200" y="157">čte claimy z UserInfo</text>
+          <rect class="flow-box flow-new" x="20" y="210" width="360" height="62" rx="10"/>
+          <text class="flow-t flow-t-new" x="200" y="237">NOVĚ: email_verified musí být true</text><text class="flow-s" x="200" y="257">chybí nebo false: přihlášení odmítnuto</text>
+          <rect class="flow-box" x="20" y="310" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="337">Kontrola povolených domén</text><text class="flow-s" x="200" y="357">AllowedEmailDomains</text>
+          <rect class="flow-box" x="20" y="410" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="437">Vznikne session</text><text class="flow-s" x="200" y="457">uživatel je přihlášen</text>
+          <path class="flow-arrow" d="M200 72V108" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 172V208" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
+          <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)"/>
+          <text class="flow-note" x="450" y="236">před</text><text class="flow-note" x="450" y="252">opravou</text>
+        </svg>
+        <figcaption>Zjednodušený nákres přihlašování, ne screenshot. Před opravou šel e-mail z callbacku rovnou do kontroly domén (čárkovaná čára).</figcaption>
+      </figure>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Naše první záplata odmítala přihlášení s neověřeným e-mailem, zaznamenala pokus do logu a přidala testy. Správce Johan Haals upozornil, že <code class="code-tag">email_verified</code> je nepovinný claim, takže jeho slepé vynucení by mohlo rozbít stávající nasazení. Na našem commitu proto postavil nový pull request, který:</p>
+      <ul>
+        <li>ve výchozím stavu vyžaduje pro nová přihlášení <code class="code-tag">email_verified: true</code> a chybějící nebo nepravdivý claim odmítne dřív, než vznikne session;</li>
+        <li>poskytovatelům, kteří claim neposílají, umožňuje výjimku pomocí <code class="code-tag">--oidc-require-verified-email=false</code> (nebo <code class="code-tag">OIDC_REQUIRE_VERIFIED_EMAIL=false</code>), s upozorněním při startu a validací konfigurace;</li>
+        <li>omezení domén nadále vynucuje v obou režimech;</li>
+        <li>přidává testy kompatibility a dokumentaci pro provozovatele a změnu označuje jako breaking change pro poznámky k vydání.</li>
+      </ul>
+      <p>Náš původní commit zůstal prvním commitem toho pull requestu, s naším autorstvím.</p>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>23. 9. 2026.</strong> BudgetScan upozornil na chybějící kontrolu. Otevřeli jsme <a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">pull request #3966</a> s opravou a testy.</li>
+        <li><strong>24. 9.</strong> Automatická revize chtěla silnější testy, které jsme doplnili. Správce vznesl námitku k nepovinnému claimu.</li>
+        <li><strong>25. 9.</strong> Správce na naší záplatě postavil <a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">pull request #3973</a> a #3966 ve prospěch něj zavřel.</li>
+        <li><strong>26. 9.</strong> #3973 byl začleněn. Ve výchozím nastavení teď OIDC přihlášení vyžaduje ověřený e-mail.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Skener problém našel a člověk, správce projektu, rozhodl, jak ho bezpečně opravit. Přesně takhle to chceme mít: nálezy jsou podněty pro lidi, ne rozsudky. Je to jeden příklad, ne benchmark, a naměřené výsledky zveřejníme, až je budeme mít. Díky Johanu Haalsovi za rychlé a pečlivé zpracování.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Náš původní pull request (#3966)</a></li>
+        <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">Začleněný pull request (#3973)</a></li>
+        <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Naše záplata jako jeho první commit</a></li>
+        <li><a href="https://github.com/jhaals/yopass/blob/master/docs/openid-connect.md" target="_blank" rel="noopener">Dokumentace OpenID Connect v Yopass</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na open-source projektu nano-analyzer (Apache-2.0).</p>
+    </div>
+  </footer>
+</body>
+</html>

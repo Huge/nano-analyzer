@@ -271,7 +271,7 @@
 
       <article class="story-card">
         <span class="story-badge">First hit on open source &bull; September 2026</span>
-        <h3>Yopass: unverified emails could pass OIDC domain restrictions</h3>
+        <h3><a href="stories/yopass-oidc-email-verified/">Yopass: unverified emails could pass OIDC domain restrictions</a></h3>
         <p><a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a> is an open-source tool (over 3,000 GitHub stars) for securely sharing secrets, passwords and files. When it is set to allow logins only from certain email domains, its OIDC login trusted the email address returned by the identity provider without checking the <code class="code-tag">email_verified</code> claim. Someone with an unverified account at an identity provider under an allowed domain could therefore get past the domain restriction.</p>
         <ul class="story-timeline">
           <li><strong>23 Sep 2026.</strong> BudgetScan flagged the missing check. We opened a pull request with a fix and tests.</li>
@@ -280,6 +280,7 @@
           <li><strong>26 Sep.</strong> Merged into Yopass. By default, OIDC logins now require a verified email.</li>
         </ul>
         <ul class="story-links">
+          <li><a href="stories/yopass-oidc-email-verified/"><strong>Read the full story &rarr;</strong></a></li>
           <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Our original pull request (#3966)</a></li>
           <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">The merged pull request (#3973)</a></li>
           <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Our patch as its first commit</a></li>
