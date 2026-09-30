@@ -1050,6 +1050,18 @@ input[type="range"] {
   .nav-links { display: none; }
   .cost-item { grid-template-columns: 1fr 1fr; gap: 8px; }
   .results-grid { grid-template-columns: 1fr; }
+
+  /* Header must fit a phone: drop the badge and the secondary button, tighten the rest */
+  .nav-container { gap: 10px; }
+  .badge-v { display: none; }
+  .nav-actions { gap: 8px; }
+  .nav-actions .btn { padding: 8px 12px; font-size: 0.85rem; white-space: nowrap; }
+  .nav-actions .btn-secondary:not(.lang-btn) { display: none; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .nav-actions .btn-primary { display: none; }
 }
 
 /* ==========================================================================
