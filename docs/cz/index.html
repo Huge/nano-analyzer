@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BudgetScan | Kreditová Bezpečnost & PR/MR Aukční Optimalizace</title>
-  <meta name="description" content="BudgetScan - Platba pouze za sken. Napište @budgetscan $1.50 --max-delay 5m v PR/MR pro okamžitou aukční analýzu bezpečnosti kódu.">
+  <title>BudgetScan | Bezpečnostní skeny PR/MR s pevným rozpočtem</title>
+  <meta name="description" content="BudgetScan – bezpečnostní sken kódu s platbou za sken. Ve fázi raného přístupu: v komentáři PR/MR nastavíte rozpočet a termín příkazem @budgetscan $1.50 --max-delay 5m.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,16 +42,15 @@
       <nav class="nav-links">
         <a href="#features">Vlastnosti</a>
         <a href="#syntax">Syntaxe Příkazů</a>
-        <a href="#pr-auction">Aukční Engine</a>
         <a href="#calculator">Kalkulačka Úspor</a>
-        <a href="#demo">Živá Ukázka</a>
+        <a href="#demo">Ukázka (simulace)</a>
         <a href="#pricing">Kreditní Balíčky</a>
       </nav>
 
       <div class="nav-actions">
         <a href="../" class="btn btn-secondary lang-btn">🌐 English</a>
-        <a href="#demo" class="btn btn-secondary">Vyzkoušet v PR</a>
-        <a href="#pricing" class="btn btn-primary">Dobít Kredity</a>
+        <a href="#demo" class="btn btn-secondary">Vyzkoušet simulátor</a>
+        <a href="#pricing" class="btn btn-primary">Zobrazit ceník</a>
       </div>
     </div>
   </header>
@@ -61,7 +60,7 @@
     <div class="container hero-container">
       <div class="hero-badge">
         <span class="pulse-dot"></span>
-        <span>Žádné měsíční poplatky • Platba kreditům za skutečně provedené skeny</span>
+        <span>Raný přístup • Žádné měsíční poplatky • Platíte jen za provedené skeny</span>
       </div>
 
       <h1 class="hero-title">
@@ -70,7 +69,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        Žádné paušály ani licence na vývojáře. Stačí napsat <code class="code-tag">@budgetscan $1.50 --max-delay 5m</code> do komentáře PR/MR. BudgetScan dynamicky vysoutěží spotový cloudový výkon, dokončí analýzu včas a přesnou částku odečte z vašeho týmového kreditu.
+        Žádné paušály ani licence na vývojáře. Stačí napsat <code class="code-tag">@budgetscan $1.50 --max-delay 5m</code> do komentáře PR/MR. Na tom právě pracujeme: BudgetScan naplánuje hloubku skenu tak, aby se vešel do limitu i termínu, a z kreditu odečte jen to, co sken skutečně stál.
       </p>
 
       <div class="hero-cta-group">
@@ -81,7 +80,10 @@
         <a href="#calculator" class="btn btn-outline btn-lg">Spočítat Úsporu Kreditu</a>
       </div>
 
+      <p class="status-note"><strong>Raný přístup, na kterém ještě pracujeme.</strong> Open-source skener nano-analyzer už dnes funguje jako CLI, GitHub Action i úloha v GitLab CI. Příkaz <code class="code-tag">@budgetscan</code> v komentáři, limity rozpočtu a termínu i předplacené kredity, které tu vidíte, teprve stavíme. Zatím si tedy nic koupit nelze a všechny příklady i čísla jsou jen ilustrační. Děkujeme, že jste se přišli podívat.</p>
+
       <!-- Hero Interactive Terminal Preview -->
+      <p class="example-label">Ilustrativní příklad &mdash; ukázkový výstup znázorňující zamýšlený průběh, nejde o skutečný výsledek skenu.</p>
       <div class="terminal-window">
         <div class="terminal-header">
           <div class="window-controls">
@@ -90,46 +92,46 @@
             <span class="control maximize"></span>
           </div>
           <div class="window-title">GitLab MR #418 — @budgetscan $1.50 --max-delay 5m</div>
-          <div class="window-badge">Status: Audit & Aukce Dokončena</div>
+          <div class="window-badge">Příklad</div>
         </div>
         <div class="terminal-body">
           <div class="terminal-line comment-line">
             <span class="user-avatar">reviewer-jan</span>
-            <span class="comment-text">Kontroluji zmeny v C++. <span class="highlight-mention">@budgetscan $1.50 --max-delay 5m</span></span>
+            <span class="comment-text">Kontroluji změny v C++. <span class="highlight-mention">@budgetscan $1.50 --max-delay 5m</span></span>
           </div>
           <div class="terminal-divider"></div>
           <div class="terminal-line bot-response">
             <div class="bot-header">
               <span class="bot-badge">BudgetScan Bot</span>
-              <span class="bot-time">právě teď</span>
+              <span class="bot-time">příklad</span>
             </div>
             <div class="bot-card">
               <div class="scan-result-header">
                 <span class="status-icon danger">⚡</span>
                 <div>
                   <h4>Zranitelnost Use-After-Free v <code class="file-link">interpreter.cpp:142</code></h4>
-                  <p>CVSS 8.9 | Dokončeno za <strong>38 ms</strong> | Limit rozpočtu: <strong>$1.50</strong> | Max zpoždění: <strong>5m</strong></p>
+                  <p>Závažnost: vysoká | Limit rozpočtu: <strong>$1.50</strong> | Max zpoždění: <strong>5m</strong></p>
                 </div>
               </div>
 
-              <!-- Live Auction Widget inside Bot Card -->
+              <!-- Cost summary inside bot card -->
               <div class="bot-auction-box">
                 <div class="auction-box-title">
-                  <span>🏆 Přehled Aukce & Odečtu Kreditu</span>
+                  <span>🏆 Přehled Běhu & Odečtu Kreditu</span>
                   <span class="auction-timer">Cena: $0.161 / $1.50 Limit</span>
                 </div>
                 <div class="auction-bids">
                   <div class="bid-item winner">
-                    <span class="bid-provider">OCI Spot Worker (fra-1)</span>
-                    <span class="bid-specs">8 vCPU, AST Tree-sitter</span>
+                    <span class="bid-provider">LLM kontext + sken</span>
+                    <span class="bid-specs">Změněné soubory</span>
                     <span class="bid-price">$0.041</span>
-                    <span class="bid-status">Vybraný Spot Uzel</span>
+                    <span class="bid-status">V rámci limitu</span>
                   </div>
                   <div class="bid-item winner">
-                    <span class="bid-provider">AI Refactor Engine</span>
-                    <span class="bid-specs">Generován opravný diff</span>
+                    <span class="bid-provider">Skeptická triáž</span>
+                    <span class="bid-specs">5 kol</span>
                     <span class="bid-price">$0.120</span>
-                    <span class="bid-status ready">Patch Připojen</span>
+                    <span class="bid-status ready">Dokončeno</span>
                   </div>
                   <div class="bid-item">
                     <span class="bid-provider">Odečet z Týmového Kreditu</span>
@@ -159,24 +161,24 @@
           <div class="syntax-badge">Rychlá Kontrola</div>
           <div class="syntax-code">@budgetscan $0.50</div>
           <h3>Základní Bezpečnostní Audit</h3>
-          <p>Ideální pro průběžnou kontrolu vývojáře. BudgetScan alokuje rychlá AST pravidla a dokončí sken pomocí lokální cache nebo mikro spotových uzlů.</p>
-          <div class="syntax-foot">Průměrná cena: <strong>$0.03 - $0.10</strong> / PR</div>
+          <p>Ideální pro průběžnou kontrolu vývojáře. BudgetScan projde změněné soubory s jedním rychlým kolem triáže.</p>
+          <div class="syntax-foot">Skutečné ceny za sken: <strong>zveřejníme po změření</strong></div>
         </div>
 
         <div class="syntax-card highlighted">
-          <div class="syntax-badge recommended">Nejoblíbenější</div>
+          <div class="syntax-badge recommended">Doporučujeme</div>
           <div class="syntax-code">@budgetscan $1.50 --max-delay 5m</div>
-          <h3>Hloubkový Audit s Garancí Času (SLA)</h3>
-          <p>Perfektní pro release kandidáty. Garantuje dokončení do 5 minut a alokuje až $1.50 napříč spotovými uzly pro hloubkovou SAST analýzu a AI patch.</p>
-          <div class="syntax-foot">Průměrná cena: <strong>$0.15 - $0.45</strong> / PR</div>
+          <h3>Hloubkový audit s časovým limitem</h3>
+          <p>Vhodné pro release kandidáty. Snaží se dokončit do 5 minut a utratit nejvýše $1.50 za hlubší kontext, sken a vícekolovou triáž. Když čas vyprší, dostanete částečný report místo zaseknuté pipeline.</p>
+          <div class="syntax-foot">Skutečné ceny za sken: <strong>zveřejníme po změření</strong></div>
         </div>
 
         <div class="syntax-card">
           <div class="syntax-badge">Kritické Vydání</div>
-          <div class="syntax-code">@budgetscan $5.00 --bounty-autofix</div>
-          <h3>Zero-Day Audit s Mikrobounty za Patch</h3>
-          <p>Pro klíčové architektury. Spustí hloubkovou sémantickou analýzu a automaticky vypíše mikrobounty pro AI agenty nebo vývojáře k okamžité opravě.</p>
-          <div class="syntax-foot">Průměrná cena: <strong>$0.80 - $2.10</strong> / PR</div>
+          <div class="syntax-code">@budgetscan $5.00 --depth deep</div>
+          <h3>Nejhlubší audit, na jaký rozpočet stačí</h3>
+          <p>Pro klíčové změny. Vyšší limit se investuje do širšího kontextu a více kol triáže a report uvede, co všechno bylo pokryto.</p>
+          <div class="syntax-foot">Skutečné ceny za sken: <strong>zveřejníme po změření</strong></div>
         </div>
       </div>
     </div>
@@ -186,8 +188,8 @@
   <section class="section" id="features">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Proč je Kreditový BudgetScan Výhodnější než Tradiční SAST</h2>
-        <p class="section-subtitle">Žádné plýtvání na měsíčních paušálech. Platíte pouze za výpočetní výkon, který vaše PR reálně spotřebují.</p>
+        <h2 class="section-title">Proč platit za sken, a ne za licenci</h2>
+        <p class="section-subtitle">Žádné nevyužité licence. Platíte za skeny, které skutečně proběhnou.</p>
       </div>
 
       <div class="features-grid">
@@ -197,47 +199,47 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <h3>Odečet Kreditu Pouze Při Skenu</h3>
-          <p>Neplaťte $50/vývojář/měsíc za neaktivní uživatele. Kredit se odečítá striktně podle reálně spotřebovaného času a výkonu.</p>
+          <p>Žádné licence pro vývojáře, kteří PR otevřou jednou za čas. Kredit se odečte jen tehdy, když sken proběhne, a to podle toho, kolik skutečně stál.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-purple">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
-          <h3>Reverzní Aukce Spotových Uzlů</h3>
-          <p>Aukční engine dotazuje OCI Spot, AWS Spot i Hetzner v reálném čase. Vybere nejlevnější uzel, aby bezpečně dodržel váš finanční limit.</p>
+          <h3>Vlastní LLM backend</h3>
+          <p>Skeny běží na LLM backendu dle vaší volby: OpenRouter, OpenAI, Google Gemini / Vertex AI nebo libovolný OpenAI-kompatibilní endpoint (KosCompute, vLLM, Ollama). Automatické směrování na nejlevnější backend je v plánu, zatím není spuštěno. Váš kód se odesílá poskytovateli, kterého si nastavíte, proto zvolte takového, který vyhovuje vašim pravidlům pro práci s daty.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-emerald">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
-          <h3>Garance Času Dokončení (--max-delay)</h3>
-          <p>Parametr <code class="code-tag">--max-delay 5m</code> zajišťuje, že CI pipeline nikdy nečeká dlouho. Router vybere silnější vCPU uzel pro včasné dokončení.</p>
+          <h3>Skeny s ohledem na termín (--max-delay)</h3>
+          <p>S parametrem <code class="code-tag">--max-delay 5m</code> je BudgetScan navržen tak, aby CI pipeline nezdržoval: když se blíží termín, přestane spouštět novou práci a zveřejní částečný report s přehledem pokrytých souborů.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-amber">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
-          <h3>Chytrá SQLite AST Cache</h3>
-          <p>Změnami nedotčené moduly se kešují lokálně. Opakovaný sken stojí $0.00 a proběhne pod 5 milisekund.</p>
+          <h3>Přeskakování nezměněných souborů (plán)</h3>
+          <p>Přeskočení nezměněných souborů při opakovaném skenu, abyste za stejný kód neplatili dvakrát, dnes existuje v komunitním portu v Go a plánujeme ho i do hlavního skeneru.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-rose">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
-          <h3>Nativní GitLab & GitHub Bot</h3>
-          <p>Funguje přímo v komentářích u PR/MR. Žádné otevírání dalších záložek nebo nepřehledných dashboardů pro reviewera.</p>
+          <h3>Funguje s GitHubem i GitLabem</h3>
+          <p>Skener už dnes běží jako GitHub Action a úloha v GitLab CI u každého PR/MR. Spouštění komentářem <code class="code-tag">@budgetscan</code> je to, na čem budeme pracovat dál.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon icon-indigo">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3>Sdílený Týmový Kreditní Pool</h3>
-          <p>Nastavte měsíční rozpočtové limity na projekt nebo vývojáře. PM má plnou kontrolu nad FinOps a náklady na vývoj.</p>
+          <h3>Jednoduché předplacené kredity</h3>
+          <p>Dobijete si předplacený zůstatek a každý sken odečte jen svou skutečnou cenu. Týmové rozpočtové limity možná doplníme později.</p>
         </div>
       </div>
     </div>
@@ -248,7 +250,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Interaktivní Simulátor Budget-Skenu</h2>
-        <p class="section-subtitle">Vyberte si scénář a vyzkoušejte nastavení rozpočtu a SLA jako @budgetscan $1.50 --max-delay 5m v reálném čase!</p>
+        <p class="section-subtitle">Vyberte si scénář a vyzkoušejte nastavení rozpočtu a termínu jako @budgetscan $1.50 --max-delay 5m &mdash; jde o koncepční simulaci s ukázkovými čísly, ne o živý sken.</p>
       </div>
 
       <div class="interactive-demo-card">
@@ -265,7 +267,7 @@
         </div>
 
         <div class="demo-output-terminal" id="demo-terminal">
-          <div class="term-line prompt">> Klikněte na "Spustit Příkaz v PR" pro otestování aukčního rozpočtu a SLA garance...</div>
+          <div class="term-line prompt">> [simulace] Klikněte na "Spustit Příkaz v PR" a uvidíte, jak rozpočet a termín ovlivní sken (ukázková data)...</div>
         </div>
       </div>
     </div>
@@ -276,7 +278,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Kalkulačka Úspory Kreditového Skenování</h2>
-        <p class="section-subtitle">Porovnejte vaše reálné náklady na skenování PR oproti drahým měsíčním paušálům ($50+/vývojář/měsíc).</p>
+        <p class="section-subtitle">Porovnejte odhadované náklady při platbě za sken s cenou za licenci na vývojáře. Vstupy i předpoklady jsou jen ilustrační.</p>
       </div>
 
       <div class="calculator-wrapper">
@@ -301,7 +303,7 @@
           <div class="result-box primary-result">
             <span class="result-label">Odhadovaná Roční Úspora oproti Paušálům</span>
             <span class="result-number" id="res-total-savings">$6,750</span>
-            <span class="result-sub">Platba za reálné skeny vs $50/dev/měsíc licence</span>
+            <span class="result-sub">Odhad: ~28 % limitu na PR vs $50/dev/měsíc za licenci</span>
           </div>
 
           <div class="results-grid">
@@ -320,6 +322,7 @@
           </div>
         </div>
       </div>
+      <p class="calc-note">Ilustrativní výpočet: počítá s tím, že průměrný sken vyjde asi na 28 % svého limitu a že licence stojí $50 na vývojáře a měsíc. Skutečné ceny skenů doplníme, až je změříme. Cena licence je jen orientační hodnota, ne nabídka konkrétního dodavatele.</p>
     </div>
   </section>
 
@@ -328,7 +331,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Transparentní Kreditní Balíčky • Nulové Měsíční Paušály</h2>
-        <p class="section-subtitle">Předplaťte si kredit pro jednotlivce nebo sdílený týmový pool. Kredity nikdy neexspirují.</p>
+        <p class="section-subtitle">Plánované předplacené kreditní balíčky: bez předplatného a bez poplatků za licence. Ceny a podmínky jsou zatím návrh a před spuštěním se mohou změnit.</p>
       </div>
 
       <div class="pricing-grid">
@@ -342,16 +345,14 @@
           </div>
           <ul class="plan-features">
             <li>✓ <strong>$0 Měsíční Paušální Poplatky</strong></li>
-            <li>✓ ~150 - 300 PR skenů (průměr $0.10-$0.25)</li>
+            <li>✓ Počet skenů na balíček závisí na zvolených limitech; skutečné ceny zveřejníme po změření</li>
             <li>✓ Podpora syntaxe <code class="code-tag">@budgetscan $X</code></li>
-            <li>✓ Lokální SQLite AST cache</li>
-            <li>✓ Kredity nikdy neexspirují</li>
           </ul>
-          <a href="#" class="btn btn-outline btn-block">Koupit $25 Kreditní Balíček</a>
+          <span class="btn btn-outline btn-block btn-disabled" aria-disabled="true">Balíček $25: brzy</span>
         </div>
 
         <div class="pricing-card featured">
-          <div class="popular-tag">Nejoblíbenější</div>
+          <div class="popular-tag">Doporučujeme</div>
           <div class="plan-header">
             <h3>Team Shared Pool</h3>
             <p>Sdílený kreditní zůstatek pro celý vývojový tým</p>
@@ -360,32 +361,30 @@
             </div>
           </div>
           <ul class="plan-features">
-            <li>✓ <strong>$0 Měsíční Platformní / Uivatelské Poplatky</strong></li>
-            <li>✓ ~1 500 - 3 000 PR skenů pro celý tým</li>
-            <li>✓ Podpora parametrů <code class="code-tag">--max-delay</code> pro SLA</li>
-            <li>✓ Limity rozpočtu pro členy & automatické dobíjení</li>
-            <li>✓ Integrace pro GitLab CI i GitHub Actions bota</li>
-            <li>✓ Návrhy AI opravných diffů</li>
+            <li>✓ <strong>$0 Měsíční Platformní / Uživatelské Poplatky</strong></li>
+            <li>✓ Jeden sdílený předplacený zůstatek pro celý tým</li>
+            <li>✓ Podpora parametru <code class="code-tag">--max-delay</code> pro časový limit</li>
+            <li>✓ Integrace s GitLab CI i GitHub Actions</li>
           </ul>
-          <a href="#" class="btn btn-primary btn-block">Koupit $250 Týmový Kredit</a>
+          <span class="btn btn-primary btn-block btn-disabled" aria-disabled="true">Týmový kredit $250: brzy</span>
         </div>
 
         <div class="pricing-card">
           <div class="plan-header">
-            <h3>Enterprise Private Nodes</h3>
-            <p>Vlastní cloudová spotová infrastruktura</p>
+            <h3>Enterprise / Vlastní hosting</h3>
+            <p>Vlastní infrastruktura</p>
             <div class="plan-price">
               <span class="amount">Vlastní Pool</span>
             </div>
           </div>
           <ul class="plan-features">
             <li>✓ Vše ze sdíleného týmového poolu</li>
-            <li>✓ Pripojení vlastních OCI / AWS / Hetzner spot uzlů</li>
-            <li>✓ Nulová přirážka na výpočetní výkon (Raw Spot Ceny)</li>
-            <li>✓ Dedikované SOC2 & On-Premise runnery</li>
-            <li>✓ Vlastní kreditní fakturace a garance SLA</li>
+            <li>✓ Připojení vlastního LLM endpointu (OpenAI-kompatibilní, vLLM, Ollama)</li>
+            <li>✓ Nulová přirážka na výpočetní výkon (platíte ceny svého poskytovatele)</li>
+            <li>✓ On-premise runnery</li>
+            <li>✓ Vlastní fakturace</li>
           </ul>
-          <a href="#" class="btn btn-outline btn-block">Kontaktovat Obchodníka</a>
+          <span class="btn btn-outline btn-block btn-disabled" aria-disabled="true">Dotazy pro firmy: brzy</span>
         </div>
       </div>
     </div>
@@ -396,7 +395,7 @@
     <div class="container footer-container">
       <div class="footer-brand">
         <span class="brand-name">BudgetScan</span>
-        <p>Kreditový bezpečnostní skener a aukční optimalizátor pro moderní softwarový vývoj.</p>
+        <p>Kreditový bezpečnostní skener s pevným rozpočtem pro pull a merge requesty.</p>
       </div>
 
       <div class="footer-links">
@@ -410,18 +409,12 @@
 
         <div class="footer-col">
           <h4>Dokumentace & Repozitáře</h4>
-          <a href="https://github.com/Huge/nano-analyzer" target="_blank">GitHub Repository</a>
-          <a href="https://gitlab.com/Huge1/BudgetScan" target="_blank">GitLab BudgetScan</a>
-          <a href="#">Security Profiles</a>
+          <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">GitHub Repository</a>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan / nano-analyzer. Všechna práva vyhrazena.</p>
-      <div class="system-status">
-        <span class="status-dot"></span>
-        <span>Aukční Engine: Provozní (OCI / AWS Active)</span>
-      </div>
+      <p>&copy; 2026 BudgetScan. Postaveno na open-source projektu nano-analyzer (Apache-2.0).</p>
     </div>
   </footer>
 

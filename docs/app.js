@@ -1,37 +1,15 @@
 /**
- * BudgetScan - Interactive Web Logic & Auction Engine Simulator
+ * BudgetScan - Interactive Web Logic & Conceptual Budget Simulator (mock data, no live scans)
  * Supports dual-language (EN / CS) terminal output & credit-based pay-per-scan calculations.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initAuctionTimer();
   initCalculator();
   initDemoTerminal();
 });
 
 /* -------------------------------------------------------------------------- */
-/* 1. Live Auction Countdown Timer in Hero Banner                            */
-/* -------------------------------------------------------------------------- */
-function initAuctionTimer() {
-  let seconds = 45;
-  const timerEl = document.getElementById('auction-timer');
-  if (!timerEl) return;
-
-  const isCs = document.documentElement.lang === 'cs';
-  const labelSuffix = isCs ? 'zbývá' : 'remaining';
-
-  setInterval(() => {
-    seconds--;
-    if (seconds <= 0) {
-      seconds = 60;
-    }
-    const secsStr = seconds < 10 ? `0${seconds}` : seconds;
-    timerEl.textContent = `00:${secsStr}s ${labelSuffix}`;
-  }, 1000);
-}
-
-/* -------------------------------------------------------------------------- */
-/* 2. Interactive Calculator (Pay-Per-Scan Credit vs Seat Subscriptions)     */
+/* 1. Interactive Calculator (Pay-Per-Scan Credit vs Seat Subscriptions)     */
 /* -------------------------------------------------------------------------- */
 function initCalculator() {
   const inputPRs = document.getElementById('input-prs');
@@ -60,7 +38,7 @@ function initCalculator() {
     valDevs.textContent = devs;
     valRate.textContent = avgBudget.toFixed(2);
 
-    // Pay-per-scan actual spend (avg actual scan cost is ~25% of the max budget cap due to spot bidding & SQLite cache)
+    // Pay-per-scan actual spend: placeholder assumption (actual ≈ 28% of cap) until real benchmark data replaces it
     const actualCostPerPR = avgBudget * 0.28;
     const monthlyCreditSpend = Math.round(prs * actualCostPerPR);
     
@@ -97,7 +75,7 @@ function initCalculator() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 3. Interactive PR/MR Auction Terminal Simulator                           */
+/* 2. Conceptual PR/MR Budget Simulator (mock data)                           */
 /* -------------------------------------------------------------------------- */
 function initDemoTerminal() {
   const selectPR = document.getElementById('demo-pr-select');
@@ -112,42 +90,39 @@ function initDemoTerminal() {
     'c-memory': {
       cmd: '@budgetscan $1.50 --max-delay 5m',
       vuln: 'Use-After-Free & Buffer Overflow in buffer_allocator.cpp:88',
-      scanTime: '38 ms',
       budgetCap: '$1.50',
       maxDelay: '5m',
       actualCost: '$0.161',
       bids: [
-        { provider: 'OCI Spot Node (fra-1)', cost: '$0.041', time: '1.2s', status: 'SELECTED (Within SLA & Budget)' },
-        { provider: 'AI Patch Engine', cost: '$0.120', time: '0.8s', status: 'DIFF INCLUDED' }
+        { provider: 'LLM context + scan (changed files)', cost: '$0.041', status: 'WITHIN CAP & DEADLINE' },
+        { provider: 'Skeptical triage (5 rounds)', cost: '$0.120', status: 'COMPLETED' }
       ],
-      aiFix: 'Generated patch with std::unique_ptr & bounds check sanitization.',
+      aiFix: 'Use std::unique_ptr for ownership and add a bounds check before the copy.',
       creditRem: '$248.34'
     },
     'go-concurrency': {
       cmd: '@budgetscan $0.75 --max-delay 2m',
       vuln: 'Data Race in session_store.go & Potential SQL Injection',
-      scanTime: '24 ms',
       budgetCap: '$0.75',
       maxDelay: '2m',
       actualCost: '$0.085',
       bids: [
-        { provider: 'Hetzner Spot Node (nbg1)', cost: '$0.025', time: '0.5s', status: 'SELECTED (Fastest Spot Node)' },
-        { provider: 'AST Security Matcher', cost: '$0.060', time: '0.3s', status: 'ANALYSIS COMPLETED' }
+        { provider: 'LLM context + scan (changed files)', cost: '$0.025', status: 'WITHIN CAP & DEADLINE' },
+        { provider: 'Skeptical triage (3 rounds)', cost: '$0.060', status: 'COMPLETED' }
       ],
-      aiFix: 'Parameterized SQL query & added sync.RWMutex lock to SessionStore.',
+      aiFix: 'Use a parameterized SQL query and guard SessionStore with a sync.RWMutex.',
       creditRem: '$248.41'
     },
     'py-security': {
       cmd: '@budgetscan $0.30',
       vuln: 'Unsanitized eval() input in data_loader.py:42',
-      scanTime: '18 ms',
       budgetCap: '$0.30',
       maxDelay: 'None',
       actualCost: '$0.032',
       bids: [
-        { provider: 'Local AST Cache / Spot Micro', cost: '$0.032', time: '0.2s', status: 'SELECTED' }
+        { provider: 'LLM scan + 1 triage round', cost: '$0.032', status: 'WITHIN CAP' }
       ],
-      aiFix: 'Replaced eval() with safe ast.literal_eval() execution.',
+      aiFix: 'Replace eval() with ast.literal_eval() for untrusted input.',
       creditRem: '$248.46'
     }
   };
@@ -156,42 +131,39 @@ function initDemoTerminal() {
     'c-memory': {
       cmd: '@budgetscan $1.50 --max-delay 5m',
       vuln: 'Use-After-Free & Buffer Overflow v buffer_allocator.cpp:88',
-      scanTime: '38 ms',
       budgetCap: '$1.50',
       maxDelay: '5m',
       actualCost: '$0.161',
       bids: [
-        { provider: 'OCI Spot Uzel (fra-1)', cost: '$0.041', time: '1.2s', status: 'VYBRÁNO (V rámci SLA & Rozpočtu)' },
-        { provider: 'AI Patch Engine', cost: '$0.120', time: '0.8s', status: 'DIFF PŘIPOJEN' }
+        { provider: 'LLM kontext + sken (změněné soubory)', cost: '$0.041', status: 'V RÁMCI LIMITU & TERMÍNU' },
+        { provider: 'Skeptická triáž (5 kol)', cost: '$0.120', status: 'DOKONČENO' }
       ],
-      aiFix: 'Vytvořen patch s std::unique_ptr & kontrolou mezí.',
+      aiFix: 'Použít std::unique_ptr pro vlastnictví paměti a přidat kontrolu mezí před kopírováním.',
       creditRem: '$248.34'
     },
     'go-concurrency': {
       cmd: '@budgetscan $0.75 --max-delay 2m',
       vuln: 'Data Race v session_store.go & Potenciální SQL Injection',
-      scanTime: '24 ms',
       budgetCap: '$0.75',
       maxDelay: '2m',
       actualCost: '$0.085',
       bids: [
-        { provider: 'Hetzner Spot Uzel (nbg1)', cost: '$0.025', time: '0.5s', status: 'VYBRÁNO (Nejrychlejší Spot Uzel)' },
-        { provider: 'AST Security Matcher', cost: '$0.060', time: '0.3s', status: 'ANALÝZA DOKONČENA' }
+        { provider: 'LLM kontext + sken (změněné soubory)', cost: '$0.025', status: 'V RÁMCI LIMITU & TERMÍNU' },
+        { provider: 'Skeptická triáž (3 kola)', cost: '$0.060', status: 'DOKONČENO' }
       ],
-      aiFix: 'Parametrizován SQL dotaz & přidán sync.RWMutex zámek do SessionStore.',
+      aiFix: 'Použít parametrizovaný SQL dotaz a chránit SessionStore pomocí sync.RWMutex.',
       creditRem: '$248.41'
     },
     'py-security': {
       cmd: '@budgetscan $0.30',
       vuln: 'Neošetřený eval() vstup v data_loader.py:42',
-      scanTime: '18 ms',
       budgetCap: '$0.30',
       maxDelay: 'Není',
       actualCost: '$0.032',
       bids: [
-        { provider: 'Lokální AST Cache / Spot Mikro', cost: '$0.032', time: '0.2s', status: 'VYBRÁNO' }
+        { provider: 'LLM sken + 1 kolo triáže', cost: '$0.032', status: 'V RÁMCI LIMITU' }
       ],
-      aiFix: 'Nahrazeno ast.literal_eval() pro bezpečné zpracování dat.',
+      aiFix: 'Nahradit eval() funkcí ast.literal_eval() pro nedůvěryhodný vstup.',
       creditRem: '$248.46'
     }
   };
@@ -203,34 +175,35 @@ function initDemoTerminal() {
     const data = scenarios[key];
 
     terminal.innerHTML = '';
+    appendTerminalLine(isCs ? '# SIMULACE – ukázková data, žádný skutečný sken' : '# SIMULATION – mock data, no real scan is run', 'info');
     appendTerminalLine(`> reviewer: ${data.cmd}`, 'prompt');
 
     setTimeout(() => {
       appendTerminalLine(isCs 
-        ? `[1/4] ⚙️  Zpracování příkazu... Limit rozpočtu: ${data.budgetCap} | Garance času (SLA): ${data.maxDelay}` 
-        : `[1/4] ⚙️  Processing PR command... Budget Cap: ${data.budgetCap} | SLA Limit: ${data.maxDelay}`, 'info');
+        ? `[1/4] ⚙️  Zpracování příkazu... Limit rozpočtu: ${data.budgetCap} | Časový limit: ${data.maxDelay}` 
+        : `[1/4] ⚙️  Processing PR command... Budget Cap: ${data.budgetCap} | Deadline: ${data.maxDelay}`, 'info');
     }, 300);
 
     setTimeout(() => {
       appendTerminalLine(isCs
-        ? `[2/4] ⚠️  DETEKOVÁNA ZRANITELNOST: ${data.vuln} (Čas skenování: ${data.scanTime})`
-        : `[2/4] ⚠️  VULNERABILITY DETECTED: ${data.vuln} (Scan duration: ${data.scanTime})`, 'danger');
+        ? `[2/4] ⚠️  DETEKOVÁNA ZRANITELNOST: ${data.vuln}`
+        : `[2/4] ⚠️  VULNERABILITY DETECTED: ${data.vuln}`, 'danger');
     }, 700);
 
     setTimeout(() => {
       appendTerminalLine(isCs
-        ? `[3/4] 🏆 Výsledek aukce a alokace výkonu:`
-        : `[3/4] 🏆 Spot Auction & Resource Allocation Summary:`, 'warning');
+        ? `[3/4] 🏆 Rozdělení rozpočtu podle fází:`
+        : `[3/4] 🏆 Budget Allocation by Stage:`, 'warning');
       
       data.bids.forEach(bid => {
-        appendTerminalLine(`   • ${bid.provider} -> ${bid.cost} (${bid.time}) [${bid.status}]`, 'success');
+        appendTerminalLine(`   • ${bid.provider} -> ${bid.cost} [${bid.status}]`, 'success');
       });
     }, 1200);
 
     setTimeout(() => {
       appendTerminalLine(isCs
-        ? `[4/4] ⚡ OPRAVNÝ PATCH: ${data.aiFix}`
-        : `[4/4] ⚡ REMEDIATION PATCH: ${data.aiFix}`, 'success');
+        ? `[4/4] 💡 NÁVRH OPRAVY: ${data.aiFix}`
+        : `[4/4] 💡 SUGGESTED FIX: ${data.aiFix}`, 'success');
       
       appendTerminalLine(isCs
         ? `   💰 Odečteno z týmového kreditu: ${data.actualCost} (Úspora oproti limitu ${data.budgetCap}). Zbývající kredit: ${data.creditRem}`
