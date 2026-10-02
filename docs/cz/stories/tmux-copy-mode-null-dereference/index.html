@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tmux: pád serveru při copy-mode -S bez připojeného klienta | BudgetScan</title>
+  <meta name="description" content="BudgetScan odhalil chybějící kontrolu NULL ukazatele v obsluze copy-mode -S v tmuxu, která mohla shodit proces serveru při spuštění bez připojeného klienta. Správce Nicholas Marriott začlenil opravu přímo do OpenBSD CVS.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/tmux-copy-mode-null-dereference/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/tmux-copy-mode-null-dereference/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/tmux-copy-mode-null-dereference/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/tmux-copy-mode-null-dereference/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="tmux: pád serveru při copy-mode -S bez připojeného klienta">
+  <meta property="og:description" content="BudgetScan odhalil chybějící kontrolu NULL ukazatele v obsluze copy-mode -S v tmuxu, která shodila proces démona serveru. Správce Nicholas Marriott začlenil opravu přímo do OpenBSD CVS.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/tmux-copy-mode-null-dereference/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/tmux-copy-mode-null-dereference/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Začleněno do OpenBSD 2. 10. 2026</span> &nbsp;Oprava chyby v tmuxu v upstreamu</p>
+      <h1>tmux: pád serveru při copy-mode -S bez připojeného klienta</h1>
+      <p>BudgetScan odhalil chybějící kontrolu NULL ukazatele v obsluze <code class="code-tag">copy-mode -S</code> v <a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmuxu</a>, celosvětově používaném terminálovém multiplexeru. Při vyvolání v kontextu serveru bez připojeného terminálového klienta (například z hooků nebo front příkazů na pozadí) vedla chybějící kontrola k okamžitému pádu centrálního serveru tmux na <code class="code-tag">SIGSEGV</code>, což ukončilo všechny běžící relace a procesy všech uživatelů. Nicholas Marriott, autor a hlavní správce tmuxu, přijal naši zprávu a začlenil opravu přímo do CVS OpenBSD.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>Příkaz <code class="code-tag">copy-mode</code> nabízí přepínač <code class="code-tag">-S</code> pro posouvání historie pomocí událostí posuvníku myši. Při provádění funkce <code class="code-tag">cmd_copy_mode_exec()</code> získává tmux odkaz na aktivního klienta příkazu voláním <code class="code-tag">cmdq_get_client(item)</code>.</p>
+      <p>Pokud příkaz spustí interaktivní terminálový klient, ukazuje <code class="code-tag">c</code> na strukturu klienta a jeho terminál (<code class="code-tag">c->tty</code>). Příkazy v tmuxu však mohou být vyvolány také na úrovni serveru zcela bez připojeného terminálu &mdash; například z konfiguračního souboru <code class="code-tag">~/.tmux.conf</code>, přes automatizaci na pozadí nebo ze systémových hooků jako <code class="code-tag">pane-died</code> (<code class="code-tag">set-hook -g pane-died "copy-mode -S"</code>).</p>
+      <p>V těchto situacích bez klienta je <code class="code-tag">c</code> rovno <code class="code-tag">NULL</code>. Zatímco sousední větev pro myš (<code class="code-tag">-M</code>) tento stav správně ošetřila:</p>
+      <pre><code>if (c == NULL || c->session != s)
+    return (CMD_RETURN_NORMAL);</code></pre>
+      <p>ve větvi <code class="code-tag">-S</code> tato kontrola zcela chyběla. Kód okamžitě předal <code class="code-tag">&amp;c->tty</code> do funkce <code class="code-tag">tty_window_offset()</code>, což vedlo k okamžitému pádu na neplatnou paměť (<code class="code-tag">SIGSEGV</code>). Protože tmux běží jako jediný centrální serverový démon obsluhující všechny relace a okna na stroji, pád démona okamžitě usmrtil všechna okna, panely i běžící procesy pro všechny připojené uživatele.</p>
+
+      <figure class="flow">
+        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="flow-title">Řídicí tok v tmux copy-mode -S</title>
+          <desc id="flow-desc">Serverový hook vyvolá copy-mode -S bez připojeného klienta. cmdq_get_client vrátí NULL. Před opravou způsobil neověřený ukazatel pád serveru. Po opravě funkce bezpečně vrátí návratový kód.</desc>
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#818cf8"/></marker>
+            <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ef4444"/></marker>
+          </defs>
+          <rect class="flow-box" x="20" y="10" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="37">Serverový hook či fronta</text><text class="flow-s" x="200" y="57">spustí copy-mode -S (např. hook pane-died)</text>
+          <rect class="flow-box" x="20" y="110" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="137">cmdq_get_client(item)</text><text class="flow-s" x="200" y="157">není připojen klient &rarr; c je NULL</text>
+          <rect class="flow-box flow-new" x="20" y="210" width="360" height="62" rx="10"/>
+          <text class="flow-t flow-t-new" x="200" y="237">NOVĚ: if (c == NULL) return</text><text class="flow-s" x="200" y="257">ošetřeno: vrátí CMD_RETURN_NORMAL</text>
+          <rect class="flow-box" x="20" y="310" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="337">tty_window_offset(&amp;c->tty)</text><text class="flow-s" x="200" y="357">spustí se pouze při připojeném klientovi</text>
+          <rect class="flow-box" x="20" y="410" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="437">Server pokračuje v běhu</text><text class="flow-s" x="200" y="457">všechny relace a procesy zůstanou živé</text>
+          <path class="flow-arrow" d="M200 72V108" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 172V208" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
+          <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)" style="stroke: #ef4444;"/>
+          <text class="flow-note" x="450" y="236" style="fill: #ef4444;">dříve: SIGSEGV</text><text class="flow-note" x="450" y="252" style="fill: #ef4444;">pád serveru</text>
+        </svg>
+        <figcaption>Průchod kódem v copy-mode -S. Před opravou vedlo spuštění bez klienta k obejití jakékoli kontroly (červená čára) a okamžitému pádu serverového démona tmux.</figcaption>
+      </figure>
+
+      <figure class="shot">
+        <div class="shot-scroll"><img src="../../../stories/tmux-copy-mode-null-dereference/tmux-server-crash-illustration.svg" width="1200" height="780" loading="lazy" alt="Ilustrace: Záznam v OpenBSD CVS revize 1.55 se jménem Martin Vlach, diff ošetřující cmd-copy-mode.c a potvrzení správce Nicholase Marriotta."></div>
+        <figcaption><strong>Upstreamové ověření v CVS OpenBSD</strong>. Revize 1.55 začleněná Nicholasem Marriottem (nicm): <em>„Do not use client for copy-mode -S if NULL, reported by Martin Vlach.“</em></figcaption>
+      </figure>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Odeslali jsme pull request s defenzivní kontrolou ukazatele a automatickým regresním testem reprodukujícím pád bez připojeného klienta:</p>
+      <pre><code>Index: src/usr.bin/tmux/cmd-copy-mode.c
+===================================================================
+RCS file: /cvs/src/usr.bin/tmux/cmd-copy-mode.c,v
+retrieving revision 1.54
+retrieving revision 1.55
+diff -u -p -r1.54 -r1.55
+--- src/usr.bin/tmux/cmd-copy-mode.c	14 Jul 2026 17:17:17 -0000	1.54
++++ src/usr.bin/tmux/cmd-copy-mode.c	2 Oct 2026 12:12:51 -0000	1.55
+@@ -103,6 +103,8 @@ cmd_copy_mode_exec(struct cmd *self, struct cmdq_item *item)
+ 	if (args_has(args, 'd'))
+ 		window_copy_pagedown(wp, 0, args_has(args, 'e'));
+ 	if (args_has(args, 'S')) {
++		if (c == NULL)
++			return (CMD_RETURN_NORMAL);
+ 		tty_window_offset(&amp;c->tty, &amp;tty_ox, &amp;tty_oy, &amp;tty_sx, &amp;tty_sy);
+ 		window_copy_scroll(wp, c->tty.mouse_slider_mpos, event->m.y,
+ 		    tty_oy, args_has(args, 'e'));</code></pre>
+      <p>Přiložený regresní test (<code class="code-tag">regress/copy-mode-no-client-scroll.sh</code>) vyvolá <code class="code-tag">copy-mode -S</code> z hooku <code class="code-tag">pane-died</code> bez připojeného klienta. Na původním kódu test okamžitě reprodukoval segmentation fault; s nasazenou opravou server příkaz bezpečně ignoroval a test doběhl zelený.</p>
+      <p>Správce Nicholas Marriott opravu přijal a začlenil revizi 1.55 přímo do stromu OpenBSD:</p>
+      <blockquote>
+        <p><em>„Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀“</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>1. 10. 2026.</strong> BudgetScan upozornil na nechráněný ukazatel na klienta v <code class="code-tag">cmd-copy-mode.c</code>. Manuální audit zdrojového kódu potvrdil vektor pádu serveru přes hooky. Otevřeli jsme <a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">pull request #5670</a> s opravou a regresním testem.</li>
+        <li><strong>2. 10. (12:12 UTC).</strong> Autor a hlavní správce tmuxu Nicholas Marriott (<code class="code-tag">nicm</code>) pull request zhodnotil, odpověděl na GitHubu a začlenil revizi 1.55 do CVS OpenBSD: <em>„Do not use client for copy-mode -S if NULL, reported by Martin Vlach.“</em></li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Skener poukázal na nechráněný ukazatel jako na konkrétní podnět. Inženýr prověřil řídicí tok, izoloval spuštění přes hooky, napsal reprodukovatelný test a připravil opravu. Upstreamový správce Nicholas Marriott ji zvalidoval a začlenil do OpenBSD. Přesně tak má automatizované skenování fungovat: nálezy slouží lidem k prověření, nikoli jako nezpochybnitelné ortely. Velké díky patří Nicholasi Marriottovi za okamžitou, vstřícnou reakci a bezproblémové začlenění do OpenBSD.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">Záznamy v CVS OpenBSD pro cmd-copy-mode.c</a></li>
+        <li><a href="https://cvsweb.openbsd.org/diff/src/usr.bin/tmux/cmd-copy-mode.c?rev=1.55&prev=1.54" target="_blank" rel="noopener">Diff v CVS OpenBSD (revize 1.54 &rarr; 1.55)</a></li>
+        <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">GitHub Pull Request (tmux/tmux#5670)</a></li>
+        <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Komentář správce Nicholase Marriotta na GitHubu</a></li>
+        <li><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">Oficiální repozitář tmux na GitHubu</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na open-source nano-analyzer (Apache-2.0).</p>
+    </div>
+  </footer>
+</body>
+</html>

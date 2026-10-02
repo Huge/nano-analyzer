@@ -266,8 +266,25 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Příběhy úspěchu</h2>
-        <p class="section-subtitle">Skutečné výsledky na skutečných open-source projektech, s odkazy, které si můžete ověřit. Zatím je jeden; další přidáme, jakmile přijdou.</p>
+        <p class="section-subtitle">Skutečné výsledky na skutečných open-source projektech, s odkazy, které si můžete ověřit. Nálezy slouží správcům k prověření, potvrzené reprodukovatelnými testy.</p>
       </div>
+
+      <article class="story-card">
+        <span class="story-badge">Začleněno do upstreamu OpenBSD &bull; říjen 2026</span>
+        <h3><a href="stories/tmux-copy-mode-null-dereference/">tmux: pád serveru při copy-mode -S bez připojeného klienta</a></h3>
+        <p><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmux</a> je standardní terminálový multiplexer. Při spuštění obsluhy <code class="code-tag">copy-mode -S</code> bez připojeného klienta (například z hooku nebo fronty serveru na pozadí) tmux dereferencoval NULL ukazatel na klienta, což okamžitě shodilo proces serverového démona na <code class="code-tag">SIGSEGV</code> a ukončilo všechny relace na stroji. Autor a hlavní správce Nicholas Marriott naši zprávu přijal a začlenil opravu do CVS OpenBSD.</p>
+        <ul class="story-timeline">
+          <li><strong>1. 10. 2026.</strong> BudgetScan upozornil na nechráněný ukazatel na klienta v <code class="code-tag">cmd-copy-mode.c</code>. Ověřili jsme cestu pádu přes hooky a otevřeli pull request #5670 na GitHubu s opravou a automatickým regresním testem.</li>
+          <li><strong>2. 10.</strong> Hlavní správce tmuxu Nicholas Marriott (<code class="code-tag">nicm</code>) pull request posoudil, odpověděl <em>„Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀“</em> a začlenil revizi 1.55 do CVS OpenBSD se zmínkou Martina Vlacha.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/tmux-copy-mode-null-dereference/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">Záznam v CVS OpenBSD (rev 1.55)</a></li>
+          <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">Pull request na GitHubu (#5670)</a></li>
+          <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Odpověď správce Nicholase Marriotta</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Skener upozornil na nechráněný ukazatel jako na konkrétní podnět, člověk ověřil řídicí tok, izoloval spuštění přes hooky, napsal test a odeslal opravu. Správce Nicholas Marriott ji ověřil a začlenil do OpenBSD. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
 
       <article class="story-card">
         <span class="story-badge">První zásah v open source &bull; září 2026</span>

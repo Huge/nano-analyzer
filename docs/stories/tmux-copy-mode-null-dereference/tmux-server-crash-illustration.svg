@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img"
+     font-family="JetBrains Mono, Menlo, Monaco, 'Courier New', monospace">
+  <title>Illustration: tmux copy-mode -S crash fix applied to OpenBSD</title>
+  <desc>A terminal illustration displaying the OpenBSD CVS revision 1.55 commit log by Nicholas Marriott crediting Martin Vlach, the diff guarding against NULL client dereference in cmd-copy-mode.c, and the merged status.</desc>
+  <defs>
+    <filter id="sh" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity=".6"/>
+    </filter>
+    <linearGradient id="term-header" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e232d"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <linearGradient id="badge-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Terminal Window with Shadow -->
+  <g filter="url(#sh)">
+    <rect x="40" y="30" width="1120" height="710" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+  </g>
+
+  <!-- Terminal Header / Titlebar -->
+  <path d="M40 44a14 14 0 0 1 14-14h1092a14 14 0 0 1 14 14v40H40z" fill="url(#term-header)"/>
+  <line x1="40" y1="84" x2="1160" y2="84" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Window Dots -->
+  <circle cx="68" cy="57" r="6.5" fill="#ff5f56"/>
+  <circle cx="90" cy="57" r="6.5" fill="#ffbd2e"/>
+  <circle cx="112" cy="57" r="6.5" fill="#27c93f"/>
+
+  <!-- Title -->
+  <text x="600" y="62" text-anchor="middle" font-size="13" font-weight="600" fill="#8b949e" font-family="Inter, -apple-system, sans-serif">
+    OpenBSD CVS — src/usr.bin/tmux/cmd-copy-mode.c (revision 1.55)
+  </text>
+
+  <!-- Terminal Content -->
+  <!-- Prompt 1 -->
+  <g transform="translate(70, 122)">
+    <text font-size="14" fill="#58a6ff" font-weight="600">openbsd$</text>
+    <text x="76" font-size="14" fill="#e6edf3">cvs log -r1.55 src/usr.bin/tmux/cmd-copy-mode.c</text>
+  </g>
+
+  <!-- CVS Log Output Box -->
+  <rect x="70" y="142" width="1060" height="128" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <g transform="translate(88, 170)">
+    <text font-size="13" fill="#8b949e">----------------------------</text>
+    <text y="22" font-size="13" fill="#8b949e">revision <tspan fill="#f0883e" font-weight="700">1.55</tspan> &nbsp;·&nbsp; date: <tspan fill="#e6edf3">2026/10/02 12:12:51 UTC</tspan>; &nbsp;author: <tspan fill="#a371f7" font-weight="700">nicm</tspan>; &nbsp;state: Exp; &nbsp;lines: <tspan fill="#3fb950">+3 -1</tspan></text>
+    <text y="46" font-size="14.5" fill="#3fb950" font-weight="700">Do not use client for copy-mode -S if NULL, reported by Martin Vlach.</text>
+    <text y="68" font-size="13" fill="#8b949e">----------------------------</text>
+  </g>
+
+  <!-- Prompt 2: Diff -->
+  <g transform="translate(70, 302)">
+    <text font-size="14" fill="#58a6ff" font-weight="600">openbsd$</text>
+    <text x="76" font-size="14" fill="#e6edf3">cvs diff -u -r1.54 -r1.55 src/usr.bin/tmux/cmd-copy-mode.c</text>
+  </g>
+
+  <!-- Code Diff Box -->
+  <rect x="70" y="322" width="1060" height="230" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <g transform="translate(88, 350)" font-size="13.5" line-height="1.5">
+    <text fill="#8b949e">--- src/usr.bin/tmux/cmd-copy-mode.c	14 Jul 2026 17:17:17 -0000	1.54</text>
+    <text y="22" fill="#8b949e">+++ src/usr.bin/tmux/cmd-copy-mode.c	2 Oct 2026 12:12:51 -0000	1.55</text>
+    <text y="44" fill="#79c0ff">@@ -103,6 +103,8 @@ cmd_copy_mode_exec(struct cmd *self, struct cmdq_item *item)</text>
+    <text y="66" fill="#8b949e">&nbsp;	if (args_has(args, 'd'))</text>
+    <text y="88" fill="#8b949e">&nbsp;		window_copy_pagedown(wp, 0, args_has(args, 'e'));</text>
+    <text y="110" fill="#8b949e">&nbsp;	if (args_has(args, 'S')) {</text>
+    <rect x="-8" y="118" width="1040" height="24" rx="4" fill="rgba(46, 160, 67, 0.18)"/>
+    <text y="134" fill="#3fb950" font-weight="700">+		if (c == NULL)</text>
+    <rect x="-8" y="140" width="1040" height="24" rx="4" fill="rgba(46, 160, 67, 0.18)"/>
+    <text y="156" fill="#3fb950" font-weight="700">+			return (CMD_RETURN_NORMAL);</text>
+    <text y="178" fill="#8b949e">&nbsp;		tty_window_offset(&amp;c->tty, &amp;tty_ox, &amp;tty_oy, &amp;tty_sx, &amp;tty_sy);</text>
+  </g>
+
+  <!-- GitHub Maintainer Reaction Callout -->
+  <rect x="70" y="570" width="1060" height="88" rx="8" fill="#131d2b" stroke="#1f6feb" stroke-width="1.2"/>
+  <g transform="translate(88, 596)">
+    <circle cx="16" cy="16" r="16" fill="#1f6feb" fill-opacity="0.25"/>
+    <text x="16" y="21" text-anchor="middle" font-size="14" fill="#58a6ff" font-weight="700" font-family="Inter, sans-serif">N</text>
+    <text x="46" y="14" font-size="13" font-weight="700" fill="#e6edf3" font-family="Inter, sans-serif">
+      nicm <tspan font-weight="400" fill="#8b949e">(Nicholas Marriott, author &amp; maintainer of tmux · OpenBSD)</tspan>
+      <tspan font-weight="400" fill="#58a6ff"> · GitHub PR #5670</tspan>
+    </text>
+    <text x="46" y="38" font-size="14.5" fill="#f0f6fc" font-weight="500" font-family="Inter, sans-serif">
+      “Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀”
+    </text>
+  </g>
+
+  <!-- Classic Tmux Green Status Bar -->
+  <rect x="40" y="694" width="1120" height="26" fill="#00ff66"/>
+  <g transform="translate(56, 712)" font-size="13" font-weight="700" fill="#000000">
+    <text>[0] 0:tmux*</text>
+    <text x="500" text-anchor="middle" font-weight="500">"OpenBSD CVS · cmd-copy-mode.c:1.55"</text>
+    <text x="1080" text-anchor="end">12:12 02-Oct-26</text>
+  </g>
+</svg>

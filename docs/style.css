@@ -1197,6 +1197,10 @@ input[type="range"] {
   box-shadow: var(--shadow-card);
 }
 
+.story-card + .story-card {
+  margin-top: 32px;
+}
+
 .story-card h3 {
   font-size: 1.35rem;
   margin: 12px 0;
