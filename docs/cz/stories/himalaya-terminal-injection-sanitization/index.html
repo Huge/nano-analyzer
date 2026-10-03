@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Himalaya: ochrana před terminal injection a BiDi spoofingem | BudgetScan</title>
+  <meta name="description" content="BudgetScan odhalil neošetřené řídicí sekvence terminálu v CLI e-mailových tabulkách nástroje Himalaya. Správce Clément Douin opravu začlenil a povýšil ji do sdílené knihovny pimalaya-cli.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/himalaya-terminal-injection-sanitization/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/himalaya-terminal-injection-sanitization/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/himalaya-terminal-injection-sanitization/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/himalaya-terminal-injection-sanitization/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Himalaya: ochrana před terminal injection a BiDi spoofingem v tabulkách e-mailů v Rustu">
+  <meta property="og:description" content="BudgetScan odhalil neošetřené řídicí sekvence v nástroji Himalaya. Správce Clément Douin začlenil opravu a vyčlenil sanitizaci do sdílené knihovny pimalaya-cli.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/himalaya-terminal-injection-sanitization/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/himalaya-terminal-injection-sanitization/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Začleněno 3. 10. 2026</span> &nbsp;Zodolnění sdílené knihovny pro celý ekosystém Pimalaya</p>
+      <h1>Himalaya: ochrana před terminal injection a BiDi spoofingem v Rust tabulkách e-mailů</h1>
+      <p>BudgetScan odhalil, že <a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a>, populární CLI e-mailový klient napsaný v Rustu, vypisoval neošetřená metadata zpráv &mdash; předměty, jména odesílatelů, názvy příloh a ID &mdash; přímo do tabulek terminálu. Útočník mohl v e-mailu podstrčit ANSI escape sekvence (jako neoprávněný zápis do systémové schránky přes OSC 52, mazání obrazovky a přepisování řádků) nebo Unicode BiDi override znaky k maskování přípon spustitelných souborů. Správce projektu Clément Douin (<code class="code-tag">soywod</code>) problém potvrdil, naši sanitizační logiku vyčlenil do centrální knihovny <code class="code-tag">pimalaya-cli</code>, uvedl nás jako spoluautory a zabezpečil tak celou sadu CLI nástrojů (<code class="code-tag">himalaya</code>, <code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>).</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>Když uživatel vypisuje seznam zpráv (<code class="code-tag">himalaya envelope list</code>) nebo prohlíží přílohy, formátuje Himalaya tato metadata do přehledných terminálových tabulek. Protože tato data pocházejí z nedůvěryhodných vnějších zdrojů &mdash; odesílatel e-mailu má plnou kontrolu nad předmětem, jménem odesílatele i názvy souborů &mdash; jejich přímý výpis bez ošetření do emulátoru terminálu představuje vážná bezpečnostní rizika:</p>
+      <ul>
+        <li><strong>OSC 52 Clipboard Hijacking:</strong> Terminály podporující sekvenci OSC 52 (<code class="code-tag">\x1b]52;c;...</code>) lze instruovat k tichému přepsání systémové schránky uživatele při pouhém zobrazení seznamu zpráv.</li>
+        <li><strong>BiDi (Bidirectional) Override Spoofing:</strong> Odesílatel mohl do názvu přílohy vložit řídicí znaky pro změnu směru textu (např. <code class="code-tag">\u{202E}</code> Right-to-Left Override). Nebezpečný spustitelný soubor <code class="code-tag">invoice\u{202e}fdp.exe</code> se v terminálu uživateli zobrazil jako zdánlivě neškodný <code class="code-tag">invoiceexe.pdf</code>, což jej mohlo oklamat k otevření škodlivého kódu.</li>
+        <li><strong>Manipulace s terminálem a podvržení výstupu:</strong> ANSI escape kódy pro smazání obrazovky (<code class="code-tag">\x1b[2J</code>), posun kurzoru či změny barev (SGR) mohly vymazat historii příkazů, skrýt část výpisu nebo podvrhnout falešnou příkazovou řádku.</li>
+        <li><strong>Neúplná binární kontrola:</strong> Dosavadní filtr binárních výstupů nezachycoval znak DEL (<code class="code-tag">0x7F</code>) ani kontrolní bajty C1 (<code class="code-tag">0x80..=0x9F</code>).</li>
+      </ul>
+
+      <figure class="flow">
+        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="flow-title">Řídicí tok vykreslování tabulek v Himalaya</title>
+          <desc id="flow-desc">Příchozí metadata e-mailů procházejí formátovačem tabulek. Dříve šly surové řídicí znaky přímo na terminál. Nyní funkce pimalaya_cli::table::sanitize odstraňuje escape sekvence a nahrazuje BiDi znaky.</desc>
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#818cf8"/></marker>
+            <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ef4444"/></marker>
+          </defs>
+          <rect class="flow-box" x="20" y="10" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="37">Nedůvěryhodná metadata e-mailu</text><text class="flow-s" x="200" y="57">předmět, odesílatel, název přílohy, schránka</text>
+          <rect class="flow-box" x="20" y="110" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="137">Jednořádkový formátovač tabulek</text><text class="flow-s" x="200" y="157">IMAP, JMAP, Gmail, Graph, pimdir</text>
+          <rect class="flow-box flow-new" x="20" y="210" width="360" height="62" rx="10"/>
+          <text class="flow-t flow-t-new" x="200" y="237">pimalaya_cli::table::sanitize</text><text class="flow-s" x="200" y="257">odstraní C0/C1, DEL, ANSI, nahradí BiDi</text>
+          <rect class="flow-box" x="20" y="310" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="337">Bezpečný výstup do terminálu</text><text class="flow-s" x="200" y="357">čistý text bez rizika injection</text>
+          <rect class="flow-box" x="20" y="410" width="360" height="62" rx="10"/>
+          <text class="flow-t" x="200" y="437">Emulátor terminálu uživatele</text><text class="flow-s" x="200" y="457">schránka i zobrazení jsou chráněny</text>
+          <path class="flow-arrow" d="M200 72V108" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 172V208" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
+          <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
+          <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)" style="stroke: #ef4444;"/>
+          <text class="flow-note" x="450" y="236" style="fill: #ef4444;">dříve: surové</text><text class="flow-note" x="450" y="252" style="fill: #ef4444;">escape sekvence</text>
+        </svg>
+        <figcaption>Průchod zpracováním tabulek. Před opravou putoval surový řetězec přímo na výstup terminálu (červená čára). Nyní jednořádková pole sanitizuje sdílená knihovna Pimalaya.</figcaption>
+      </figure>
+
+      <figure class="shot">
+        <div class="shot-scroll"><img src="../../../stories/himalaya-terminal-injection-sanitization/himalaya-terminal-illustration.svg" width="1200" height="820" loading="lazy" alt="Ilustrace: Výstup tabulky Himalaya se scénářem zneužití a sanitizovanou opravou, sdílená knihovna pimalaya-cli 0.2.6 a zhodnocení správce Clémenta Douina."></div>
+        <figcaption><strong>Ukázka terminal injection a systémového řešení</strong>. Demonstrace zneužití OSC 52 a BiDi spoofingu, centrální sanitizace v <code class="code-tag">pimalaya-cli</code> 0.2.6 a zhodnocení správce Clémenta Douina.</figcaption>
+      </figure>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Odeslali jsme pull request <a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">#771</a> s návrhem sanitizační funkce a automatickými testy. Správce projektu Clément Douin (<code class="code-tag">soywod</code>) rozpoznal, že příbuzné nástroje z rodiny Pimalaya (<code class="code-tag">cardamum</code> pro kontakty a <code class="code-tag">calendula</code> pro kalendář) sdílejí stejnou logiku vykreslování tabulek:</p>
+      <blockquote>
+        <p><em>„Thanks for the report and the clear write-up, the problem is real. Since cardamum and calendula share the same tables, I moved the function into pimalaya-cli and credited you as co-author. It's released in 0.2.6 as pimalaya_cli::table::sanitize. It's your printable(), with one addition: it also replaces bidi controls (U+202A–202E, U+2066–2069). Without that, a filename like invoice\u{202e}fdp.exe displays as invoiceexe.pdf.“</em></p>
+      </blockquote>
+      <p>V návaznosti na doporučení správce jsme v PR dokončili implementaci:</p>
+      <ul>
+        <li>Povýšili jsme knihovnu <code class="code-tag">pimalaya-cli</code> na verzi 0.2.6 a napojili jednořádková pole napříč backendy IMAP, JMAP, Gmail, Graph a pimdir na funkci <code class="code-tag">pimalaya_cli::table::sanitize</code>.</li>
+        <li>Upravili jsme binární kontrolu ve <code class="code-tag">write_bytes_or_save</code> v <code class="code-tag">output.rs</code>, aby odmítala řídicí bajty DEL a C1 na terminálu, přičemž ne-UTF-8 bajty interpretuje jako Latin-1, aby nedošlo k záměně s UTF-8 continuation bajty.</li>
+        <li>Přidali jsme integrační testy ověřující bezpečné vykreslení tabulek s řetězci obsahujícími OSC 52, SGR, mazání obrazovky i BiDi override znaky.</li>
+        <li>Aktualizovali jsme specifikaci CLI rozhraní Cairn (<code class="code-tag">cairn/spec/commands.md</code>) o požadavek na sanitizaci jednořádkových metadatových polí.</li>
+      </ul>
+      <p>Správce Clément Douin změny ověřil a 3. října 2026 pull request začlenil do větve master:</p>
+      <blockquote>
+        <p><em>„Thanks, all good. The Windows-1252 side effect is fine for now; we'll revisit if it turns out to bite. Merging. 🚀“</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>2. 10. 2026.</strong> BudgetScan odhalil neošetřená metadata ve výstupu tabulek Himalaya. Otevřeli jsme <a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">pull request #771</a> s návrhem opravy a sadou testů.</li>
+        <li><strong>2. 10.</strong> Správce Clément Douin zranitelnost potvrdil, vyčlenil sanitizační logiku do sdílené knihovny <code class="code-tag">pimalaya-cli</code> 0.2.6 s ošetřením BiDi znaků a uvedl nás jako spoluautory.</li>
+        <li><strong>3. 10.</strong> Doplnili jsme PR o novou verzi knihovny, pokryli všechny backendové výstupy a aktualizovali specifikaci. Správce Douin PR zkontroloval a začlenil do hlavní větve.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Automatizované skenování zachytilo subtilní mezeru v sanitizaci vstupů pro terminál a díky otevřené spolupráci se zkušeným správcem vznikla systémová obrana pro celou rodinu CLI nástrojů. Přesně takhle vypadá open-source bezpečnost v nejlepší formě: automatizovaná detekce přináší jasné podněty, po nichž následuje pečlivá lidská revize, důkladné testy a systémové zodolnění. Velké poděkování patří Clémentu Douinovi za příkladné vedení projektu a rychlou reakci.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">Začleněný pull request (pimalaya/himalaya#771)</a></li>
+        <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5959074461" target="_blank" rel="noopener">Hodnocení správce a uvedení spoluautorství</a></li>
+        <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5969248173" target="_blank" rel="noopener">Závěrečný komentář správce k začlenění</a></li>
+        <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">Knihovna pimalaya-cli na crates.io</a></li>
+        <li><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Oficiální repozitář Himalaya na GitHubu</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na open-source nano-analyzer (Apache-2.0).</p>
+    </div>
+  </footer>
+</body>
+</html>
