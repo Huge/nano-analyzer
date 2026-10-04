@@ -1292,7 +1292,7 @@ input[type="range"] {
 
 /* Login-flow sketch on story pages */
 .flow {
-  max-width: 480px;
+  max-width: 550px;
   margin: 26px auto;
 }
 
@@ -1300,6 +1300,7 @@ input[type="range"] {
   display: block;
   width: 100%;
   height: auto;
+  overflow: visible;
 }
 
 .flow-box { fill: rgba(15, 20, 32, 0.85); stroke: rgba(255, 255, 255, 0.2); stroke-width: 1.5; }
@@ -1309,7 +1310,7 @@ input[type="range"] {
 .flow-s { fill: #9ca3af; font: 400 13px Inter, -apple-system, sans-serif; text-anchor: middle; }
 .flow-arrow { stroke: #818cf8; stroke-width: 2; fill: none; }
 .flow-bypass { stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 6 5; fill: none; }
-.flow-note { fill: #f59e0b; font: 600 12.5px Inter, -apple-system, sans-serif; text-anchor: middle; }
+.flow-note { fill: #f59e0b; font: 600 12px Inter, -apple-system, sans-serif; text-anchor: start; }
 
 .flow figcaption {
   margin-top: 10px;

@@ -79,7 +79,7 @@
       </ul>
 
       <figure class="flow">
-        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">Himalaya table rendering flow</title>
           <desc id="flow-desc">Incoming email metadata passes through table rendering. Before the fix, raw control characters were printed to the terminal. Now, pimalaya_cli::table::sanitize strips escape codes and replaces BiDi overrides.</desc>
           <defs>
@@ -101,7 +101,8 @@
           <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
           <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
           <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)" style="stroke: #ef4444;"/>
-          <text class="flow-note" x="450" y="236" style="fill: #ef4444;">before: raw</text><text class="flow-note" x="450" y="252" style="fill: #ef4444;">terminal escape</text>
+          <text class="flow-note" x="426" y="235" style="fill: #ef4444;" text-anchor="start">before: raw</text>
+          <text class="flow-note" x="426" y="251" style="fill: #ef4444;" text-anchor="start">terminal escape</text>
         </svg>
         <figcaption>Table rendering pipeline. Before the fix, raw string data went directly to standard output (red dashed line). Now, single-line fields are sanitized by the shared Pimalaya library.</figcaption>
       </figure>

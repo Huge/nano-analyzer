@@ -78,7 +78,7 @@
       <p>the <code class="code-tag">-S</code> branch omitted the check entirely. It immediately passed <code class="code-tag">&amp;c->tty</code> into <code class="code-tag">tty_window_offset()</code>, resulting in an immediate segmentation fault (<code class="code-tag">SIGSEGV</code>). Because tmux operates as a single central daemon managing all sessions on the machine, crashing the daemon abruptly kills all windows, panes, and running processes for every user on that host.</p>
 
       <figure class="flow">
-        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">tmux copy-mode -S control flow</title>
           <desc id="flow-desc">Server hook invokes copy-mode -S without an attached client. cmdq_get_client returns NULL. Before the fix, the unverified pointer caused an immediate server crash. With the fix, the handler returns safely.</desc>
           <defs>
@@ -100,7 +100,8 @@
           <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
           <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
           <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)" style="stroke: #ef4444;"/>
-          <text class="flow-note" x="450" y="236" style="fill: #ef4444;">before: SIGSEGV</text><text class="flow-note" x="450" y="252" style="fill: #ef4444;">server crash</text>
+          <text class="flow-note" x="426" y="235" style="fill: #ef4444;" text-anchor="start">before: SIGSEGV</text>
+          <text class="flow-note" x="426" y="251" style="fill: #ef4444;" text-anchor="start">server crash</text>
         </svg>
         <figcaption>Execution flow of copy-mode -S. Before the fix, triggering the command without an attached client bypassed any check (red dashed line) and crashed the tmux server daemon.</figcaption>
       </figure>

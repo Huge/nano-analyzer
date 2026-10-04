@@ -76,7 +76,7 @@
       <p>So someone with an unverified account at an identity provider under an allowed domain could get past the domain restriction. Whether that is possible in practice depends on the identity provider.</p>
 
       <figure class="flow">
-        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">Simplified OIDC login flow in Yopass</title>
           <desc id="flow-desc">The identity provider returns the email and optionally email_verified. Before the fix the email went straight to the allowed-domain check. Now a verified-email check sits in between.</desc>
           <defs>
@@ -98,7 +98,8 @@
           <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
           <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
           <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)"/>
-          <text class="flow-note" x="450" y="236">before</text><text class="flow-note" x="450" y="252">the fix</text>
+          <text class="flow-note" x="426" y="235" text-anchor="start">before</text>
+          <text class="flow-note" x="426" y="251" text-anchor="start">the fix</text>
         </svg>
         <figcaption>A simplified sketch of the login flow, not a screenshot. Before the fix, the email went straight from the callback to the domain check (dashed line).</figcaption>
       </figure>

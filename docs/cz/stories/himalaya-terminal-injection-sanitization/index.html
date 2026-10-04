@@ -79,7 +79,7 @@
       </ul>
 
       <figure class="flow">
-        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">Řídicí tok vykreslování tabulek v Himalaya</title>
           <desc id="flow-desc">Příchozí metadata e-mailů procházejí formátovačem tabulek. Dříve šly surové řídicí znaky přímo na terminál. Nyní funkce pimalaya_cli::table::sanitize odstraňuje escape sekvence a nahrazuje BiDi znaky.</desc>
           <defs>
@@ -101,7 +101,8 @@
           <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
           <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
           <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)" style="stroke: #ef4444;"/>
-          <text class="flow-note" x="450" y="236" style="fill: #ef4444;">dříve: surové</text><text class="flow-note" x="450" y="252" style="fill: #ef4444;">escape sekvence</text>
+          <text class="flow-note" x="426" y="235" style="fill: #ef4444;" text-anchor="start">dříve: surové</text>
+          <text class="flow-note" x="426" y="251" style="fill: #ef4444;" text-anchor="start">escape sekvence</text>
         </svg>
         <figcaption>Průchod zpracováním tabulek. Před opravou putoval surový řetězec přímo na výstup terminálu (červená čára). Nyní jednořádková pole sanitizuje sdílená knihovna Pimalaya.</figcaption>
       </figure>

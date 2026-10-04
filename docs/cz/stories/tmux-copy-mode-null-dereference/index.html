@@ -78,7 +78,7 @@
       <p>ve větvi <code class="code-tag">-S</code> tato kontrola zcela chyběla. Kód okamžitě předal <code class="code-tag">&amp;c->tty</code> do funkce <code class="code-tag">tty_window_offset()</code>, což vedlo k okamžitému pádu na neplatnou paměť (<code class="code-tag">SIGSEGV</code>). Protože tmux běží jako jediný centrální serverový démon obsluhující všechny relace a okna na stroji, pád démona okamžitě usmrtil všechna okna, panely i běžící procesy pro všechny připojené uživatele.</p>
 
       <figure class="flow">
-        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">Řídicí tok v tmux copy-mode -S</title>
           <desc id="flow-desc">Serverový hook vyvolá copy-mode -S bez připojeného klienta. cmdq_get_client vrátí NULL. Před opravou způsobil neověřený ukazatel pád serveru. Po opravě funkce bezpečně vrátí návratový kód.</desc>
           <defs>
@@ -100,7 +100,8 @@
           <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
           <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
           <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)" style="stroke: #ef4444;"/>
-          <text class="flow-note" x="450" y="236" style="fill: #ef4444;">dříve: SIGSEGV</text><text class="flow-note" x="450" y="252" style="fill: #ef4444;">pád serveru</text>
+          <text class="flow-note" x="426" y="235" style="fill: #ef4444;" text-anchor="start">dříve: SIGSEGV</text>
+          <text class="flow-note" x="426" y="251" style="fill: #ef4444;" text-anchor="start">pád serveru</text>
         </svg>
         <figcaption>Průchod kódem v copy-mode -S. Před opravou vedlo spuštění bez klienta k obejití jakékoli kontroly (červená čára) a okamžitému pádu serverového démona tmux.</figcaption>
       </figure>

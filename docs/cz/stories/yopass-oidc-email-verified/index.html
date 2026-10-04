@@ -76,7 +76,7 @@
       <p>Kdo tedy měl u poskytovatele identity s povolenou doménou neověřený účet, mohl omezení domén obejít. Zda je to v praxi možné, záleží na konkrétním poskytovateli identity.</p>
 
       <figure class="flow">
-        <svg viewBox="0 0 480 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">Zjednodušený tok OIDC přihlášení v Yopass</title>
           <desc id="flow-desc">Poskytovatel identity vrací e-mail a volitelně email_verified. Před opravou šel e-mail rovnou do kontroly povolených domén. Nyní je mezi tím kontrola ověřeného e-mailu.</desc>
           <defs>
@@ -98,7 +98,8 @@
           <path class="flow-arrow" d="M200 272V308" marker-end="url(#arr)"/>
           <path class="flow-arrow" d="M200 372V408" marker-end="url(#arr)"/>
           <path class="flow-bypass" d="M380 141H414V341H386" marker-end="url(#arrb)"/>
-          <text class="flow-note" x="450" y="236">před</text><text class="flow-note" x="450" y="252">opravou</text>
+          <text class="flow-note" x="426" y="235" text-anchor="start">před</text>
+          <text class="flow-note" x="426" y="251" text-anchor="start">opravou</text>
         </svg>
         <figcaption>Zjednodušený nákres přihlašování, ne screenshot. Před opravou šel e-mail z callbacku rovnou do kontroly domén (čárkovaná čára).</figcaption>
       </figure>
