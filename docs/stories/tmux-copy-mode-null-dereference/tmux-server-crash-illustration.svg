@@ -46,7 +46,7 @@
   <rect x="70" y="142" width="1060" height="128" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
   <g transform="translate(88, 170)">
     <text font-size="13" fill="#8b949e">----------------------------</text>
-    <text y="22" font-size="13" fill="#8b949e">revision <tspan fill="#f0883e" font-weight="700">1.55</tspan> &nbsp;·&nbsp; date: <tspan fill="#e6edf3">2026/10/02 12:12:51 UTC</tspan>; &nbsp;author: <tspan fill="#a371f7" font-weight="700">nicm</tspan>; &nbsp;state: Exp; &nbsp;lines: <tspan fill="#3fb950">+3 -1</tspan></text>
+    <text y="22" font-size="13" fill="#8b949e">revision <tspan fill="#f0883e" font-weight="700">1.55</tspan> &#160;·&#160; date: <tspan fill="#e6edf3">2026/10/02 12:12:51 UTC</tspan>; &#160;author: <tspan fill="#a371f7" font-weight="700">nicm</tspan>; &#160;state: Exp; &#160;lines: <tspan fill="#3fb950">+3 -1</tspan></text>
     <text y="46" font-size="14.5" fill="#3fb950" font-weight="700">Do not use client for copy-mode -S if NULL, reported by Martin Vlach.</text>
     <text y="68" font-size="13" fill="#8b949e">----------------------------</text>
   </g>
@@ -63,14 +63,14 @@
     <text fill="#8b949e">--- src/usr.bin/tmux/cmd-copy-mode.c	14 Jul 2026 17:17:17 -0000	1.54</text>
     <text y="22" fill="#8b949e">+++ src/usr.bin/tmux/cmd-copy-mode.c	2 Oct 2026 12:12:51 -0000	1.55</text>
     <text y="44" fill="#79c0ff">@@ -103,6 +103,8 @@ cmd_copy_mode_exec(struct cmd *self, struct cmdq_item *item)</text>
-    <text y="66" fill="#8b949e">&nbsp;	if (args_has(args, 'd'))</text>
-    <text y="88" fill="#8b949e">&nbsp;		window_copy_pagedown(wp, 0, args_has(args, 'e'));</text>
-    <text y="110" fill="#8b949e">&nbsp;	if (args_has(args, 'S')) {</text>
+    <text y="66" fill="#8b949e">&#160;	if (args_has(args, 'd'))</text>
+    <text y="88" fill="#8b949e">&#160;		window_copy_pagedown(wp, 0, args_has(args, 'e'));</text>
+    <text y="110" fill="#8b949e">&#160;	if (args_has(args, 'S')) {</text>
     <rect x="-8" y="118" width="1040" height="24" rx="4" fill="rgba(46, 160, 67, 0.18)"/>
     <text y="134" fill="#3fb950" font-weight="700">+		if (c == NULL)</text>
     <rect x="-8" y="140" width="1040" height="24" rx="4" fill="rgba(46, 160, 67, 0.18)"/>
     <text y="156" fill="#3fb950" font-weight="700">+			return (CMD_RETURN_NORMAL);</text>
-    <text y="178" fill="#8b949e">&nbsp;		tty_window_offset(&amp;c->tty, &amp;tty_ox, &amp;tty_oy, &amp;tty_sx, &amp;tty_sy);</text>
+    <text y="178" fill="#8b949e">&#160;		tty_window_offset(&amp;c->tty, &amp;tty_ox, &amp;tty_oy, &amp;tty_sx, &amp;tty_sy);</text>
   </g>
 
   <!-- GitHub Maintainer Reaction Callout -->
