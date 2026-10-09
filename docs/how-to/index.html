@@ -69,7 +69,7 @@
       <p>An early, deliberately unpolished guide, written on 2026-09-30 from how the code works today. It will grow. Every part carries a status tag, so you can see what is real:</p>
       <ul>
         <li><span class="tag-status tag-available">Available</span> works today and is public.</li>
-        <li><span class="tag-status tag-untested">Untested</span> exists in our private codebase but has not been run end to end yet.</li>
+        <li><span class="tag-status tag-testing">In private testing</span> lives in our private codebase and works end to end on our own test project, but has not been used by other teams yet.</li>
         <li><span class="tag-status tag-draft">Draft</span> partly wired, with known gaps.</li>
         <li><span class="tag-status tag-planned">Planned</span> not built yet; described so you know where we are heading.</li>
       </ul>
@@ -94,7 +94,7 @@
           <thead><tr><th>Piece</th><th>Status</th><th>Where</th></tr></thead>
           <tbody>
             <tr><td>Core scanner: context, scan, then skeptical multi-round triage</td><td><span class="tag-status tag-available">Available</span></td><td>Open source: <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">github.com/Huge/nano-analyzer</a></td></tr>
-            <tr><td>GitLab merge-request job that posts one report comment</td><td><span class="tag-status tag-untested">Untested</span></td><td>Private codebase, shared during early access</td></tr>
+            <tr><td>GitLab merge-request job that posts one report comment</td><td><span class="tag-status tag-testing">In private testing</span></td><td>Private codebase, shared during early access</td></tr>
             <tr><td>GitHub Action</td><td><span class="tag-status tag-draft">Draft</span></td><td>Private codebase, shared during early access</td></tr>
             <tr><td><code class="code-tag">@budgetscan</code> comment command with budget and deadline caps</td><td><span class="tag-status tag-planned">Planned</span></td><td>&mdash;</td></tr>
             <tr><td>Prepaid credits and hosted scans on zero-data-retention inference</td><td><span class="tag-status tag-planned">Planned</span></td><td>&mdash;</td></tr>
@@ -145,8 +145,8 @@ python3 scan.py ./path/to/src</code></pre>
 └── &lt;file&gt;.md / .json / .context.md   # raw output per file</code></pre>
       <p>A confidence such as <code class="code-tag">80% [VVIVV→V]</code> is the share of triage rounds that judged the finding valid; the last letter is the arbiter's final call. Always verify a finding by hand before acting on it.</p>
 
-      <h2 id="gitlab">4. GitLab merge-request integration <span class="tag-status tag-untested">Untested</span></h2>
-      <p>A CI job that scans the files changed in a merge request and keeps <strong>one</strong> report discussion up to date on that MR. It exists in our private codebase and has not been run end to end yet, so expect rough edges. Ask us for the files during early access (see <a href="#help">Questions</a>).</p>
+      <h2 id="gitlab">4. GitLab merge-request integration <span class="tag-status tag-testing">In private testing</span></h2>
+      <p>A CI job that scans the files changed in a merge request and keeps <strong>one</strong> report discussion up to date on that MR. It lives in our private codebase and works end to end on our own test project; other teams have not used it yet, so expect rough edges. Ask us for the files during early access (see <a href="#help">Questions</a>).</p>
       <ol>
         <li><strong>Build and publish the image.</strong> The Dockerfile installs git, ripgrep and the optional code-search tools:
 <pre><code>docker build -f gitlab/Dockerfile -t registry.gitlab.com/&lt;group&gt;/&lt;project&gt;/nano-analyzer:latest .

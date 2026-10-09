@@ -69,7 +69,7 @@
       <p>Raný a záměrně nedoladěný návod, sepsaný 30. 9. 2026 podle toho, jak kód funguje dnes. Bude se rozrůstat. Každá část má štítek se stavem, takže hned vidíte, co je skutečné:</p>
       <ul>
         <li><span class="tag-status tag-available">Funguje</span> funguje už dnes a je veřejné.</li>
-        <li><span class="tag-status tag-untested">Netestováno</span> existuje v našem privátním kódu, ale zatím ho nikdo neprošel od začátku do konce.</li>
+        <li><span class="tag-status tag-testing">V privátním testování</span> je v našem privátním kódu a na našem testovacím projektu funguje od začátku do konce, ale jiné týmy ho zatím nepoužívaly.</li>
         <li><span class="tag-status tag-draft">Koncept</span> zapojeno jen zčásti, se známými mezerami.</li>
         <li><span class="tag-status tag-planned">Plánováno</span> ještě nestojí; popisujeme to, abyste věděli, kam směřujeme.</li>
       </ul>
@@ -94,7 +94,7 @@
           <thead><tr><th>Součást</th><th>Stav</th><th>Kde</th></tr></thead>
           <tbody>
             <tr><td>Jádro skeneru: kontext, sken a skeptická vícekolová triáž</td><td><span class="tag-status tag-available">Funguje</span></td><td>Open source: <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">github.com/Huge/nano-analyzer</a></td></tr>
-            <tr><td>Úloha pro merge requesty v GitLabu, která přidá jeden komentář s reportem</td><td><span class="tag-status tag-untested">Netestováno</span></td><td>Privátní kód, sdílíme v rámci raného přístupu</td></tr>
+            <tr><td>Úloha pro merge requesty v GitLabu, která přidá jeden komentář s reportem</td><td><span class="tag-status tag-testing">V privátním testování</span></td><td>Privátní kód, sdílíme v rámci raného přístupu</td></tr>
             <tr><td>GitHub Action</td><td><span class="tag-status tag-draft">Koncept</span></td><td>Privátní kód, sdílíme v rámci raného přístupu</td></tr>
             <tr><td>Příkaz <code class="code-tag">@budgetscan</code> v komentáři s limitem rozpočtu a termínu</td><td><span class="tag-status tag-planned">Plánováno</span></td><td>&mdash;</td></tr>
             <tr><td>Předplacené kredity a hostované skeny na inferenci s nulovou retencí dat</td><td><span class="tag-status tag-planned">Plánováno</span></td><td>&mdash;</td></tr>
@@ -145,8 +145,8 @@ python3 scan.py ./cesta/ke/zdrojakum</code></pre>
 └── &lt;soubor&gt;.md / .json / .context.md   # surový výstup po souborech</code></pre>
       <p>Jistota typu <code class="code-tag">80% [VVIVV→V]</code> je podíl kol triáže, která nález uznala za platný; poslední písmeno je konečné rozhodnutí arbitra. Než podle nějakého nálezu začnete jednat, vždy si ho ověřte ručně.</p>
 
-      <h2 id="gitlab">4. Integrace s merge requesty v GitLabu <span class="tag-status tag-untested">Netestováno</span></h2>
-      <p>CI úloha, která proskenuje soubory změněné v merge requestu a udržuje na něm <strong>jednu</strong> aktuální diskusi s reportem. Existuje v našem privátním kódu a zatím nebyla vyzkoušena od začátku do konce, takže počítejte s drobnými nedodělky. Soubory vám rádi pošleme v rámci raného přístupu (viz <a href="#help">Dotazy</a>).</p>
+      <h2 id="gitlab">4. Integrace s merge requesty v GitLabu <span class="tag-status tag-testing">V privátním testování</span></h2>
+      <p>CI úloha, která proskenuje soubory změněné v merge requestu a udržuje na něm <strong>jednu</strong> aktuální diskusi s reportem. Je v našem privátním kódu a na našem testovacím projektu funguje od začátku do konce; jiné týmy ji zatím nepoužívaly, takže počítejte s drobnými nedodělky. Soubory vám rádi pošleme v rámci raného přístupu (viz <a href="#help">Dotazy</a>).</p>
       <ol>
         <li><strong>Sestavte a publikujte image.</strong> Dockerfile nainstaluje git, ripgrep a volitelné nástroje pro vyhledávání v kódu:
 <pre><code>docker build -f gitlab/Dockerfile -t registry.gitlab.com/&lt;skupina&gt;/&lt;projekt&gt;/nano-analyzer:latest .
