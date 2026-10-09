@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Windmill: unbounded S3 downloads for AI attachments | BudgetScan</title>
+  <meta name="description" content="A scan flagged that Windmill buffered whole S3 objects before base64-encoding AI attachments. Ruben Fiszel shipped a bounded download in v1.824.0.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/windmill-s3-ai-attachment-size-limit/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/windmill-s3-ai-attachment-size-limit/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/windmill-s3-ai-attachment-size-limit/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/windmill-s3-ai-attachment-size-limit/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Windmill: unbounded S3 downloads for AI attachments">
+  <meta property="og:description" content="A scan flagged that Windmill buffered whole S3 objects before base64-encoding AI attachments. Ruben Fiszel shipped a bounded download in v1.824.0.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/windmill-s3-ai-attachment-size-limit/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Overview</a>
+        <a href="../../#stories">Success Stories</a>
+        <a href="../../how-to/">How-to Guide</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../cz/stories/windmill-s3-ai-attachment-size-limit/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../../#stories" class="btn btn-primary">All stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Released in v1.824.0, 5 Oct 2026</span> &nbsp;Upstream fix in Windmill</p>
+      <h1>Windmill: unbounded S3 downloads for AI attachments</h1>
+      <p>Our scanner flagged that <a href="https://github.com/windmill-labs/windmill" target="_blank" rel="noopener">Windmill</a>, an open-source platform for scripts, workflows and internal tools, downloaded S3 objects used as AI attachments into memory and base64-encoded them without any size limit, so one large object could exhaust a worker&rsquo;s memory. Our pull request added a size check. Maintainer Ruben Fiszel pointed out that it came too late and implemented a better fix, released the same day in v1.824.0.</p>
+
+      <h2 id="problem">What was wrong</h2>
+      <p>When the messages of an AI step reference an S3 object, <code class="code-tag">download_and_encode_s3_image()</code> in <code class="code-tag">backend/windmill-ai/src/image_handler.rs</code> fetched the whole object and turned it into a base64 data URL for the model provider. Nothing limited its size, and workspace storage can hold large job outputs, dumps or archives. A big enough object meant a big allocation, plus about a third more for the base64 copy, and could run the worker out of memory.</p>
+
+      <h2 id="fix">How it was fixed</h2>
+      <p>Our <a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">pull request #11515</a> rejected objects over 30 MB before base64-encoding them. Ruben Fiszel&rsquo;s review was precise:</p>
+      <blockquote>
+        <p><em>&ldquo;With the check here, a 2 GB object still gets fully buffered before the 30 MiB check runs, so it can still cause the OOM this aims to prevent.&rdquo;</em></p>
+      </blockquote>
+      <p>We agreed, and ours was closed in favour of his <a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">pull request #11534</a>. It lets the S3 download helper take a byte limit, rejects a declared <code class="code-tag">Content-Length</code> over the limit before reading the body, and stops reading a streamed response once it passes 30 MiB, with regression tests for both cases. SQL S3 inputs keep downloading without the limit.</p>
+
+      <h2 id="timeline">Timeline</h2>
+      <ul class="story-timeline">
+        <li><strong>2 Oct 2026.</strong> A scan of Windmill&rsquo;s AI backend (model qwen3.8-27b) rated the unbounded download and encoding in <code class="code-tag">image_handler.rs</code> as high severity.</li>
+        <li><strong>4 Oct.</strong> We opened <a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">pull request #11515</a> with a size check before encoding.</li>
+        <li><strong>5 Oct.</strong> Ruben Fiszel reviewed it, opened and merged <a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">#11534</a> with a bounded download, and it shipped in <a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">v1.824.0</a> the same day.</li>
+      </ul>
+
+      <h2 id="takeaway">How to read this</h2>
+      <p>Our patch only avoided the extra base64 copy; the whole object was still buffered first. The maintainer&rsquo;s review caught that, and the upstream fix is better than ours. The scan&rsquo;s value was pointing at the unbounded allocation; the right fix came from someone who knows the code. Findings are leads for people, not verdicts.</p>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">Our pull request windmill-labs/windmill#11515</a></li>
+        <li><a href="https://github.com/windmill-labs/windmill/pull/11515#issuecomment-5989317574" target="_blank" rel="noopener">Review by Ruben Fiszel</a></li>
+        <li><a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">Upstream fix windmill-labs/windmill#11534</a></li>
+        <li><a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">Windmill release v1.824.0</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

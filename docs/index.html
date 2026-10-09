@@ -282,6 +282,24 @@
       </article>
 
       <article class="story-card">
+        <span class="story-badge">Released upstream &bull; October 2026</span>
+        <h3><a href="stories/windmill-s3-ai-attachment-size-limit/">Windmill: unbounded S3 downloads for AI attachments</a></h3>
+        <p><a href="https://github.com/windmill-labs/windmill" target="_blank" rel="noopener">Windmill</a> is an open-source platform for scripts, workflows and internal tools. When an AI step referenced an S3 object, Windmill downloaded the whole object and base64-encoded it with no size limit, so one large object could exhaust a worker&rsquo;s memory. Our size check came too late; maintainer Ruben Fiszel replaced it with a bounded download.</p>
+        <ul class="story-timeline">
+          <li><strong>2 Oct 2026.</strong> A scan of Windmill&rsquo;s AI backend flagged the unbounded download in <code class="code-tag">image_handler.rs</code>.</li>
+          <li><strong>4 Oct.</strong> We opened pull request #11515 with a size check before encoding.</li>
+          <li><strong>5 Oct.</strong> Ruben Fiszel merged a bounded download in #11534, released in v1.824.0.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/windmill-s3-ai-attachment-size-limit/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">Pull request #11515</a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">Upstream fix #11534</a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">Release v1.824.0</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> Our patch was only a partial mitigation; the maintainer&rsquo;s fix is better. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Merged &bull; Shared library hardening &bull; October 2026</span>
         <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</a></h3>
         <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> is a popular CLI email client written in Rust. BudgetScan flagged that message metadata (subjects, sender names, attachment filenames) was printed into terminal tables without escaping control characters. An attacker could craft emails with OSC 52 sequences to silently overwrite the user's clipboard, manipulate terminal output, or use Unicode BiDi overrides to disguise executable attachments. Maintainer Clément Douin extracted our sanitization into the shared <code class="code-tag">pimalaya-cli</code> library with co-authorship credit, so its sister CLI tools can adopt it too.</p>

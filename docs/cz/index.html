@@ -282,6 +282,24 @@
       </article>
 
       <article class="story-card">
+        <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
+        <h3><a href="stories/windmill-s3-ai-attachment-size-limit/">Windmill: neomezené stahování z S3 u příloh pro AI</a></h3>
+        <p><a href="https://github.com/windmill-labs/windmill" target="_blank" rel="noopener">Windmill</a> je open-source platforma pro skripty, workflow a interní nástroje. Když krok s AI odkazoval na objekt v S3, Windmill ho stáhl celý a zakódoval do base64 bez limitu velikosti, takže jediný velký objekt mohl vyčerpat paměť workeru. Naše kontrola velikosti přicházela pozdě; správce Ruben Fiszel ji nahradil omezeným stahováním.</p>
+        <ul class="story-timeline">
+          <li><strong>2. 10. 2026.</strong> Sken AI backendu Windmillu upozornil na neomezené stahování v <code class="code-tag">image_handler.rs</code>.</li>
+          <li><strong>4. 10.</strong> Otevřeli jsme pull request #11515 s kontrolou velikosti před kódováním.</li>
+          <li><strong>5. 10.</strong> Ruben Fiszel začlenil omezené stahování v #11534, vydané ve v1.824.0.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/windmill-s3-ai-attachment-size-limit/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">Pull request #11515</a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">Oprava #11534</a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">Vydání v1.824.0</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Náš patch byl jen částečná ochrana; oprava správce je lepší. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Začleněno &bull; Zodolnění sdílené knihovny &bull; říjen 2026</span>
         <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: ochrana před terminal injection a BiDi spoofingem v Rust tabulkách e-mailů</a></h3>
         <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> je populární CLI e-mailový klient v Rustu. BudgetScan odhalil, že metadata zpráv (předměty, odesílatelé, názvy příloh) byla vypisována do terminálových tabulek bez ošetření řídicích znaků. Útočník mohl v e-mailu podstrčit sekvence OSC 52 pro tiché přepsání systémové schránky, manipulovat s terminálem nebo použít Unicode BiDi override k maskování spustitelných příloh. Správce Clément Douin vyčlenil naši sanitizaci do sdílené knihovny <code class="code-tag">pimalaya-cli</code> a uvedl Martina Vlacha jako spoluautora, takže ji mohou převzít i sesterské CLI nástroje.</p>

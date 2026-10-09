@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Windmill: neomezené stahování z S3 u příloh pro AI | BudgetScan</title>
+  <meta name="description" content="Sken odhalil, že Windmill načítal celé objekty z S3 do paměti před kódováním příloh pro AI do base64. Ruben Fiszel vydal omezené stahování ve v1.824.0.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/windmill-s3-ai-attachment-size-limit/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/windmill-s3-ai-attachment-size-limit/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/windmill-s3-ai-attachment-size-limit/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/windmill-s3-ai-attachment-size-limit/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Windmill: neomezené stahování z S3 u příloh pro AI">
+  <meta property="og:description" content="Sken odhalil, že Windmill načítal celé objekty z S3 do paměti před kódováním příloh pro AI do base64. Ruben Fiszel vydal omezené stahování ve v1.824.0.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/windmill-s3-ai-attachment-size-limit/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/windmill-s3-ai-attachment-size-limit/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Vydáno ve v1.824.0, 5. 10. 2026</span> &nbsp;Oprava ve Windmillu v upstreamu</p>
+      <h1>Windmill: neomezené stahování z S3 u příloh pro AI</h1>
+      <p>Náš skener upozornil, že <a href="https://github.com/windmill-labs/windmill" target="_blank" rel="noopener">Windmill</a>, open-source platforma pro skripty, workflow a interní nástroje, stahoval objekty z S3 použité jako přílohy pro AI celé do paměti a kódoval je do base64 bez jakéhokoli limitu velikosti. Jediný velký objekt tak mohl vyčerpat paměť workeru. Náš pull request přidal kontrolu velikosti. Správce Ruben Fiszel upozornil, že přichází příliš pozdě, a připravil lepší opravu, kterou ještě týž den vydal ve v1.824.0.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>Když zprávy kroku s AI odkazují na objekt v S3, funkce <code class="code-tag">download_and_encode_s3_image()</code> v <code class="code-tag">backend/windmill-ai/src/image_handler.rs</code> stáhla celý objekt a převedla ho na base64 data URL pro poskytovatele modelu. Velikost nic neomezovalo a úložiště workspace může obsahovat velké výstupy jobů, dumpy nebo archivy. Dost velký objekt znamenal velkou alokaci, k tomu zhruba o třetinu víc na kopii v base64, a mohl workeru vyčerpat paměť.</p>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Náš <a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">pull request #11515</a> odmítal objekty nad 30 MB ještě před kódováním do base64. Review Rubena Fiszela bylo přesné:</p>
+      <blockquote>
+        <p><em>„With the check here, a 2 GB object still gets fully buffered before the 30 MiB check runs, so it can still cause the OOM this aims to prevent.“</em></p>
+      </blockquote>
+      <p>Souhlasili jsme a náš PR byl uzavřen ve prospěch jeho <a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">pull requestu #11534</a>. Ten umožní pomocné funkci pro stahování z S3 převzít limit v bajtech, odmítne deklarovaný <code class="code-tag">Content-Length</code> nad limitem ještě před čtením těla a přestane číst streamovanou odpověď, jakmile překročí 30 MiB; obojí pokrývají regresní testy. Vstupy z S3 pro SQL se dál stahují bez limitu.</p>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>2. 10. 2026.</strong> Sken AI backendu Windmillu (model qwen3.8-27b) vyhodnotil neomezené stahování a kódování v <code class="code-tag">image_handler.rs</code> jako vysokou závažnost.</li>
+        <li><strong>4. 10.</strong> Otevřeli jsme <a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">pull request #11515</a> s kontrolou velikosti před kódováním.</li>
+        <li><strong>5. 10.</strong> Ruben Fiszel ho zrevidoval, otevřel a začlenil <a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">#11534</a> s omezeným stahováním a týž den vyšel ve <a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">v1.824.0</a>.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Náš patch ušetřil jen kopii v base64; celý objekt se stejně nejdřív načetl do paměti. Review správce to odhalilo a oprava v upstreamu je lepší než ta naše. Přínos skenu byl v tom, že ukázal na neomezenou alokaci; správnou opravu připravil ten, kdo kód zná. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">Náš pull request windmill-labs/windmill#11515</a></li>
+        <li><a href="https://github.com/windmill-labs/windmill/pull/11515#issuecomment-5989317574" target="_blank" rel="noopener">Review Rubena Fiszela</a></li>
+        <li><a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">Oprava v upstreamu windmill-labs/windmill#11534</a></li>
+        <li><a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">Vydání Windmill v1.824.0</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
