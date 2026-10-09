@@ -272,11 +272,11 @@
       <article class="story-card">
         <span class="story-badge">Merged &bull; Shared library hardening &bull; October 2026</span>
         <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</a></h3>
-        <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> is a popular CLI email client written in Rust. BudgetScan flagged that message metadata (subjects, sender names, attachment filenames) was printed into terminal tables without escaping control characters. An attacker could craft emails with OSC 52 sequences to silently overwrite the user's clipboard, manipulate terminal output, or use Unicode BiDi overrides to disguise executable attachments. Maintainer Clément Douin extracted our sanitization into the shared <code class="code-tag">pimalaya-cli</code> library with co-authorship credit, protecting the whole CLI ecosystem.</p>
+        <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> is a popular CLI email client written in Rust. BudgetScan flagged that message metadata (subjects, sender names, attachment filenames) was printed into terminal tables without escaping control characters. An attacker could craft emails with OSC 52 sequences to silently overwrite the user's clipboard, manipulate terminal output, or use Unicode BiDi overrides to disguise executable attachments. Maintainer Clément Douin extracted our sanitization into the shared <code class="code-tag">pimalaya-cli</code> library with co-authorship credit, so its sister CLI tools can adopt it too.</p>
         <ul class="story-timeline">
           <li><strong>2 Oct 2026.</strong> BudgetScan flagged unescaped metadata rendering in Himalaya's table output. We opened pull request #771 on GitHub with an initial patch and test suite.</li>
-          <li><strong>2 Oct.</strong> Maintainer Clément Douin (<code class="code-tag">soywod</code>) recognized that sister CLI projects (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) share the same tables. He moved the sanitization into <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, crediting us as co-author.</li>
-          <li><strong>3 Oct.</strong> We completed backend coverage across IMAP, JMAP, Gmail, Graph and pimdir backends and added integration tests. Maintainer Douin reviewed and merged pull request #771 into master.</li>
+          <li><strong>2 Oct.</strong> Maintainer Clément Douin (<code class="code-tag">soywod</code>) recognized that sister CLI projects (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) share the same tables. He moved the sanitization into <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, crediting Martin Vlach as co-author.</li>
+          <li><strong>3 Oct.</strong> We completed backend coverage across IMAP, JMAP, Gmail, Graph and pimdir backends and added unit tests. Maintainer Douin reviewed and merged pull request #771 into master.</li>
         </ul>
         <ul class="story-links">
           <li><a href="stories/himalaya-terminal-injection-sanitization/"><strong>Read the full story &rarr;</strong></a></li>
@@ -284,7 +284,7 @@
           <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5959074461" target="_blank" rel="noopener">Maintainer review &amp; co-authorship note</a></li>
           <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">pimalaya-cli crate on crates.io</a></li>
         </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> Automated scanning detected an input-sanitization gap, and close collaboration with the maintainer turned a single bug fix into a system-wide defense across multiple CLI tools. Findings are actionable leads for humans, not unquestioned verdicts.</p>
+        <p class="story-caveat"><strong>How to read this.</strong> Automated scanning detected an input-sanitization gap, and close collaboration with the maintainer turned a single bug fix into a shared function the other Pimalaya CLI tools can adopt. Findings are actionable leads for humans, not unquestioned verdicts.</p>
       </article>
 
       <article class="story-card">

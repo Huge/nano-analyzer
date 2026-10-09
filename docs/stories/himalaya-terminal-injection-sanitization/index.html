@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <title>Himalaya: terminal escape injection and BiDi spoofing defense | BudgetScan</title>
-  <meta name="description" content="BudgetScan identified unescaped terminal control sequences in Himalaya's CLI email tables. Maintainer Clément Douin merged our fix and promoted the sanitization into the shared pimalaya-cli library, protecting the entire ecosystem.">
+  <meta name="description" content="BudgetScan identified unescaped terminal control sequences in Himalaya's CLI email tables. Maintainer Clément Douin merged our fix and moved the sanitization into the shared pimalaya-cli library, so its sister tools can adopt it.">
   <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/himalaya-terminal-injection-sanitization/">
   <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/himalaya-terminal-injection-sanitization/">
   <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/himalaya-terminal-injection-sanitization/">
@@ -65,9 +65,9 @@
 
   <main class="doc">
     <div class="container doc-container">
-      <p><span class="tag-status tag-available">Merged 3 Oct 2026</span> &nbsp;Shared crate hardening across Pimalaya</p>
+      <p><span class="tag-status tag-available">Merged 3 Oct 2026</span> &nbsp;Fix moved into the shared Pimalaya crate</p>
       <h1>Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</h1>
-      <p>BudgetScan flagged that <a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a>, a popular CLI email client written in Rust, printed unescaped message metadata &mdash; subjects, sender names, attachment filenames, and IDs &mdash; directly into terminal tables. An external email sender could inject ANSI escape sequences (such as OSC 52 clipboard hijacking, screen clearing, and line overwrites) or Unicode BiDi overrides to disguise executable attachment extensions. Project maintainer Clément Douin (<code class="code-tag">soywod</code>) affirmed the problem and extracted our proposed sanitization into the central <code class="code-tag">pimalaya-cli</code> library, crediting us as co-author and shielding the entire suite of CLI tools (<code class="code-tag">himalaya</code>, <code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>).</p>
+      <p>BudgetScan flagged that <a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a>, a popular CLI email client written in Rust, printed unescaped message metadata &mdash; subjects, sender names, attachment filenames, and IDs &mdash; directly into terminal tables. An external email sender could inject ANSI escape sequences (such as OSC 52 clipboard hijacking, screen clearing, and line overwrites) or Unicode BiDi overrides to disguise executable attachment extensions. Project maintainer Clément Douin (<code class="code-tag">soywod</code>) affirmed the problem and extracted our proposed sanitization into the central <code class="code-tag">pimalaya-cli</code> library, credited Martin Vlach as co-author, and made it available to the sister CLI tools <code class="code-tag">cardamum</code> and <code class="code-tag">calendula</code>, which share the same tables.</p>
 
       <h2 id="problem">What was wrong</h2>
       <p>When an email user lists envelopes (<code class="code-tag">himalaya envelope list</code>) or inspects attachments, Himalaya formats the message metadata into clean CLI tables. Because this metadata comes directly from external untrusted sources &mdash; anyone who sends an email can set arbitrary Subject headers, sender display names, and attachment filenames &mdash; printing it raw to a terminal emulator creates severe security risks:</p>
@@ -81,7 +81,7 @@
       <figure class="flow">
         <svg viewBox="0 0 550 490" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
           <title id="flow-title">Himalaya table rendering flow</title>
-          <desc id="flow-desc">Incoming email metadata passes through table rendering. Before the fix, raw control characters were printed to the terminal. Now, pimalaya_cli::table::sanitize strips escape codes and replaces BiDi overrides.</desc>
+          <desc id="flow-desc">Incoming email metadata passes through table rendering. Before the fix, raw control characters were printed to the terminal. Now, pimalaya_cli::table::sanitize replaces control characters (which defuses escape sequences) and BiDi overrides with U+FFFD.</desc>
           <defs>
             <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#818cf8"/></marker>
             <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ef4444"/></marker>
@@ -91,7 +91,7 @@
           <rect class="flow-box" x="20" y="110" width="360" height="62" rx="10"/>
           <text class="flow-t" x="200" y="137">Single-line table formatter</text><text class="flow-s" x="200" y="157">IMAP, JMAP, Gmail, Graph, pimdir</text>
           <rect class="flow-box flow-new" x="20" y="210" width="360" height="62" rx="10"/>
-          <text class="flow-t flow-t-new" x="200" y="237">pimalaya_cli::table::sanitize</text><text class="flow-s" x="200" y="257">strips C0/C1, DEL, ANSI, replaces BiDi</text>
+          <text class="flow-t flow-t-new" x="200" y="237">pimalaya_cli::table::sanitize</text><text class="flow-s" x="200" y="257">C0/C1, DEL and BiDi &rarr; U+FFFD</text>
           <rect class="flow-box" x="20" y="310" width="360" height="62" rx="10"/>
           <text class="flow-t" x="200" y="337">Safe terminal table output</text><text class="flow-s" x="200" y="357">clean text without injection hazard</text>
           <rect class="flow-box" x="20" y="410" width="360" height="62" rx="10"/>
@@ -121,7 +121,7 @@
       <ul>
         <li>Bumped <code class="code-tag">pimalaya-cli</code> to 0.2.6 and converted single-line fields across IMAP, JMAP, Gmail, Graph, and pimdir backends to use <code class="code-tag">pimalaya_cli::table::sanitize</code>.</li>
         <li>Refined <code class="code-tag">write_bytes_or_save</code> in <code class="code-tag">output.rs</code> to reject DEL and C1 control bytes on terminal outputs, reading non-UTF-8 bytes as Latin-1 so UTF-8 continuation bytes are not misidentified.</li>
-        <li>Added integration tests rendering tables from strings containing OSC 52, SGR, screen-clearing sequences, and BiDi overrides.</li>
+        <li>Added unit tests rendering tables from strings containing OSC 52, SGR, screen-clearing sequences, and BiDi overrides.</li>
         <li>Updated the Cairn CLI specification (<code class="code-tag">cairn/spec/commands.md</code>) to formally require printable sanitization on single-line metadata fields.</li>
       </ul>
       <p>Maintainer Clément Douin verified the changes and merged the pull request into master on 3 October 2026:</p>
@@ -132,12 +132,12 @@
       <h2 id="timeline">Timeline</h2>
       <ul class="story-timeline">
         <li><strong>2 Oct 2026.</strong> BudgetScan flagged unescaped metadata rendering in Himalaya's table output. We opened <a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">pull request #771</a> with an initial patch and test suite.</li>
-        <li><strong>2 Oct.</strong> Maintainer Clément Douin confirmed the vulnerability, extracted the sanitization routine into the shared library <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, and credited us as co-author.</li>
+        <li><strong>2 Oct.</strong> Maintainer Clément Douin confirmed the vulnerability, extracted the sanitization routine into the shared library <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, and credited Martin Vlach as co-author.</li>
         <li><strong>3 Oct.</strong> We completed the PR with the updated library, comprehensive backend coverage, and specification updates. Maintainer Douin reviewed and merged the PR into master.</li>
       </ul>
 
       <h2 id="takeaway">How to read this</h2>
-      <p>Automated scanning found an unescaped control sequence flaw in CLI tables, and thoughtful maintainer collaboration turned a single-repo bug fix into a system-wide defense for an entire suite of command-line tools. This is open-source security at its best: automated detection generating clear leads, followed by thoughtful human review, robust test cases, and collaborative architectural hardening. Special thanks to Clément Douin for outstanding open-source leadership and swift action.</p>
+      <p>Automated scanning found an unescaped control sequence flaw in CLI tables, and thoughtful maintainer collaboration turned a single-repo bug fix into a shared function that the other Pimalaya command-line tools can adopt. This is open-source security at its best: automated detection generating clear leads, followed by thoughtful human review, robust test cases, and collaborative architectural hardening. Special thanks to Clément Douin for outstanding open-source leadership and swift action.</p>
 
       <h2 id="sources">Sources</h2>
       <ul>

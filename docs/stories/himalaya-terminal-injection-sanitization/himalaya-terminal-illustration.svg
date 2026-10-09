@@ -71,7 +71,7 @@
       <rect x="-10" y="-14" width="1040" height="34" rx="4" fill="rgba(46, 160, 67, 0.14)" stroke="rgba(46, 160, 67, 0.35)" stroke-width="1"/>
       <text fill="#3fb950" font-weight="700">142</text>
       <text x="45" fill="#8b949e"> </text>
-      <text x="105" fill="#3fb950">Urgent Invoice [sanitized] (control chars stripped)</text>
+      <text x="105" fill="#3fb950">Urgent Invoice [sanitized] (control chars replaced)</text>
       <text x="540" fill="#7ee787">attacker@evil.com</text>
       <text x="730" fill="#8b949e">10:42 AM</text>
       <text x="830" fill="#3fb950" font-weight="700">[SANITIZED: safe]</text>
@@ -84,8 +84,8 @@
     <g transform="translate(20, 28)">
       <text font-size="12.5" fill="#58a6ff" font-weight="700" font-family="Inter, sans-serif">CRATE RELEASE · pimalaya-cli 0.2.6 (crates.io)</text>
       <text y="24" font-size="14" fill="#e6edf3" font-weight="600">pimalaya_cli::table::sanitize(input) &#8212; Co-authored by Huge &amp; Clément Douin</text>
-      <text y="46" font-size="13" fill="#8b949e">Extracted to shared core crate to protect the entire suite: <tspan fill="#79c0ff">himalaya</tspan> (email), <tspan fill="#79c0ff">cardamum</tspan> (contacts), <tspan fill="#79c0ff">calendula</tspan> (calendar).</text>
-      <text y="70" font-size="12.5" fill="#7ee787" font-weight="500">+ Strips C0 / C1 controls, DEL, ANSI / OSC escape sequences</text>
+      <text y="46" font-size="13" fill="#8b949e">Moved into the shared crate so the whole suite can adopt it: <tspan fill="#79c0ff">himalaya</tspan> (email), <tspan fill="#79c0ff">cardamum</tspan> (contacts), <tspan fill="#79c0ff">calendula</tspan> (calendar).</text>
+      <text y="70" font-size="12.5" fill="#7ee787" font-weight="500">+ Replaces C0 / C1 controls and DEL with U+FFFD, defusing ANSI / OSC escape sequences</text>
       <text y="92" font-size="12.5" fill="#7ee787" font-weight="500">+ Replaces Unicode BiDi overrides (U+202A–202E, U+2066–2069) preventing filename spoofing</text>
     </g>
   </g>

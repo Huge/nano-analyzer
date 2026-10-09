@@ -272,11 +272,11 @@
       <article class="story-card">
         <span class="story-badge">Začleněno &bull; Zodolnění sdílené knihovny &bull; říjen 2026</span>
         <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: ochrana před terminal injection a BiDi spoofingem v Rust tabulkách e-mailů</a></h3>
-        <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> je populární CLI e-mailový klient v Rustu. BudgetScan odhalil, že metadata zpráv (předměty, odesílatelé, názvy příloh) byla vypisována do terminálových tabulek bez ošetření řídicích znaků. Útočník mohl v e-mailu podstrčit sekvence OSC 52 pro tiché přepsání systémové schránky, manipulovat s terminálem nebo použít Unicode BiDi override k maskování spustitelných příloh. Správce Clément Douin vyčlenil naši sanitizaci do sdílené knihovny <code class="code-tag">pimalaya-cli</code> se spoluautorstvím pro nás, čímž ochránil celý ekosystém CLI nástrojů.</p>
+        <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> je populární CLI e-mailový klient v Rustu. BudgetScan odhalil, že metadata zpráv (předměty, odesílatelé, názvy příloh) byla vypisována do terminálových tabulek bez ošetření řídicích znaků. Útočník mohl v e-mailu podstrčit sekvence OSC 52 pro tiché přepsání systémové schránky, manipulovat s terminálem nebo použít Unicode BiDi override k maskování spustitelných příloh. Správce Clément Douin vyčlenil naši sanitizaci do sdílené knihovny <code class="code-tag">pimalaya-cli</code> a uvedl Martina Vlacha jako spoluautora, takže ji mohou převzít i sesterské CLI nástroje.</p>
         <ul class="story-timeline">
           <li><strong>2. 10. 2026.</strong> BudgetScan upozornil na neošetřená metadata ve výstupu tabulek Himalaya. Otevřeli jsme pull request #771 na GitHubu s prvním návrhem opravy a testy.</li>
-          <li><strong>2. 10.</strong> Správce Clément Douin (<code class="code-tag">soywod</code>) rozpoznal, že příbuzné CLI projekty (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) sdílejí stejné tabulky. Vyčlenil sanitizaci do <code class="code-tag">pimalaya-cli</code> 0.2.6 s ošetřením BiDi znaků a uvedl nás jako spoluautory.</li>
-          <li><strong>3. 10.</strong> Dokončili jsme pokrytí napříč backendy IMAP, JMAP, Gmail, Graph i pimdir a doplnili integrační testy. Správce Douin změny zkontroloval a pull request #771 začlenil do masteru.</li>
+          <li><strong>2. 10.</strong> Správce Clément Douin (<code class="code-tag">soywod</code>) rozpoznal, že příbuzné CLI projekty (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) sdílejí stejné tabulky. Vyčlenil sanitizaci do <code class="code-tag">pimalaya-cli</code> 0.2.6 s ošetřením BiDi znaků a uvedl Martina Vlacha jako spoluautora.</li>
+          <li><strong>3. 10.</strong> Dokončili jsme pokrytí napříč backendy IMAP, JMAP, Gmail, Graph i pimdir a doplnili jednotkové testy. Správce Douin změny zkontroloval a pull request #771 začlenil do masteru.</li>
         </ul>
         <ul class="story-links">
           <li><a href="stories/himalaya-terminal-injection-sanitization/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
@@ -284,7 +284,7 @@
           <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5959074461" target="_blank" rel="noopener">Hodnocení správce a uvedení spoluautorství</a></li>
           <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">Knihovna pimalaya-cli na crates.io</a></li>
         </ul>
-        <p class="story-caveat"><strong>Jak to číst.</strong> Automatizované skenování zachytilo mezeru v sanitizaci vstupů a spolupráce se správcem proměnila opravu jedné chyby v systémovou ochranu celé rodiny CLI nástrojů. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Automatizované skenování zachytilo mezeru v sanitizaci vstupů a spolupráce se správcem proměnila opravu jedné chyby ve sdílenou funkci, kterou mohou převzít i další CLI nástroje Pimalaya. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
       <article class="story-card">
