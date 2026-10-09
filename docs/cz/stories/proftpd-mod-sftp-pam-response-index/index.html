@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>ProFTPD: odpovědi keyboard-interactive přiřazené ke špatným výzvám PAM | BudgetScan</title>
+  <meta name="description" content="Sken odhalil chybné indexování odpovědí v modulu mod_sftp_pam serveru ProFTPD. Správce TJ Saunders opravu 7. 10. 2026 začlenil do upstreamu.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/proftpd-mod-sftp-pam-response-index/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/proftpd-mod-sftp-pam-response-index/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/proftpd-mod-sftp-pam-response-index/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/proftpd-mod-sftp-pam-response-index/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="ProFTPD: odpovědi keyboard-interactive přiřazené ke špatným výzvám PAM">
+  <meta property="og:description" content="Sken odhalil chybné indexování odpovědí v modulu mod_sftp_pam serveru ProFTPD. Správce TJ Saunders opravu 7. 10. 2026 začlenil do upstreamu.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/proftpd-mod-sftp-pam-response-index/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/proftpd-mod-sftp-pam-response-index/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Začleněno do upstreamu 7. 10. 2026</span> &nbsp;Oprava chyby v ProFTPD v upstreamu</p>
+      <h1>ProFTPD: odpovědi keyboard-interactive přiřazené ke špatným výzvám PAM</h1>
+      <p>Náš skener upozornil, že modul <code class="code-tag">mod_sftp_pam</code> serveru <a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a>, přes který se přihlášení k SFTP ověřuje pomocí PAM a metody keyboard-interactive, četl odpovědi klienta podle špatného indexu. Když modul PAM poslal ve stejné konverzaci před výzvou informační zprávu, výzva dostala špatnou odpověď a kód četl za koncem pole odpovědí. Správce TJ Saunders naši opravu 7. října 2026 začlenil.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p><code class="code-tag">sftppam_converse()</code> posílá klientovi jako výzvy keyboard-interactive jen výzvy PAM (<code class="code-tag">PAM_PROMPT_ECHO_ON</code> a <code class="code-tag">PAM_PROMPT_ECHO_OFF</code>). Informační a chybové zprávy (<code class="code-tag">PAM_TEXT_INFO</code>, <code class="code-tag">PAM_ERROR_MSG</code>) se místo toho zobrazí jako banner nebo zalogují. ProFTPD vyžaduje na každou výzvu právě jednu odpověď, takže klient vrátí jednu odpověď na výzvu.</p>
+      <p>Smyčka, která odpovědi předává zpět do PAM, je ale indexovala pozicí zprávy PAM, ne pozicí výzvy. Při zprávách <code class="code-tag">[PAM_TEXT_INFO, PAM_PROMPT_ECHO_OFF]</code> se pošle jen jedna výzva, kód však přečetl <code class="code-tag">recvd_responses[1]</code> a předal ho do <code class="code-tag">strdup()</code>: čtení mimo alokovanou paměť na haldě.</p>
+      <p>Moduly PAM to dělat smějí. Například pam-krb5 posílá při změně prošlého hesla banner Kerberosu jako <code class="code-tag">PAM_TEXT_INFO</code> spolu s výzvami. S takovou konfigurací PAM přihlášení přes keyboard-interactive selhalo, nebo mohl spadnout proces relace. Klient sám to vyvolat nemůže; záleží na konfiguraci PAM na serveru.</p>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Oprava drží pro přijaté odpovědi samostatný index a posouvá ho jen u výzev, takže nikdy nepřekročí počet přijatých odpovědí:</p>
+      <pre><code>-  uint32_t recvd_count = 0;
++  uint32_t recvd_count = 0, recvd_idx = 0;
+ ...
+       case PAM_PROMPT_ECHO_OFF:
+-        res[i].resp = strdup(recvd_responses[i]);
++        res[i].resp = strdup(recvd_responses[recvd_idx++]);</code></pre>
+      <p>Moduly v contrib ProFTPD nemají harness pro jednotkové testy, takže jsme změnu ověřili samostatným harnessem s AddressSanitizerem kolem konverzační funkce. Tři smíšené seznamy zpráv, které před opravou vedly k čtení mimo hranice haldy, po ní projdou. Správce TJ Saunders (<code class="code-tag">Castaglia</code>) v pull requestu odpověděl:</p>
+      <blockquote>
+        <p><em>„I'll be merging this shortly.  Thanks for the patch/fix!“</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>30. 9. 2026.</strong> Sken zdrojového stromu ProFTPD (411 souborů, model qwen3.8-27b) upozornil na <code class="code-tag">sftppam_converse()</code>. Tři kola triáže nález vyhodnotila jako platný.</li>
+        <li><strong>2. 10.</strong> Záměnu indexů jsme potvrdili harnessem s AddressSanitizerem a otevřeli <a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">pull request #2355</a>.</li>
+        <li><strong>7. 10.</strong> TJ Saunders ho začlenil do masteru. K 9. 10. 2026 zatím není v žádném vydání.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Skener ukázal na správnou funkci, ale jeho triáž přecenila dosah: předpokládala, že klient může poslat méně odpovědí než výzev. Čtení přijímacího kódu to vyloučilo a zúžilo problém na konfigurace PAM, které míchají zprávy a výzvy. Právě tenhle užší popis šel do upstreamu. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">Pull request proftpd/proftpd#2355</a></li>
+        <li><a href="https://github.com/proftpd/proftpd/commit/4f5c2583f83db330f51429c132c32a39028b83ce" target="_blank" rel="noopener">Commit 4f5c258 (mod_sftp_pam)</a></li>
+        <li><a href="https://github.com/proftpd/proftpd/pull/2355#issuecomment-6047740810" target="_blank" rel="noopener">Odpověď správce TJ Saunderse</a></li>
+        <li><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD na GitHubu</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

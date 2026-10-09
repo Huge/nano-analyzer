@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts | BudgetScan</title>
+  <meta name="description" content="A scan flagged mismatched answer indexing in ProFTPD's mod_sftp_pam. Maintainer TJ Saunders merged the fix upstream on 7 Oct 2026.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/proftpd-mod-sftp-pam-response-index/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/proftpd-mod-sftp-pam-response-index/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/proftpd-mod-sftp-pam-response-index/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/proftpd-mod-sftp-pam-response-index/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts">
+  <meta property="og:description" content="A scan flagged mismatched answer indexing in ProFTPD's mod_sftp_pam. Maintainer TJ Saunders merged the fix upstream on 7 Oct 2026.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/proftpd-mod-sftp-pam-response-index/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Overview</a>
+        <a href="../../#stories">Success Stories</a>
+        <a href="../../how-to/">How-to Guide</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../cz/stories/proftpd-mod-sftp-pam-response-index/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../../#stories" class="btn btn-primary">All stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Merged upstream 7 Oct 2026</span> &nbsp;Upstream bug fix in ProFTPD</p>
+      <h1>ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts</h1>
+      <p>Our scanner flagged that the <code class="code-tag">mod_sftp_pam</code> module of <a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a>, which lets SFTP logins authenticate through PAM with keyboard-interactive authentication, read the client&rsquo;s answers by the wrong index. When a PAM module sent an informational message before a prompt in the same conversation, the prompt got the wrong answer and the code read past the end of the answers array. Maintainer TJ Saunders merged our fix on 7 October 2026.</p>
+
+      <h2 id="problem">What was wrong</h2>
+      <p><code class="code-tag">sftppam_converse()</code> sends the client only the PAM prompts (<code class="code-tag">PAM_PROMPT_ECHO_ON</code> and <code class="code-tag">PAM_PROMPT_ECHO_OFF</code>) as keyboard-interactive challenges. Informational and error messages (<code class="code-tag">PAM_TEXT_INFO</code>, <code class="code-tag">PAM_ERROR_MSG</code>) are shown as a banner or logged instead. ProFTPD requires exactly one answer per challenge, so the client returns one answer per prompt.</p>
+      <p>The loop that hands the answers back to PAM, however, indexed them by the position of the PAM message, not by the position of the prompt. With the messages <code class="code-tag">[PAM_TEXT_INFO, PAM_PROMPT_ECHO_OFF]</code>, only one challenge is sent, yet the code read <code class="code-tag">recvd_responses[1]</code> and passed it to <code class="code-tag">strdup()</code>: a heap out-of-bounds read.</p>
+      <p>PAM modules may legitimately do this. pam-krb5, for example, sends the Kerberos prompter&rsquo;s banner as <code class="code-tag">PAM_TEXT_INFO</code> together with the prompts during an expired-password change. With such a PAM stack, keyboard-interactive login failed or the session process could crash. A client cannot trigger it on its own; it depends on the server&rsquo;s PAM configuration.</p>
+
+      <h2 id="fix">How it was fixed</h2>
+      <p>The fix keeps a separate index into the received answers and advances it only for prompts, so it can never pass the number of answers received:</p>
+      <pre><code>-  uint32_t recvd_count = 0;
++  uint32_t recvd_count = 0, recvd_idx = 0;
+ ...
+       case PAM_PROMPT_ECHO_OFF:
+-        res[i].resp = strdup(recvd_responses[i]);
++        res[i].resp = strdup(recvd_responses[recvd_idx++]);</code></pre>
+      <p>ProFTPD&rsquo;s contrib modules have no unit-test harness, so we checked the change with a standalone AddressSanitizer harness around the conversation function. The three mixed message lists that produced heap-buffer-overflow reads before the fix pass after it. Maintainer TJ Saunders (<code class="code-tag">Castaglia</code>) replied on the pull request:</p>
+      <blockquote>
+        <p><em>&ldquo;I'll be merging this shortly.  Thanks for the patch/fix!&rdquo;</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Timeline</h2>
+      <ul class="story-timeline">
+        <li><strong>30 Sep 2026.</strong> A scan of the ProFTPD source tree (411 files, model qwen3.8-27b) flagged <code class="code-tag">sftppam_converse()</code>. Three triage rounds rated the finding valid.</li>
+        <li><strong>2 Oct.</strong> We confirmed the index mix-up with the AddressSanitizer harness and opened <a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">pull request #2355</a>.</li>
+        <li><strong>7 Oct.</strong> TJ Saunders merged it into master. As of 9 Oct 2026 it is not in a tagged release yet.</li>
+      </ul>
+
+      <h2 id="takeaway">How to read this</h2>
+      <p>The scanner pointed at the right function, but its triage overstated the reach: it assumed a client could send fewer answers than prompts. Reading the receiving code ruled that out and narrowed the issue to PAM stacks that mix messages and prompts. That narrower description is what went upstream. Findings are leads for people, not verdicts.</p>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">Pull request proftpd/proftpd#2355</a></li>
+        <li><a href="https://github.com/proftpd/proftpd/commit/4f5c2583f83db330f51429c132c32a39028b83ce" target="_blank" rel="noopener">Commit 4f5c258 (mod_sftp_pam)</a></li>
+        <li><a href="https://github.com/proftpd/proftpd/pull/2355#issuecomment-6047740810" target="_blank" rel="noopener">Maintainer reply by TJ Saunders</a></li>
+        <li><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD on GitHub</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

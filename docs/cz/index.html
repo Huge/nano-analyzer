@@ -265,6 +265,23 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Začleněno do upstreamu &bull; říjen 2026</span>
+        <h3><a href="stories/proftpd-mod-sftp-pam-response-index/">ProFTPD: odpovědi keyboard-interactive přiřazené ke špatným výzvám PAM</a></h3>
+        <p><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a> je rozšířený FTP a SFTP server. Jeho modul <code class="code-tag">mod_sftp_pam</code> přiřazoval odpovědi keyboard-interactive k výzvám PAM podle špatného indexu. Když modul PAM poslal před výzvou informační zprávu, jako to dělá pam-krb5 při změně hesla, přihlášení selhalo nebo proces relace četl za koncem pole odpovědí. Správce TJ Saunders naši opravu začlenil.</p>
+        <ul class="story-timeline">
+          <li><strong>30. 9. 2026.</strong> Sken stromu ProFTPD upozornil na <code class="code-tag">sftppam_converse()</code>; tři kola triáže nález potvrdila.</li>
+          <li><strong>2. 10.</strong> Potvrdili jsme ho harnessem s AddressSanitizerem a otevřeli pull request #2355.</li>
+          <li><strong>7. 10.</strong> TJ Saunders ho začlenil do masteru; zatím není v žádném vydání.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/proftpd-mod-sftp-pam-response-index/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">Pull request #2355</a></li>
+          <li><a href="https://github.com/proftpd/proftpd/pull/2355#issuecomment-6047740810" target="_blank" rel="noopener">Odpověď správce</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Triáž skeneru přecenila dosah; čtení přijímacího kódu ho zúžilo na konfigurace PAM, které míchají zprávy a výzvy. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Začleněno &bull; Zodolnění sdílené knihovny &bull; říjen 2026</span>
         <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: ochrana před terminal injection a BiDi spoofingem v Rust tabulkách e-mailů</a></h3>
         <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> je populární CLI e-mailový klient v Rustu. BudgetScan odhalil, že metadata zpráv (předměty, odesílatelé, názvy příloh) byla vypisována do terminálových tabulek bez ošetření řídicích znaků. Útočník mohl v e-mailu podstrčit sekvence OSC 52 pro tiché přepsání systémové schránky, manipulovat s terminálem nebo použít Unicode BiDi override k maskování spustitelných příloh. Správce Clément Douin vyčlenil naši sanitizaci do sdílené knihovny <code class="code-tag">pimalaya-cli</code> a uvedl Martina Vlacha jako spoluautora, takže ji mohou převzít i sesterské CLI nástroje.</p>

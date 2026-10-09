@@ -265,6 +265,23 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Merged upstream &bull; October 2026</span>
+        <h3><a href="stories/proftpd-mod-sftp-pam-response-index/">ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts</a></h3>
+        <p><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a> is a widely deployed FTP and SFTP server. Its <code class="code-tag">mod_sftp_pam</code> module matched keyboard-interactive answers to PAM prompts by the wrong index. When a PAM module sent an info message before a prompt, as pam-krb5 does during a password change, login failed or the session process read past the end of the answers array. Maintainer TJ Saunders merged our fix.</p>
+        <ul class="story-timeline">
+          <li><strong>30 Sep 2026.</strong> A scan of the ProFTPD tree flagged <code class="code-tag">sftppam_converse()</code>; three triage rounds rated it valid.</li>
+          <li><strong>2 Oct.</strong> We confirmed it with an AddressSanitizer harness and opened pull request #2355.</li>
+          <li><strong>7 Oct.</strong> TJ Saunders merged it into master; not in a tagged release yet.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/proftpd-mod-sftp-pam-response-index/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">Pull request #2355</a></li>
+          <li><a href="https://github.com/proftpd/proftpd/pull/2355#issuecomment-6047740810" target="_blank" rel="noopener">Maintainer reply</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage overstated the reach; reading the receiving code narrowed it to PAM stacks that mix messages and prompts. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Merged &bull; Shared library hardening &bull; October 2026</span>
         <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</a></h3>
         <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> is a popular CLI email client written in Rust. BudgetScan flagged that message metadata (subjects, sender names, attachment filenames) was printed into terminal tables without escaping control characters. An attacker could craft emails with OSC 52 sequences to silently overwrite the user's clipboard, manipulate terminal output, or use Unicode BiDi overrides to disguise executable attachments. Maintainer Clément Douin extracted our sanitization into the shared <code class="code-tag">pimalaya-cli</code> library with co-authorship credit, so its sister CLI tools can adopt it too.</p>
