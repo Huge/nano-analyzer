@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname | BudgetScan</title>
+  <meta name="description" content="A scan flagged a NULL hostname reaching a log call in dnsmasq's SLAAC code. Simon Kelley fixed the underlying stale records upstream on 1 Oct 2026.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname">
+  <meta property="og:description" content="A scan flagged a NULL hostname reaching a log call in dnsmasq's SLAAC code. Simon Kelley fixed the underlying stale records upstream on 1 Oct 2026.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Overview</a>
+        <a href="../../#stories">Success Stories</a>
+        <a href="../../how-to/">How-to Guide</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../cz/stories/dnsmasq-slaac-stale-hostname/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../../#stories" class="btn btn-primary">All stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Fixed upstream 1 Oct 2026</span> &nbsp;Upstream bug fix in dnsmasq</p>
+      <h1>dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname</h1>
+      <p>Our scanner flagged that <a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>, the DNS and DHCP server built into many routers and Linux systems, could pass a NULL hostname to a <code class="code-tag">%s</code> log format in its SLAAC code. We sent a small patch to the dnsmasq-discuss mailing list. Author and maintainer Simon Kelley traced it to the underlying cause, SLAAC name records left on a lease that had lost its hostname, and fixed that the next day. His commit message credits Martin Vlach with finding a symptom of it in the SLAAC logging code.</p>
+
+      <h2 id="problem">What was wrong</h2>
+      <p>For DHCPv4 clients on interfaces with router-advertisement naming, dnsmasq derives SLAAC IPv6 addresses from the client&rsquo;s MAC address and maps them to the lease&rsquo;s hostname. <code class="code-tag">slaac_add_addrs()</code> creates these records only when the lease has a hostname, and otherwise returned early without touching existing records.</p>
+      <p>A lease can lose its hostname later, for example when another client claims the same name and <code class="code-tag">kill_name()</code> clears it. Its SLAAC records stayed behind. When an ICMPv6 echo reply for one of those addresses arrived, <code class="code-tag">slaac_ping_reply()</code> logged it with <code class="code-tag">lease-&gt;hostname</code>, by then <code class="code-tag">NULL</code>, as a <code class="code-tag">%s</code> argument. That is undefined behaviour in C. glibc and musl print <code class="code-tag">(null)</code>, so the visible symptom is cosmetic there, but the name-to-address data derived from the old hostname was no longer valid either way.</p>
+
+      <h2 id="fix">How it was fixed</h2>
+      <p>Our patch only guarded the log line, printing <code class="code-tag">*</code> for a missing name as <code class="code-tag">lease.c</code> already does. Simon Kelley fixed the cause instead: <code class="code-tag">kill_name()</code> now removes the lease&rsquo;s SLAAC records, <code class="code-tag">lease_set_hostname()</code> regenerates them when a name is added, and <code class="code-tag">slaac_add_addrs()</code> always drops the old records before deciding whether to create new ones.</p>
+      <pre><code>   lease->hostname = lease->fqdn = NULL;
++
++#ifdef HAVE_DHCP6
++  /* A lease which had a hostname when slaac_add_addrs() was called on it
++     may have slaac-address records. Since it no longer has a hostname,
++     they are no-longer valid, so update to remove them */
++  slaac_add_addrs(lease, 0, 0);
++#endif
+ }</code></pre>
+
+      <h2 id="timeline">Timeline</h2>
+      <ul class="story-timeline">
+        <li><strong>30 Sep 2026.</strong> A scan of the dnsmasq tree (59 files, model qwen3.8-27b) flagged the NULL hostname in <code class="code-tag">slaac_ping_reply()</code>; six triage rounds rated it valid. We found the path by reading the code, without reproducing it, and <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">mailed a patch</a> to dnsmasq-discuss the same evening.</li>
+        <li><strong>1 Oct.</strong> Simon Kelley committed <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">&ldquo;Clear down SLAAC-name data when a DHCP lease loses its hostname.&rdquo;</a> As of 9 Oct 2026 it is not in a tagged release yet.</li>
+      </ul>
+
+      <h2 id="takeaway">How to read this</h2>
+      <p>The scanner found a symptom; the maintainer found the cause. Our patch would have quieted one log line, while the upstream fix removes the stale records that made it possible. A narrow patch is a starting point for the maintainer, not the final word. Findings are leads for people, not verdicts.</p>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Our patch on the dnsmasq-discuss mailing list</a></li>
+        <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">Upstream commit 03fd0c1 (dnsmasq git)</a></li>
+        <li><a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq home page</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease | BudgetScan</title>
+  <meta name="description" content="Sken odhalil NULL hostname předávaný do logování v kódu SLAAC v dnsmasq. Simon Kelley 1. 10. 2026 opravil v upstreamu příčinu, zastaralé záznamy.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease">
+  <meta property="og:description" content="Sken odhalil NULL hostname předávaný do logování v kódu SLAAC v dnsmasq. Simon Kelley 1. 10. 2026 opravil v upstreamu příčinu, zastaralé záznamy.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/dnsmasq-slaac-stale-hostname/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Opraveno v upstreamu 1. 10. 2026</span> &nbsp;Oprava chyby v dnsmasq v upstreamu</p>
+      <h1>dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease</h1>
+      <p>Náš skener upozornil, že <a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>, DNS a DHCP server vestavěný do mnoha routerů a linuxových systémů, mohl v kódu SLAAC předat NULL hostname do formátu <code class="code-tag">%s</code> při logování. Do konference dnsmasq-discuss jsme poslali malý patch. Autor a správce Simon Kelley dohledal skutečnou příčinu, záznamy SLAAC ponechané na lease, který přišel o hostname, a druhý den ji opravil. V commit message uvádí, že symptom v logování SLAAC našel Martin Vlach.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>U klientů DHCPv4 na rozhraních s pojmenováním přes router advertisement odvozuje dnsmasq z MAC adresy klienta adresy SLAAC pro IPv6 a mapuje je na hostname daného lease. <code class="code-tag">slaac_add_addrs()</code> tyto záznamy vytváří, jen když lease hostname má, a jinak skončila dřív, aniž by na existující záznamy sáhla.</p>
+      <p>Lease může o hostname přijít později, třeba když si stejné jméno vezme jiný klient a <code class="code-tag">kill_name()</code> ho smaže. Jeho záznamy SLAAC ale zůstaly. Když pak přišla ICMPv6 echo odpověď pro některou z těchto adres, <code class="code-tag">slaac_ping_reply()</code> ji zalogovala s <code class="code-tag">lease-&gt;hostname</code>, v té době už <code class="code-tag">NULL</code>, jako argumentem <code class="code-tag">%s</code>. V C je to nedefinované chování. glibc i musl vypíšou <code class="code-tag">(null)</code>, takže viditelný projev je tam jen kosmetický, ale mapování jména na adresy odvozené ze starého hostname už každopádně neplatilo.</p>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Náš patch jen ošetřil řádek logu a pro chybějící jméno vypsal <code class="code-tag">*</code>, jak už to dělá <code class="code-tag">lease.c</code>. Simon Kelley místo toho opravil příčinu: <code class="code-tag">kill_name()</code> teď záznamy SLAAC daného lease odstraní, <code class="code-tag">lease_set_hostname()</code> je při přidání jména vytvoří znovu a <code class="code-tag">slaac_add_addrs()</code> staré záznamy vždy zahodí dřív, než rozhodne, zda vytvořit nové.</p>
+      <pre><code>   lease->hostname = lease->fqdn = NULL;
++
++#ifdef HAVE_DHCP6
++  /* A lease which had a hostname when slaac_add_addrs() was called on it
++     may have slaac-address records. Since it no longer has a hostname,
++     they are no-longer valid, so update to remove them */
++  slaac_add_addrs(lease, 0, 0);
++#endif
+ }</code></pre>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>30. 9. 2026.</strong> Sken stromu dnsmasq (59 souborů, model qwen3.8-27b) upozornil na NULL hostname v <code class="code-tag">slaac_ping_reply()</code>; šest kol triáže nález potvrdilo. Cestu jsme našli čtením kódu, bez reprodukce, a týž večer <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">poslali patch</a> do dnsmasq-discuss.</li>
+        <li><strong>1. 10.</strong> Simon Kelley commitnul <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">„Clear down SLAAC-name data when a DHCP lease loses its hostname.“</a> K 9. 10. 2026 zatím není v žádném vydání.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Skener našel symptom, správce příčinu. Náš patch by umlčel jeden řádek logu, oprava v upstreamu odstraňuje zastaralé záznamy, které ho umožnily. Úzký patch je pro správce výchozí bod, ne poslední slovo. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Náš patch v konferenci dnsmasq-discuss</a></li>
+        <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">Commit 03fd0c1 v upstreamu (git dnsmasq)</a></li>
+        <li><a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">Domovská stránka dnsmasq</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
