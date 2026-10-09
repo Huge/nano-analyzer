@@ -101,7 +101,7 @@
           </tbody>
         </table>
       </div>
-      <p>The public repository is the open-source core. We also maintain a much more advanced private codebase; the CI integrations below live there.</p>
+      <p>The public repository is our fork of <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner created by AISLE (<a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">their introduction</a>). The fork adds smaller CLI improvements, such as several target paths in one run and an <code class="code-tag">--extensions</code> flag. We also maintain a much more advanced private codebase; the CI integrations below live there.</p>
 
       <h2 id="cli">2. Quick start with the command line <span class="tag-status tag-available">Available</span></h2>
       <p>You need Python 3.8+ and an API key: OpenAI (the default model is <code class="code-tag">gpt-5.4-nano</code>) or OpenRouter (model names with a slash, such as <code class="code-tag">qwen/qwen3-32b</code>). Optionally install <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">ripgrep</a> (<code class="code-tag">rg</code>) so the triage step can search your code. There are no other dependencies.</p>
@@ -256,7 +256,7 @@ jobs:
 
   <footer class="footer">
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan. Built on the open-source nano-analyzer (Apache-2.0).</p>
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us.</p>
     </div>
   </footer>
 </body>

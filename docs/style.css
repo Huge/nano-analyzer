@@ -1038,6 +1038,14 @@ input[type="range"] {
   color: var(--text-dim);
 }
 
+.footer-bottom a {
+  color: var(--text-muted);
+}
+
+.footer-bottom a:hover {
+  color: var(--primary-light);
+}
+
 .system-status {
   display: flex;
   align-items: center;

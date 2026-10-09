@@ -101,7 +101,7 @@
           </tbody>
         </table>
       </div>
-      <p>Veřejný repozitář je open-source jádro. Kromě něj udržujeme mnohem pokročilejší privátní kód; integrace do CI popsané níže žijí právě tam.</p>
+      <p>Veřejný repozitář je náš fork projektu <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru, který vytvořila firma AISLE (<a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">jejich představení</a>). Fork přidává menší vylepšení CLI, například více cest k prohledání v jednom běhu a přepínač <code class="code-tag">--extensions</code>. Kromě něj udržujeme mnohem pokročilejší privátní kód; integrace do CI popsané níže žijí právě tam.</p>
 
       <h2 id="cli">2. Rychlý start z příkazové řádky <span class="tag-status tag-available">Funguje</span></h2>
       <p>Potřebujete Python 3.8+ a API klíč: OpenAI (výchozí model je <code class="code-tag">gpt-5.4-nano</code>) nebo OpenRouter (názvy modelů s lomítkem, například <code class="code-tag">qwen/qwen3-32b</code>). Volitelně si nainstalujte <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">ripgrep</a> (<code class="code-tag">rg</code>), aby triáž mohla prohledávat váš kód. Žádné další závislosti nejsou.</p>
@@ -256,7 +256,7 @@ jobs:
 
   <footer class="footer">
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan. Postaveno na open-source projektu nano-analyzer (Apache-2.0).</p>
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme.</p>
     </div>
   </footer>
 </body>
