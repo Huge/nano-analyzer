@@ -221,7 +221,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
           <h3>Bring Your Own LLM Backend</h3>
-          <p>By default, hosted scans run on our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, zero data retention). You can also choose OpenRouter, OpenAI, Google Gemini / Vertex AI, or any OpenAI-compatible endpoint such as vLLM or Ollama. Your code goes only to the provider you pick. Automatic routing to the cheapest backend is on the roadmap, not live yet. <a href="#privacy">Where does my code go?</a></p>
+          <p>By default, hosted scans run on our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, zero data retention). The open-source scanner works with OpenAI and OpenRouter today; our early-access build adds Google Gemini / Vertex AI and any OpenAI-compatible endpoint such as vLLM or Ollama. Your code goes only to the provider you pick. Automatic routing to the cheapest backend is on the roadmap, not live yet. <a href="#privacy">Where does my code go?</a></p>
         </div>
 
         <div class="feature-card">
@@ -476,7 +476,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Where Does My Code Go?</h2>
-        <p class="section-subtitle">Short answer: to EU-hosted inference with zero data retention, or nowhere outside your own infrastructure.</p>
+        <p class="section-subtitle">Short answer: only to the LLM provider you choose. For hosted scans that is EU inference with zero data retention; self-hosted against your own endpoint, nowhere outside your infrastructure.</p>
       </div>
 
       <div class="features-grid">
@@ -501,7 +501,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
           </div>
           <h3>Or Keep It On-Prem</h3>
-          <p>The scanner is open source (Apache-2.0) and can run on your own infrastructure against your own LLM endpoint (vLLM, Ollama or any OpenAI-compatible server), so your code never leaves your network.</p>
+          <p>The scanner is open source (Apache-2.0) and runs on your own infrastructure. Pointing it at your own LLM endpoint (vLLM, Ollama or any OpenAI-compatible server), so your code never leaves your network, works in our early-access build and is coming to the open-source scanner, which today calls OpenAI or OpenRouter.</p>
         </div>
       </div>
     </div>

@@ -221,7 +221,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
           <h3>Vlastní LLM backend</h3>
-          <p>Hostované skeny ve výchozím nastavení běží u našeho partnera <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, nulová retence dat). Můžete zvolit i OpenRouter, OpenAI, Google Gemini / Vertex AI nebo libovolný endpoint kompatibilní s OpenAI, třeba vLLM či Ollama. Váš kód putuje jen k poskytovateli, kterého si vyberete. Automatické směrování na nejlevnější backend je v plánu, zatím není spuštěno. <a href="#privacy">Kam putuje můj kód?</a></p>
+          <p>Hostované skeny ve výchozím nastavení běží u našeho partnera <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, nulová retence dat). Open-source skener dnes funguje s OpenAI a OpenRouterem; náš build pro raný přístup přidává Google Gemini / Vertex AI a libovolný endpoint kompatibilní s OpenAI, třeba vLLM či Ollama. Váš kód putuje jen k poskytovateli, kterého si vyberete. Automatické směrování na nejlevnější backend je v plánu, zatím není spuštěno. <a href="#privacy">Kam putuje můj kód?</a></p>
         </div>
 
         <div class="feature-card">
@@ -476,7 +476,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Kam putuje můj kód?</h2>
-        <p class="section-subtitle">Stručně: do evropské inference s nulovou retencí dat, nebo nikam mimo vaši vlastní infrastrukturu.</p>
+        <p class="section-subtitle">Stručně: jen k poskytovateli LLM, kterého si zvolíte. U hostovaných skenů je to evropská inference s nulovou retencí dat, při provozu u vás s vlastním endpointem nikam mimo vaši infrastrukturu.</p>
       </div>
 
       <div class="features-grid">
@@ -501,7 +501,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
           </div>
           <h3>Nebo celé u vás (on-prem)</h3>
-          <p>Skener je open source (Apache-2.0) a můžete ho provozovat na vlastní infrastruktuře s vlastním LLM endpointem (vLLM, Ollama nebo jiný server kompatibilní s OpenAI). Váš kód pak vaši síť vůbec neopustí.</p>
+          <p>Skener je open source (Apache-2.0) a můžete ho provozovat na vlastní infrastruktuře. Napojení na vlastní LLM endpoint (vLLM, Ollama nebo jiný server kompatibilní s OpenAI), díky kterému kód vaši síť vůbec neopustí, funguje v našem buildu pro raný přístup a chystáme ho i do open-source skeneru. Ten dnes volá OpenAI nebo OpenRouter.</p>
         </div>
       </div>
     </div>
