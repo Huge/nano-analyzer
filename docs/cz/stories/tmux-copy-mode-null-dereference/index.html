@@ -65,7 +65,7 @@
 
   <main class="doc">
     <div class="container doc-container">
-      <p><span class="tag-status tag-available">Začleněno do OpenBSD 2. 10. 2026</span> &nbsp;Oprava chyby v tmuxu v upstreamu</p>
+      <p><span class="tag-status tag-available">V OpenBSD i tmuxu od 2. 10. 2026</span> &nbsp;Oprava chyby v tmuxu v upstreamu</p>
       <h1>tmux: pád serveru při copy-mode -S bez připojeného klienta</h1>
       <p>BudgetScan odhalil chybějící kontrolu NULL ukazatele v obsluze <code class="code-tag">copy-mode -S</code> v <a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmuxu</a>, celosvětově používaném terminálovém multiplexeru. Při vyvolání v kontextu serveru bez připojeného terminálového klienta (například z hooků nebo front příkazů na pozadí) vedla chybějící kontrola k okamžitému pádu centrálního serveru tmux na <code class="code-tag">SIGSEGV</code>, což ukončilo všechny běžící relace a procesy všech uživatelů. Nicholas Marriott, autor a hlavní správce tmuxu, přijal naši zprávu a začlenil opravu přímo do CVS OpenBSD.</p>
 
@@ -135,11 +135,13 @@ diff -u -p -r1.54 -r1.55
       <blockquote>
         <p><em>„Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀“</em></p>
       </blockquote>
+      <p>A tak se i stalo: týž den odpoledne se změna přenesla do tmuxu na GitHubu jako commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</p>
 
       <h2 id="timeline">Časová osa</h2>
       <ul class="story-timeline">
         <li><strong>1. 10. 2026.</strong> BudgetScan upozornil na nechráněný ukazatel na klienta v <code class="code-tag">cmd-copy-mode.c</code>. Manuální audit zdrojového kódu potvrdil vektor pádu serveru přes hooky. Otevřeli jsme <a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">pull request #5670</a> s opravou a regresním testem.</li>
         <li><strong>2. 10. (12:12 UTC).</strong> Autor a hlavní správce tmuxu Nicholas Marriott (<code class="code-tag">nicm</code>) pull request zhodnotil, odpověděl na GitHubu a začlenil revizi 1.55 do CVS OpenBSD: <em>„Do not use client for copy-mode -S if NULL, reported by Martin Vlach.“</em></li>
+        <li><strong>2. 10. (14:10 UTC).</strong> Změna se z OpenBSD přenesla do repozitáře tmux na GitHubu jako commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</li>
       </ul>
 
       <h2 id="takeaway">Jak to číst</h2>
@@ -149,8 +151,10 @@ diff -u -p -r1.54 -r1.55
       <ul>
         <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">Záznamy v CVS OpenBSD pro cmd-copy-mode.c</a></li>
         <li><a href="https://cvsweb.openbsd.org/diff/src/usr.bin/tmux/cmd-copy-mode.c?rev=1.55&prev=1.54" target="_blank" rel="noopener">Diff v CVS OpenBSD (revize 1.54 &rarr; 1.55)</a></li>
+        <li><a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">Commit 5932140 v repozitáři tmux na GitHubu</a></li>
         <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">GitHub Pull Request (tmux/tmux#5670)</a></li>
         <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Komentář správce Nicholase Marriotta na GitHubu</a></li>
+        <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5993648183" target="_blank" rel="noopener">Doplňující komentář v pull requestu s odkazem na commit</a></li>
         <li><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">Oficiální repozitář tmux na GitHubu</a></li>
       </ul>
       <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>

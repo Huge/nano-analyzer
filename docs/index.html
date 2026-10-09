@@ -288,16 +288,17 @@
       </article>
 
       <article class="story-card">
-        <span class="story-badge">Applied to OpenBSD upstream &bull; October 2026</span>
+        <span class="story-badge">Fixed in OpenBSD and tmux upstream &bull; October 2026</span>
         <h3><a href="stories/tmux-copy-mode-null-dereference/">tmux: server crash on copy-mode -S without attached client</a></h3>
         <p><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmux</a> is the ubiquitous terminal multiplexer. When executing its <code class="code-tag">copy-mode -S</code> handler without an attached client (such as from a hook or background server queue), tmux dereferenced a NULL client pointer, instantly crashing the server daemon with <code class="code-tag">SIGSEGV</code> and killing all active sessions on the host. Creator and lead maintainer Nicholas Marriott accepted our report and applied the fix to OpenBSD CVS.</p>
         <ul class="story-timeline">
           <li><strong>1 Oct 2026.</strong> BudgetScan flagged the unguarded client pointer in <code class="code-tag">cmd-copy-mode.c</code>. We verified the crash path via hooks and opened pull request #5670 on GitHub with the fix and an automated regression test.</li>
-          <li><strong>2 Oct.</strong> tmux lead maintainer Nicholas Marriott (<code class="code-tag">nicm</code>) reviewed the pull request, replied <em>&ldquo;Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀&rdquo;</em>, and committed revision 1.55 to OpenBSD CVS credited to Martin Vlach.</li>
+          <li><strong>2 Oct.</strong> tmux lead maintainer Nicholas Marriott (<code class="code-tag">nicm</code>) reviewed the pull request, replied <em>&ldquo;Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀&rdquo;</em>, and committed revision 1.55 to OpenBSD CVS credited to Martin Vlach. The same day it was synced to tmux on GitHub as commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</li>
         </ul>
         <ul class="story-links">
           <li><a href="stories/tmux-copy-mode-null-dereference/"><strong>Read the full story &rarr;</strong></a></li>
           <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">OpenBSD CVS log (rev 1.55)</a></li>
+          <li><a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">tmux commit 5932140 on GitHub</a></li>
           <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">GitHub pull request (#5670)</a></li>
           <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Maintainer response by Nicholas Marriott</a></li>
         </ul>

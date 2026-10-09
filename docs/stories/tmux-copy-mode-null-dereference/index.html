@@ -65,7 +65,7 @@
 
   <main class="doc">
     <div class="container doc-container">
-      <p><span class="tag-status tag-available">Applied to OpenBSD 2 Oct 2026</span> &nbsp;Upstream bug fix in tmux</p>
+      <p><span class="tag-status tag-available">In OpenBSD and tmux since 2 Oct 2026</span> &nbsp;Upstream bug fix in tmux</p>
       <h1>tmux: server crash on copy-mode -S without attached client</h1>
       <p>BudgetScan flagged a missing NULL pointer check in the <code class="code-tag">copy-mode -S</code> handler of <a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmux</a>, the widely used terminal multiplexer. When executed in a server context without an attached terminal client (such as from hooks or background command queues), the missing check caused an immediate <code class="code-tag">SIGSEGV</code> crash of the central tmux server, terminating all active user sessions and processes. Nicholas Marriott, the author and lead maintainer of tmux, applied our fix directly to OpenBSD CVS.</p>
 
@@ -135,11 +135,13 @@ diff -u -p -r1.54 -r1.55
       <blockquote>
         <p><em>&ldquo;Applied to OpenBSD now, will be in GitHub later. Thanks! 🚀&rdquo;</em></p>
       </blockquote>
+      <p>It did: the same afternoon the change was synced to tmux on GitHub as commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</p>
 
       <h2 id="timeline">Timeline</h2>
       <ul class="story-timeline">
         <li><strong>1 Oct 2026.</strong> BudgetScan flagged the unguarded client pointer in <code class="code-tag">cmd-copy-mode.c</code>. Manual code audit confirmed the server crash vector via hooks. We opened <a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">pull request #5670</a> with the fix and regression test.</li>
         <li><strong>2 Oct (12:12 UTC).</strong> tmux author and maintainer Nicholas Marriott (<code class="code-tag">nicm</code>) reviewed the pull request, replied on GitHub, and committed revision 1.55 to OpenBSD CVS: <em>&ldquo;Do not use client for copy-mode -S if NULL, reported by Martin Vlach.&rdquo;</em></li>
+        <li><strong>2 Oct (14:10 UTC).</strong> The change was synced from OpenBSD to the tmux repository on GitHub as commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</li>
       </ul>
 
       <h2 id="takeaway">How to read this</h2>
@@ -149,8 +151,10 @@ diff -u -p -r1.54 -r1.55
       <ul>
         <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">OpenBSD CVS log for cmd-copy-mode.c</a></li>
         <li><a href="https://cvsweb.openbsd.org/diff/src/usr.bin/tmux/cmd-copy-mode.c?rev=1.55&prev=1.54" target="_blank" rel="noopener">OpenBSD CVS diff (revision 1.54 &rarr; 1.55)</a></li>
+        <li><a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">tmux commit 5932140 on GitHub</a></li>
         <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">GitHub Pull Request (tmux/tmux#5670)</a></li>
         <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Maintainer response by Nicholas Marriott</a></li>
+        <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5993648183" target="_blank" rel="noopener">Follow-up on the pull request linking the GitHub commit</a></li>
         <li><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">Official tmux GitHub repository</a></li>
       </ul>
       <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
