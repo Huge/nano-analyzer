@@ -313,7 +313,7 @@ body {
 /* Syntax Grid Section */
 .syntax-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 28px;
 }
 
@@ -636,7 +636,7 @@ body {
 /* Features Grid */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
   gap: 24px;
 }
 
@@ -706,7 +706,7 @@ body {
 /* Workflow Steps */
 .workflow-steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 30px;
 }
 
@@ -790,7 +790,8 @@ body {
   font-size: 0.95rem;
   outline: none;
   flex-grow: 1;
-  max-width: 450px;
+  min-width: 0;
+  max-width: min(450px, 100%);
 }
 
 .demo-output-terminal {
@@ -911,7 +912,7 @@ input[type="range"] {
 /* Pricing Grid */
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 30px;
   align-items: center;
 }
@@ -1178,6 +1179,11 @@ input[type="range"] {
   color: var(--text-main);
   max-width: 100%;
   box-sizing: border-box;
+}
+
+/* long identifiers in running text must wrap on phones */
+.doc .code-tag {
+  overflow-wrap: anywhere;
 }
 
 .doc-table-wrap {
