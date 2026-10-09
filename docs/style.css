@@ -411,6 +411,10 @@ body {
   text-align: center;
 }
 
+.status-note a {
+  color: var(--primary-light);
+}
+
 .calc-note {
   max-width: 900px;
   margin: 18px auto 0;
