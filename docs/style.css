@@ -201,6 +201,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
+}
+
+/* Header items never wrap inside themselves; links are hidden instead when they don't fit */
+.nav-links a,
+.nav-actions .btn,
+.badge-v {
+  white-space: nowrap;
 }
 
 .brand-logo {
@@ -1062,6 +1070,11 @@ input[type="range"] {
 }
 
 /* Responsive adjustments */
+/* The homepage header needs about 1090px for brand, five links and two buttons on one row */
+@media (max-width: 1099px) {
+  .nav-links { display: none; }
+}
+
 @media (max-width: 768px) {
   .hero-title { font-size: 2.4rem; }
   .nav-links { display: none; }
@@ -1073,7 +1086,6 @@ input[type="range"] {
   .badge-v { display: none; }
   .nav-actions { gap: 8px; }
   .nav-actions .btn { padding: 8px 12px; font-size: 0.85rem; white-space: nowrap; }
-  .nav-actions .btn-secondary:not(.lang-btn) { display: none; }
 
   .bg-glow {
     width: 280px;
