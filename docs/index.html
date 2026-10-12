@@ -266,6 +266,23 @@
 
       <article class="story-card">
         <span class="story-badge">Merged upstream &bull; October 2026</span>
+        <h3><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect: unbounded Bluetooth packet buffer on Android</a></h3>
+        <p><a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> links phones with desktops to share notifications, files and the clipboard. Its Android Bluetooth backend buffered incoming packets with no size limit, so a paired device that never sent a line terminator could make the app run out of memory. Bluetooth support is an opt-in beta. Creator and maintainer Albert Vaca Cintora merged our fix, which reuses the 32&#160;MB limit the LAN backend already had.</p>
+        <ul class="story-timeline">
+          <li><strong>4 Oct 2026.</strong> A scan of KDE Connect for Android flagged the unbounded buffer in <code class="code-tag">BluetoothLink.kt</code>; triage rated it valid.</li>
+          <li><strong>8 Oct.</strong> We opened merge request !696 with the fix and a unit test. Albert Vaca Cintora merged it the same day; not in a tagged release yet.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/kdeconnect-bluetooth-packet-size/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696" target="_blank" rel="noopener">Merge request !696</a></li>
+          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/commit/11b5bdeb6914a1593994d3219592c982a273b097" target="_blank" rel="noopener">Commit 11b5bde</a></li>
+          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696#note_1666911" target="_blank" rel="noopener">Maintainer reply</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage called the attacker remote; reading the code narrowed it to an opt-in backend and an already paired device. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
+        <span class="story-badge">Merged upstream &bull; October 2026</span>
         <h3><a href="stories/proftpd-mod-sftp-pam-response-index/">ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts</a></h3>
         <p><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a> is a widely deployed FTP and SFTP server. Its <code class="code-tag">mod_sftp_pam</code> module matched keyboard-interactive answers to PAM prompts by the wrong index. When a PAM module sent an info message before a prompt, as pam-krb5 does during a password change, login failed or the session process read past the end of the answers array. Maintainer TJ Saunders merged our fix.</p>
         <ul class="story-timeline">

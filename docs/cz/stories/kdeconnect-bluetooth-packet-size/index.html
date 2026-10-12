@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>KDE Connect: neomezený buffer pro pakety přes Bluetooth na Androidu | BudgetScan</title>
+  <meta name="description" content="Sken odhalil neomezený přijímací buffer v Bluetooth backendu KDE Connect pro Android. Albert Vaca Cintora opravu 8. 10. 2026 začlenil.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/kdeconnect-bluetooth-packet-size/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/kdeconnect-bluetooth-packet-size/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/kdeconnect-bluetooth-packet-size/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/kdeconnect-bluetooth-packet-size/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="KDE Connect: neomezený buffer pro pakety přes Bluetooth na Androidu">
+  <meta property="og:description" content="Sken odhalil neomezený přijímací buffer v Bluetooth backendu KDE Connect pro Android. Albert Vaca Cintora opravu 8. 10. 2026 začlenil.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/kdeconnect-bluetooth-packet-size/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/kdeconnect-bluetooth-packet-size/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Začleněno do upstreamu 8. 10. 2026</span> &nbsp;Oprava chyby v KDE Connect pro Android v upstreamu</p>
+      <h1>KDE Connect: neomezený buffer pro pakety přes Bluetooth na Androidu</h1>
+      <p>Náš skener upozornil, že Bluetooth backend aplikace <a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> pro Android, která propojuje telefon s počítačem kvůli sdílení notifikací, souborů a schránky, ukládal příchozí pakety do bufferu bez jakéhokoli limitu velikosti. Poslali jsme merge request s opravou a unit testem. Autor a správce KDE Connect Albert Vaca Cintora ho týž den začlenil.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>Pakety KDE Connect jsou řádky JSON zakončené <code class="code-tag">\n</code>. Přijímací vlákno v <code class="code-tag">BluetoothLink.kt</code> přidávalo vše přečtené do <code class="code-tag">StringBuilder</code>, dokud nepřišel konec řádku, a to bez horní meze. Připojené zařízení, které posílalo data bez ukončení řádku, tak nutilo aplikaci držet všechno v paměti, dokud jí paměť nedošla. Protože se po každém čtení 512 znaků prohledával na <code class="code-tag">\n</code> celý buffer, byla smyčka navíc kvadratická vůči velikosti paketu.</p>
+      <p>Backend pro LAN (Wi-Fi) už ochranu měl: <code class="code-tag">LanLink</code> čte pakety přes <code class="code-tag">readLineBounded()</code> s limitem 32&#160;MB. Bluetooth backend ne.</p>
+      <p>Dosah je omezený. Podpora Bluetooth je ve výchozím stavu vypnutá (nastavení se jmenuje „Enable bluetooth (beta)“) a protistrana musí být Bluetooth zařízení už spárované s telefonem. Nejhorší důsledek je vyčerpání paměti aplikace, ne spuštění kódu.</p>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Oprava čte pakety přes Bluetooth stejným pomocníkem <code class="code-tag">readLineBounded()</code> se stejným limitem 32&#160;MB jako <code class="code-tag">LanLink</code>. Paket nad limit se bere jako jakákoli jiná chyba čtení, takže se spojení ukončí. Vstup je obalen do <code class="code-tag">BufferedInputStream</code> jako v <code class="code-tag">LanLink</code>, aby čtení po bajtech nebralo zámek kanálu multiplexeru pro každý bajt.</p>
+      <pre><code>-            val sb = StringBuilder()
+             try {
+-                val reader: Reader = InputStreamReader(input, UTF_8)
+-                val buf = CharArray(512)
++                val stream = BufferedInputStream(input)
+                 while (continueAccepting) {
+-                    while (sb.indexOf("\n") == -1 &amp;&amp; continueAccepting) {
+-                        ...
+-                            sb.append(buf, 0, charsRead)
+-                        ...
+-                    }
++                    val message = readLineBounded(stream, MAX_PACKET_SIZE)</code></pre>
+      <p>Nový unit test <code class="code-tag">BluetoothLinkTest</code> pošle spojení 64&#160;MB bez konce řádku a čeká, že se odpojí. Před změnou vypršel časový limit, po ní projde celá sada testů. Testovali jsme jen unit testem, ne se skutečným Bluetooth zařízením. Albert Vaca Cintora (<code class="code-tag">albertvaka</code>) v merge requestu odpověděl:</p>
+      <blockquote>
+        <p><em>„Thanks for catching this!“</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>4. 10. 2026.</strong> Sken stromu KDE Connect pro Android (215 souborů, model gemini-3.5-flash-lite, s threat modelem projektu) upozornil na neomezený <code class="code-tag">StringBuilder</code> v <code class="code-tag">BluetoothLink.kt</code>; triáž nález potvrdila.</li>
+        <li><strong>8. 10.</strong> Na GitLabu KDE jsme otevřeli <a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696" target="_blank" rel="noopener">merge request !696</a> s opravou a unit testem. Albert Vaca Cintora ho týž den začlenil do masteru jako commit <a href="https://invent.kde.org/network/kdeconnect-android/-/commit/11b5bdeb6914a1593994d3219592c982a273b097" target="_blank" rel="noopener">11b5bde</a>. K 12. 10. 2026 zatím není v žádném vydání; poslední je v1.35.17.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Triáž skeneru popsala útočníka jako „unauthenticated or remote“. Čtení kódu to zúžilo na volitelný backend a už spárované zařízení a do upstreamu šel tento užší popis. Samotná oprava znovu používá ochranu, kterou projekt už měl pro spojení přes LAN. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696" target="_blank" rel="noopener">Merge request kdeconnect-android!696</a></li>
+        <li><a href="https://invent.kde.org/network/kdeconnect-android/-/commit/11b5bdeb6914a1593994d3219592c982a273b097" target="_blank" rel="noopener">Commit 11b5bde (BluetoothLink)</a></li>
+        <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696#note_1666911" target="_blank" rel="noopener">Odpověď správce Alberta Vacy Cintory</a></li>
+        <li><a href="https://invent.kde.org/network/kdeconnect-android" target="_blank" rel="noopener">KDE Connect pro Android na invent.kde.org</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
