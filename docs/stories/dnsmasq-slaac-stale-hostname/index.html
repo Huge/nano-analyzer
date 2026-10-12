@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <title>dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname | BudgetScan</title>
-  <meta name="description" content="A scan flagged a NULL hostname reaching a log call in dnsmasq's SLAAC code. Simon Kelley fixed the underlying stale records upstream on 1 Oct 2026.">
+  <meta name="description" content="A scan flagged a NULL hostname reaching a log call in dnsmasq's SLAAC code. Simon Kelley fixed the underlying stale records upstream on 1 Oct 2026 and applied a second patch from the same scan.">
   <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
   <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
   <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="BudgetScan">
   <meta property="og:title" content="dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname">
-  <meta property="og:description" content="A scan flagged a NULL hostname reaching a log call in dnsmasq's SLAAC code. Simon Kelley fixed the underlying stale records upstream on 1 Oct 2026.">
+  <meta property="og:description" content="A scan flagged a NULL hostname reaching a log call in dnsmasq's SLAAC code. Simon Kelley fixed the underlying stale records upstream on 1 Oct 2026 and applied a second patch from the same scan.">
   <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary">
@@ -63,7 +63,7 @@
     <div class="container doc-container">
       <p><span class="tag-status tag-available">Fixed upstream 1 Oct 2026</span> &nbsp;Upstream bug fix in dnsmasq</p>
       <h1>dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname</h1>
-      <p>Our scanner flagged that <a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>, the DNS and DHCP server built into many routers and Linux systems, could pass a NULL hostname to a <code class="code-tag">%s</code> log format in its SLAAC code. We sent a small patch to the dnsmasq-discuss mailing list. Author and maintainer Simon Kelley traced it to the underlying cause, SLAAC name records left on a lease that had lost its hostname, and fixed that the next day. His commit message credits Martin Vlach with finding a symptom of it in the SLAAC logging code.</p>
+      <p>Our scanner flagged that <a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>, the DNS and DHCP server built into many routers and Linux systems, could pass a NULL hostname to a <code class="code-tag">%s</code> log format in its SLAAC code. We sent a small patch to the dnsmasq-discuss mailing list. Author and maintainer Simon Kelley traced it to the underlying cause, SLAAC name records left on a lease that had lost its hostname, and fixed that the next day. His commit message credits Martin Vlach with finding a symptom of it in the SLAAC logging code. A second patch from the same scan, for an allocation-failure bug in <code class="code-tag">poll_listen()</code>, was applied as well.</p>
 
       <h2 id="problem">What was wrong</h2>
       <p>For DHCPv4 clients on interfaces with router-advertisement naming, dnsmasq derives SLAAC IPv6 addresses from the client&rsquo;s MAC address and maps them to the lease&rsquo;s hostname. <code class="code-tag">slaac_add_addrs()</code> creates these records only when the lease has a hostname, and otherwise returned early without touching existing records.</p>
@@ -81,10 +81,14 @@
 +#endif
  }</code></pre>
 
+      <h2 id="poll">A second patch from the same scan</h2>
+      <p>The same run flagged <code class="code-tag">poll_listen()</code> in <code class="code-tag">src/poll.c</code>. When the <code class="code-tag">pollfds</code> array has to grow, the old code doubled <code class="code-tag">arrsize</code> before calling <code class="code-tag">whine_realloc()</code>. If that allocation failed, <code class="code-tag">arrsize</code> stayed doubled while the array kept its old size. The next call skipped the extension and wrote past the end of the array, or through NULL if the very first allocation had failed, and the state stayed broken until dnsmasq restarted. It only matters once memory allocation fails, so it is a robustness fix, not something an attacker can trigger directly. Our three-line patch updates <code class="code-tag">arrsize</code> only after the reallocation succeeds. Simon Kelley committed it on 1 Oct as <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">baeb743</a> and replied &ldquo;Patch applied.&rdquo; on the list on 11 Oct.</p>
+
       <h2 id="timeline">Timeline</h2>
       <ul class="story-timeline">
-        <li><strong>30 Sep 2026.</strong> A scan of the dnsmasq tree (59 files, model qwen3.8-27b) flagged the NULL hostname in <code class="code-tag">slaac_ping_reply()</code>; six triage rounds rated it valid. We found the path by reading the code, without reproducing it, and <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">mailed a patch</a> to dnsmasq-discuss the same evening.</li>
-        <li><strong>1 Oct.</strong> Simon Kelley committed <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">&ldquo;Clear down SLAAC-name data when a DHCP lease loses its hostname.&rdquo;</a> As of 9 Oct 2026 it is not in a tagged release yet.</li>
+        <li><strong>30 Sep 2026.</strong> A scan of the dnsmasq tree (59 files, model qwen3.8-27b) flagged the NULL hostname in <code class="code-tag">slaac_ping_reply()</code>; six triage rounds rated it valid. We found the path by reading the code, without reproducing it, and <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">mailed a patch</a> to dnsmasq-discuss the same evening, together with the <code class="code-tag">poll_listen()</code> patch from the same run.</li>
+        <li><strong>1 Oct.</strong> Simon Kelley committed <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">&ldquo;Clear down SLAAC-name data when a DHCP lease loses its hostname.&rdquo;</a> He also committed our <code class="code-tag">poll_listen()</code> patch as <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">baeb743</a>.</li>
+        <li><strong>11 Oct.</strong> On the list he replied to the SLAAC patch, &ldquo;<a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018584.html" target="_blank" rel="noopener">This is definitely a real problem</a>&rdquo;, explaining that the AAAA record also has to change when the name moves and that commit 03fd0c1 addresses all the issues. He answered the <code class="code-tag">poll_listen()</code> patch with <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018583.html" target="_blank" rel="noopener">&ldquo;Patch applied.&rdquo;</a> As of 12 Oct 2026 neither commit is in a tagged release yet; the latest release is 2.93.</li>
       </ul>
 
       <h2 id="takeaway">How to read this</h2>
@@ -92,8 +96,10 @@
 
       <h2 id="sources">Sources</h2>
       <ul>
-        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Our patch on the dnsmasq-discuss mailing list</a></li>
+        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Our SLAAC patch on the dnsmasq-discuss mailing list</a> and <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018584.html" target="_blank" rel="noopener">Simon Kelley&rsquo;s reply</a></li>
+        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018572.html" target="_blank" rel="noopener">Our <code class="code-tag">poll_listen()</code> patch</a> and <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018583.html" target="_blank" rel="noopener">&ldquo;Patch applied.&rdquo;</a></li>
         <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">Upstream commit 03fd0c1 (dnsmasq git)</a></li>
+        <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">Upstream commit baeb743 (dnsmasq git)</a></li>
         <li><a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq home page</a></li>
       </ul>
       <p><a href="../../#stories">&larr; Back to Success Stories</a></p>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <title>dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease | BudgetScan</title>
-  <meta name="description" content="Sken odhalil NULL hostname předávaný do logování v kódu SLAAC v dnsmasq. Simon Kelley 1. 10. 2026 opravil v upstreamu příčinu, zastaralé záznamy.">
+  <meta name="description" content="Sken odhalil NULL hostname předávaný do logování v kódu SLAAC v dnsmasq. Simon Kelley 1. 10. 2026 opravil v upstreamu příčinu, zastaralé záznamy, a přijal i druhý patch ze stejného skenu.">
   <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
   <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/dnsmasq-slaac-stale-hostname/">
   <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="BudgetScan">
   <meta property="og:title" content="dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease">
-  <meta property="og:description" content="Sken odhalil NULL hostname předávaný do logování v kódu SLAAC v dnsmasq. Simon Kelley 1. 10. 2026 opravil v upstreamu příčinu, zastaralé záznamy.">
+  <meta property="og:description" content="Sken odhalil NULL hostname předávaný do logování v kódu SLAAC v dnsmasq. Simon Kelley 1. 10. 2026 opravil v upstreamu příčinu, zastaralé záznamy, a přijal i druhý patch ze stejného skenu.">
   <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/dnsmasq-slaac-stale-hostname/">
   <meta property="og:locale" content="cs_CZ">
   <meta name="twitter:card" content="summary">
@@ -63,7 +63,7 @@
     <div class="container doc-container">
       <p><span class="tag-status tag-available">Opraveno v upstreamu 1. 10. 2026</span> &nbsp;Oprava chyby v dnsmasq v upstreamu</p>
       <h1>dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease</h1>
-      <p>Náš skener upozornil, že <a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>, DNS a DHCP server vestavěný do mnoha routerů a linuxových systémů, mohl v kódu SLAAC předat NULL hostname do formátu <code class="code-tag">%s</code> při logování. Do konference dnsmasq-discuss jsme poslali malý patch. Autor a správce Simon Kelley dohledal skutečnou příčinu, záznamy SLAAC ponechané na lease, který přišel o hostname, a druhý den ji opravil. V commit message uvádí, že symptom v logování SLAAC našel Martin Vlach.</p>
+      <p>Náš skener upozornil, že <a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>, DNS a DHCP server vestavěný do mnoha routerů a linuxových systémů, mohl v kódu SLAAC předat NULL hostname do formátu <code class="code-tag">%s</code> při logování. Do konference dnsmasq-discuss jsme poslali malý patch. Autor a správce Simon Kelley dohledal skutečnou příčinu, záznamy SLAAC ponechané na lease, který přišel o hostname, a druhý den ji opravil. V commit message uvádí, že symptom v logování SLAAC našel Martin Vlach. Přijal i druhý patch ze stejného skenu, opravu chyby při selhání alokace v <code class="code-tag">poll_listen()</code>.</p>
 
       <h2 id="problem">Co bylo špatně</h2>
       <p>U klientů DHCPv4 na rozhraních s pojmenováním přes router advertisement odvozuje dnsmasq z MAC adresy klienta adresy SLAAC pro IPv6 a mapuje je na hostname daného lease. <code class="code-tag">slaac_add_addrs()</code> tyto záznamy vytváří, jen když lease hostname má, a jinak skončila dřív, aniž by na existující záznamy sáhla.</p>
@@ -81,10 +81,14 @@
 +#endif
  }</code></pre>
 
+      <h2 id="poll">Druhý patch ze stejného skenu</h2>
+      <p>Stejný běh upozornil na <code class="code-tag">poll_listen()</code> v <code class="code-tag">src/poll.c</code>. Když bylo potřeba zvětšit pole <code class="code-tag">pollfds</code>, starý kód zdvojnásobil <code class="code-tag">arrsize</code> ještě před voláním <code class="code-tag">whine_realloc()</code>. Pokud alokace selhala, <code class="code-tag">arrsize</code> zůstal zdvojený, zatímco pole mělo starou velikost. Další volání rozšíření přeskočilo a zapisovalo za konec pole, případně přes NULL, pokud selhala hned první alokace, a tento stav vydržel až do restartu dnsmasq. Projeví se jen při selhání alokace paměti, takže jde o opravu robustnosti, ne o chybu, kterou by útočník mohl přímo vyvolat. Náš třířádkový patch mění <code class="code-tag">arrsize</code> až po úspěšné realokaci. Simon Kelley ho 1. 10. commitnul jako <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">baeb743</a> a 11. 10. v konferenci odpověděl „Patch applied.“</p>
+
       <h2 id="timeline">Časová osa</h2>
       <ul class="story-timeline">
-        <li><strong>30. 9. 2026.</strong> Sken stromu dnsmasq (59 souborů, model qwen3.8-27b) upozornil na NULL hostname v <code class="code-tag">slaac_ping_reply()</code>; šest kol triáže nález potvrdilo. Cestu jsme našli čtením kódu, bez reprodukce, a týž večer <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">poslali patch</a> do dnsmasq-discuss.</li>
-        <li><strong>1. 10.</strong> Simon Kelley commitnul <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">„Clear down SLAAC-name data when a DHCP lease loses its hostname.“</a> K 9. 10. 2026 zatím není v žádném vydání.</li>
+        <li><strong>30. 9. 2026.</strong> Sken stromu dnsmasq (59 souborů, model qwen3.8-27b) upozornil na NULL hostname v <code class="code-tag">slaac_ping_reply()</code>; šest kol triáže nález potvrdilo. Cestu jsme našli čtením kódu, bez reprodukce, a týž večer <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">poslali patch</a> do dnsmasq-discuss, spolu s patchem pro <code class="code-tag">poll_listen()</code> ze stejného běhu.</li>
+        <li><strong>1. 10.</strong> Simon Kelley commitnul <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">„Clear down SLAAC-name data when a DHCP lease loses its hostname.“</a> Commitnul také náš patch pro <code class="code-tag">poll_listen()</code> jako <a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">baeb743</a>.</li>
+        <li><strong>11. 10.</strong> V konferenci odpověděl na patch pro SLAAC: „<a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018584.html" target="_blank" rel="noopener">This is definitely a real problem</a>“. Vysvětlil, že při přesunu jména je potřeba změnit i záznam AAAA a že commit 03fd0c1 řeší všechny tyto problémy. Na patch pro <code class="code-tag">poll_listen()</code> odpověděl <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018583.html" target="_blank" rel="noopener">„Patch applied.“</a> K 12. 10. 2026 není ani jeden z commitů v žádném vydání; poslední vydání je 2.93.</li>
       </ul>
 
       <h2 id="takeaway">Jak to číst</h2>
@@ -92,8 +96,10 @@
 
       <h2 id="sources">Zdroje</h2>
       <ul>
-        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Náš patch v konferenci dnsmasq-discuss</a></li>
+        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Náš patch pro SLAAC v konferenci dnsmasq-discuss</a> a <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018584.html" target="_blank" rel="noopener">odpověď Simona Kelleyho</a></li>
+        <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018572.html" target="_blank" rel="noopener">Náš patch pro <code class="code-tag">poll_listen()</code></a> a <a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q4/018583.html" target="_blank" rel="noopener">„Patch applied.“</a></li>
         <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">Commit 03fd0c1 v upstreamu (git dnsmasq)</a></li>
+        <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">Commit baeb743 v upstreamu (git dnsmasq)</a></li>
         <li><a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">Domovská stránka dnsmasq</a></li>
       </ul>
       <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
