@@ -137,11 +137,11 @@
         <li><strong>2 Oct 2026.</strong> BudgetScan flagged unescaped metadata rendering in Himalaya's table output. We opened <a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">pull request #771</a> with an initial patch and test suite.</li>
         <li><strong>2 Oct.</strong> Maintainer Clément Douin confirmed the vulnerability, extracted the sanitization routine into the shared library <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, and credited Martin Vlach as co-author.</li>
         <li><strong>3 Oct.</strong> We completed the PR with the updated library, comprehensive backend coverage, and specification updates. Maintainer Douin reviewed and merged the PR into master.</li>
-        <li><strong>11&ndash;12 Oct.</strong> Community contributor SORALNV builds on PR #771 with follow-up hardening: PR #782 (atomic attachment downloads, merged) and PR #783 (extending terminal and BiDi sanitization to full message views, approved by maintainer).</li>
+        <li><strong>11&ndash;12 Oct.</strong> Community contributor SORALNV built on PR #771 with follow-up hardening: PR #782 (atomic attachment downloads, merged) and PR #783 (extending terminal and BiDi sanitization to full message views, approved by maintainer).</li>
       </ul>
 
       <h2 id="takeaway">How to read this</h2>
-      <p>Automated scanning found an unescaped control sequence flaw in CLI tables, thoughtful maintainer collaboration turned a single-repo bug fix into a shared function that the other Pimalaya command-line tools can adopt, and the open-source community subsequently stepped up to extend the same defensive posture across message reading and attachment downloads. This is open-source security at its best: automated detection generating clear leads, followed by thoughtful human review, robust test cases, and collaborative architectural hardening. Special thanks to Clément Douin for outstanding open-source leadership and swift action.</p>
+      <p>Automated scanning found an unescaped control sequence flaw in CLI tables, and thoughtful maintainer collaboration turned a single-repo bug fix into a shared function for the broader Pimalaya suite. The open-source community subsequently stepped up to extend the same defensive posture across message reading and attachment downloads. This is open-source security at its best: automated detection generating clear leads, followed by thoughtful human review, robust test cases, and collaborative architectural hardening. Special thanks to Clément Douin for outstanding open-source leadership and swift action.</p>
 
       <h2 id="sources">Sources</h2>
       <ul>
