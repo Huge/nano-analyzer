@@ -126,7 +126,7 @@
       </blockquote>
 
       <h2 id="follow-up">Follow-up: Community hardening</h2>
-      <p>Our work on PR #771 catalyzed further defenses across the project. On 11 October 2026, contributor <a href="https://github.com/SORALNV" target="_blank" rel="noopener">SORALNV</a> (with declared OpenAI Codex assistance) submitted a series of hardening patches building on this foundation:</p>
+      <p>Our work on PR #771 catalyzed further defenses across the project. On 11 October 2026, contributor <a href="https://github.com/SORALNV" target="_blank" rel="noopener">SORALNV</a> submitted a series of hardening patches building on this foundation:</p>
       <ul>
         <li><strong>Human-readable message sanitization (<a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">PR #783</a>):</strong> Extends escape sequence and BiDi control character sanitization from single-line tables into the full message body and address header display (<code class="code-tag">message read</code> and <code class="code-tag">message parse</code>), preventing control characters from reaching the terminal during full message inspection. Maintainer Clément Douin approved the patch on 11 October (<em>&ldquo;Thanks! #782 just landed and this now conflicts on CHANGELOG/cairn, could you rebase? Will merge right after.&rdquo;</em>).</li>
         <li><strong>Atomic attachment downloads (<a href="https://github.com/pimalaya/himalaya/pull/782" target="_blank" rel="noopener">PR #782</a>, merged):</strong> Complements the BiDi filename spoofing defense from PR #771 on the filesystem level, reserving destination files exclusively with <code class="code-tag">create_new</code> to eliminate symlink race conditions and prevent accidental file overwrites.</li>
