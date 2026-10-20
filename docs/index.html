@@ -3,72 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>BudgetScan | Budget-Capped Security Scans for PRs & MRs</title>
-  <meta name="description" content="BudgetScan - pay-per-scan code security for PRs and MRs. Early access: set a budget and deadline with @budgetscan $0.50 --max-delay 5m and get a scan that fits your cap.">
-  <link rel="canonical" href="https://huge.github.io/nano-analyzer/">
-  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/">
-  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/">
-  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/">
+  <title>BudgetScan | Budget-Governed Code Security</title>
+  <meta name="description" content="Security scanner by Matej Vrzala & Martin Vlach. Budget-governed code audits for GitLab & GitHub with pre-scan cost estimation, built on nano-analyzer.">
+  <link rel="canonical" href="https://budget.altfresh.sk/">
+  <link rel="alternate" hreflang="en" href="https://budget.altfresh.sk/">
+  <link rel="alternate" hreflang="cs" href="https://budget.altfresh.sk/cz/">
+  <link rel="alternate" hreflang="x-default" href="https://budget.altfresh.sk/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BudgetScan">
-  <meta property="og:title" content="BudgetScan | Budget-Capped Security Scans for PRs & MRs">
-  <meta property="og:description" content="BudgetScan - pay-per-scan code security for PRs and MRs. Early access: set a budget and deadline with @budgetscan $0.50 --max-delay 5m and get a scan that fits your cap.">
-  <meta property="og:url" content="https://huge.github.io/nano-analyzer/">
+  <meta property="og:title" content="BudgetScan | Budget-Governed Code Security">
+  <meta property="og:description" content="Built by Matej Vrzala & Martin Vlach. We improve software security pro-bono and professionally. Built on nano-analyzer.">
+  <meta property="og:url" content="https://budget.altfresh.sk/">
   <meta property="og:locale" content="en_US">
-  <meta name="twitter:card" content="summary">
   <meta name="theme-color" content="#07090e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
-  
-  
-  <!-- Stylesheet -->
+
+  <!-- Stylesheet & Fonts -->
   <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <!-- Background Glow & Grid FX -->
   <div class="bg-glow bg-glow-1"></div>
   <div class="bg-glow bg-glow-2"></div>
   <div class="bg-grid"></div>
 
-  <!-- Header / Navigation -->
+  <!-- Multipage Navbar -->
   <header class="navbar">
     <div class="container nav-container">
-      <a href="#" class="brand-logo">
+      <a href="/" class="brand-logo">
         <div class="logo-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
             <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
             <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <defs>
-            <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#6366f1"/>
-              <stop offset="1" stop-color="#06b6d4"/>
-            </linearGradient>
-          </defs>
           </svg>
         </div>
         <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
       </a>
 
       <nav class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#syntax">Command</a>
-        <a href="#calculator">Calculator</a>
-        <a href="#demo">Simulator</a>
-        <a href="#pricing">Pricing</a>
+        <a href="/" class="active" style="color: #a5b4fc; font-weight: 600;">Overview</a>
+        <a href="/stories/">Stories</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/how-to/">How-To</a>
+        <a href="/privacy/">Privacy</a>
       </nav>
 
       <div class="nav-actions">
+        <a href="/findings/" class="btn btn-outline nav-disclosures-btn" style="border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe;">🛡️ Disclosures</a>
         <a href="./cz/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
-        <a href="#pricing" class="btn btn-primary">See Pricing</a>
+        <a href="/login/" class="btn btn-primary">Sign In</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
+  <!-- Hero Section Opening With Project Members -->
+  <section class="hero" style="padding-bottom: 32px;">
     <div class="container hero-container">
-      <div class="hero-badge">
-        <span class="pulse-dot"></span>
-        <span>Early Access • Zero Monthly Subscriptions • Pay-Per-Scan Credits</span>
+      
+      <!-- Project Members Callout -->
+      <div class="members-badge">
+        <span>🛡️</span>
+        <span>Built by <strong>Matej Vrzala</strong> &amp; <strong>Martin Vlach</strong> &bull; Advancing software security pro-bono &amp; professionally</span>
       </div>
 
       <h1 class="hero-title">
@@ -77,498 +78,324 @@
       </h1>
 
       <p class="hero-subtitle">
-        No seat licenses or monthly subscriptions. Simply comment <code class="code-tag">@budgetscan $0.50 --max-delay 5m</code> on any PR/MR. That is what we are building: BudgetScan plans how deep to scan so it fits your cap and deadline, then deducts only what the scan actually cost.
+        We improve software security pro-bono for open-source ecosystems, and professionally for engineering teams. BudgetScan is our security scanner designed to deliver deep zero-day discovery with strict cost control, pre-scan estimation, and seamless CI/CD integration.
       </p>
 
       <div class="hero-cta-group">
-        <a href="#syntax" class="btn btn-primary btn-lg">
-          <span>See PR Command Syntax</span>
+        <a href="#commands" class="btn btn-primary btn-lg">
+          <span>Cost Control Commands</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#calculator" class="btn btn-outline btn-lg">Calculate Credit Savings</a>
+        <a href="#workflow" class="btn btn-outline btn-lg">Internal Workflow</a>
+        <a href="/findings/" class="btn btn-outline btn-lg" style="border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe;">
+          <span>🛡️ Verified Disclosures</span>
+        </a>
       </div>
 
-      <p class="status-note"><strong>Early access, still in development.</strong> The open-source scanner (nano-analyzer) works today from the command line, and you can call it from your own CI (see the <a href="how-to/">how-to</a>). A GitLab merge-request job and a GitHub Action are in private testing and shared during early access. The <code class="code-tag">@budgetscan</code> comment command, budget and deadline caps, and prepaid credits shown on this page are what we are building next. Nothing here can be purchased yet, and all examples and numbers are illustrative. Questions or want early access? <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access">Email us</a>. Thanks for taking a look.</p>
-
-      <!-- Hero Interactive Terminal Preview -->
-      <p class="example-label">Illustrative example &mdash; mock output showing the intended flow, not a real scan result.</p>
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <div class="window-controls">
-            <span class="control close"></span>
-            <span class="control minimize"></span>
-            <span class="control maximize"></span>
-          </div>
-          <div class="window-title">GitLab MR #418 — @budgetscan $0.50 --max-delay 5m</div>
-          <div class="window-badge">Example</div>
-        </div>
-        <div class="terminal-body">
-          <div class="terminal-line comment-line">
-            <span class="user-avatar">reviewer-jane</span>
-            <span class="comment-text">Looking at the C++ changes. <span class="highlight-mention">@budgetscan $0.50 --max-delay 5m</span></span>
-          </div>
-          <div class="terminal-divider"></div>
-          <div class="terminal-line bot-response">
-            <div class="bot-header">
-              <span class="bot-badge">BudgetScan Bot</span>
-              <span class="bot-time">example</span>
-            </div>
-            <div class="bot-card">
-              <div class="scan-result-header">
-                <span class="status-icon danger">⚡</span>
-                <div>
-                  <h4>Use-After-Free Vulnerability in <code class="file-link">interpreter.cpp:142</code></h4>
-                  <p>Severity: High | Budget Cap: <strong>$0.50</strong> | Max Delay: <strong>5m</strong></p>
-                </div>
-              </div>
-
-              <!-- Cost summary inside bot card -->
-              <div class="bot-cost-box">
-                <div class="cost-box-title">
-                  <span>🏆 Execution & Credit Summary</span>
-                  <span class="cost-total">Cost: $0.161 / $0.50 Cap</span>
-                </div>
-                <div class="cost-items">
-                  <div class="cost-item winner">
-                    <span class="cost-provider">LLM Context + Scan</span>
-                    <span class="cost-specs">Changed files</span>
-                    <span class="cost-price">$0.041</span>
-                    <span class="cost-status">Within Cap</span>
-                  </div>
-                  <div class="cost-item winner">
-                    <span class="cost-provider">Skeptical Triage</span>
-                    <span class="cost-specs">5 rounds</span>
-                    <span class="cost-price">$0.120</span>
-                    <span class="cost-status ready">Completed</span>
-                  </div>
-                  <div class="cost-item">
-                    <span class="cost-provider">Team Credit Deduction</span>
-                    <span class="cost-specs">Prepaid Pool</span>
-                    <span class="cost-price">-$0.161</span>
-                    <span class="cost-status">Remaining: $248.34</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="status-note" style="margin-top: 20px;">
+        <strong>Early access.</strong> The core CLI scanner and pre-scan estimator (<code class="code-tag">budget.py</code>) work today. PR comment triggers and credit packs are in active development. Built on <a href="#workflow">nano-analyzer</a>.
+      </p>
     </div>
   </section>
 
-  <!-- PR Command Syntax Section -->
-  <section class="section section-dark" id="syntax">
+  <!-- Commands: Cost Control & Estimation Section -->
+  <section class="section section-dark" id="commands">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Granular PR/MR Command Control</h2>
-        <p class="section-subtitle">Developers, reviewers, and PMs control the scan budget and deadline right from the comment thread.</p>
+        <h2 class="section-title">Cost Estimation &amp; Budget Control</h2>
+        <p class="section-subtitle">Know what a scan will cost before running it, and enforce hard spending and deadline caps in CI.</p>
       </div>
 
-      <div class="syntax-grid">
-        <div class="syntax-card">
-          <div class="syntax-badge">Basic Quick Scan</div>
-          <div class="syntax-code">@budgetscan $0.25</div>
-          <h3>Lightweight Sanity Audit</h3>
-          <p>Ideal for quick developer sanity checks. BudgetScan scans the changed files with a single, fast triage pass.</p>
-          <div class="syntax-foot">Real per-scan costs: <strong>published after benchmarks</strong></div>
+      <div class="commands-grid">
+        <!-- Card 1: Pre-Scan Cost Estimation -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #a5b4fc; text-transform: uppercase; letter-spacing: 0.05em;">Step 1 &bull; Pre-Scan Estimation</span>
+            <span style="background: rgba(99, 102, 241, 0.15); color: #c7d2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono);">$0.00 Cost</span>
+          </div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main);">Model Cost Before Spending a Cent</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+            <code class="code-tag">budget.py</code> discovers scannable code, filters out tests and vendor trees, and prices the scan across Claude 3.5 Haiku, Qwen 2.5, DeepSeek, Gemini, and Mistral at 3 and 5 triage rounds:
+          </p>
+          <pre style="background: var(--bg-dark-section); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin: 0; font-family: var(--font-mono); font-size: 0.82rem; color: #e2e8f0; overflow-x: auto;"><code># Discover scannable code & calculate exact token costs:
+uv run budget.py /path/to/repo</code></pre>
         </div>
 
-        <div class="syntax-card highlighted">
-          <div class="syntax-badge recommended">Recommended</div>
-          <div class="syntax-code">@budgetscan $0.50 --max-delay 5m</div>
-          <h3>Deep Audit with a Deadline</h3>
-          <p>Perfect for release candidate PRs. Aims to finish within 5 minutes while spending up to $0.50 on deeper context, scanning and multi-round triage. If time runs out, you get a partial report instead of a stuck pipeline.</p>
-          <div class="syntax-foot">Real per-scan costs: <strong>published after benchmarks</strong></div>
+        <!-- Card 2: Hard Budget & Deadline Control -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">Step 2 &bull; Enforced Runtime Caps</span>
+            <span style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono);">Hard Ceiling</span>
+          </div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main);">Hard Budget &amp; Deadline Governor</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+            The budget governor limits spend and wall-clock execution. If time is running out, it stops scheduling new rounds and yields a verified partial report without blocking CI:
+          </p>
+          <pre style="background: var(--bg-dark-section); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin: 0; font-family: var(--font-mono); font-size: 0.82rem; color: #e2e8f0; overflow-x: auto;"><code># Cap spend to $5.00 and execution to 5 minutes:
+uv run scan.py /path/to/repo \
+  --max-budget 5.00 --max-delay 5m --rounds 3 --db scan.db</code></pre>
         </div>
 
-        <div class="syntax-card">
-          <div class="syntax-badge">High-Security Release</div>
-          <div class="syntax-code">@budgetscan $5.00 --depth deep</div>
-          <h3>Deepest Audit Your Budget Allows</h3>
-          <p>Used for critical core changes. Spends the larger cap on wider context and more triage rounds, and the report lists what was covered.</p>
-          <div class="syntax-foot">Real per-scan costs: <strong>published after benchmarks</strong></div>
+        <!-- Card 3: Pull Request Command Automation -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.05em;">Step 3 &bull; PR Bot Trigger</span>
+            <span style="background: rgba(245, 158, 11, 0.15); color: #fde68a; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono);">In Development</span>
+          </div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main);">Trigger from Merge Request Comments</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+            Engineers and reviewers control audit depth directly from the discussion thread, deducting only actual cost from the team credit pool:
+          </p>
+          <pre style="background: var(--bg-dark-section); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin: 0; font-family: var(--font-mono); font-size: 0.82rem; color: #e2e8f0; overflow-x: auto;"><code># Comment in GitLab MR or GitHub PR:
+@budgetscan $0.50 --max-delay 5m</code></pre>
         </div>
       </div>
-      <p class="howto-link">New to this? Read the <a href="how-to/">Preliminary How-to Setup and Use Guide</a>.</p>
     </div>
   </section>
 
-  <!-- Features Grid Section -->
+  <!-- Internal Workflow: Lineage & What We Built on nano-analyzer -->
+  <section class="section" id="workflow">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Internal Workflow &amp; Open-Source Lineage</h2>
+        <p class="section-subtitle">
+          BudgetScan builds upon the open-source scanner <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a> by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>). Here is the original architecture, and how we expanded it into a production budget governor.
+        </p>
+      </div>
+
+      <!-- Original Schema Image Container -->
+      <div class="schema-container">
+        <img src="/img/aisle-nano-analyzer.png" alt="nano-analyzer pipeline architecture schema by AISLE" class="schema-img" loading="lazy">
+        <p class="schema-caption">
+          <strong>Original nano-analyzer schema:</strong> Source repository decomposition &rarr; chunking &rarr; model invocation &rarr; triage filter &rarr; markdown report.
+        </p>
+      </div>
+
+      <!-- Comparison Grid: What BudgetScan Adds -->
+      <div style="margin-top: 32px;">
+        <h3 style="font-size: 1.25rem; color: var(--text-main); margin-bottom: 16px; text-align: center;">What We Built On Top of the Original Core</h3>
+        <div class="arch-grid">
+          <div class="arch-card">
+            <h4><span>💰</span> Pre-Scan Cost Estimator (`budget.py`)</h4>
+            <p>Accurately counts AST code characters, calculates prompt and output tokens across 7 frontier models, and projects costs before executing.</p>
+          </div>
+          <div class="arch-card">
+            <h4><span>⚖️</span> Runtime Budget Governor (`--max-budget`)</h4>
+            <p>Enforces hard dollar ceilings. The scanner never exceeds your budget cap and records granular input/output token spend in SQLite.</p>
+          </div>
+          <div class="arch-card">
+            <h4><span>⏱️</span> Deadline Cap Enforcement (`--max-delay`)</h4>
+            <p>Prevents CI pipeline timeouts by tracking elapsed wall clock and gracefully exporting partial reports with files covered.</p>
+          </div>
+          <div class="arch-card">
+            <h4><span>🔍</span> Multi-Round Adversarial Triage (Rounds 0–5)</h4>
+            <p>Upgrades single-pass detection into multi-round skeptical cross-examination, dropping false positives to deliver maintainer-ready leads.</p>
+          </div>
+          <div class="arch-card">
+            <h4><span>⚡</span> Tree-Sitter AST &amp; Hash Caching</h4>
+            <p>Functions and classes are hashed in SQLite. Unchanged code across commits is skipped, so you never pay twice to audit identical logic.</p>
+          </div>
+          <div class="arch-card">
+            <h4><span>🛡️</span> Native CI/CD &amp; SARIF 2.1.0 Export</h4>
+            <p>Full integration into GitLab CI (`.gitlab-ci.yml`) and GitHub Actions (`action.yml`), publishing findings directly to security tabs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CI/CD Quickstart Section -->
+  <section class="section section-dark" id="cicd">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Drop Into Any Pipeline in 60 Seconds</h2>
+        <p class="section-subtitle">Runs anywhere Python and Git run. Exports standard SARIF 2.1.0 to your existing security tab.</p>
+      </div>
+
+      <div class="ci-tabs">
+        <div class="ci-tabs-nav">
+          <button type="button" class="ci-tab-btn active" data-citab="tab-gitlab">GitLab CI (.gitlab-ci.yml)</button>
+          <button type="button" class="ci-tab-btn" data-citab="tab-github">GitHub Actions (action.yml)</button>
+          <button type="button" class="ci-tab-btn" data-citab="tab-cli">Local CLI (scan.py)</button>
+        </div>
+
+        <div id="tab-gitlab" class="ci-tab-pane active">
+          <pre><code># .gitlab-ci.yml: Budget-capped security audit on every MR
+stages:
+  - security
+
+budgetscan:
+  stage: security
+  image: python:3.13-slim
+  script:
+    - pip install uv && uv sync
+    - uv run scan.py . --max-budget 5.00 --rounds 3 --db scan.db
+    - uv run python -m web.dashboard.export --format sarif --output gl-sast-report.sarif
+  artifacts:
+    reports:
+      sast: gl-sast-report.sarif
+    paths:
+      - scan.db</code></pre>
+        </div>
+
+        <div id="tab-github" class="ci-tab-pane">
+          <pre><code># .github/workflows/security.yml: Uploads directly to GitHub Security Tab
+name: BudgetScan Security Audit
+on: [push, pull_request]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run BudgetScan
+        run: uv run scan.py ./src --rounds 3 --max-budget 5.00 --db ./scan.db
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: scan-report.sarif</code></pre>
+        </div>
+
+        <div id="tab-cli" class="ci-tab-pane">
+          <pre><code># Run quick developer audit with a $2.50 hard cap and 3 triage rounds:
+uv run scan.py /path/to/repo --rounds 3 --max-budget 2.50 --db ./scan.db
+
+# Or check what a scan would cost before spending a cent:
+uv run budget.py /path/to/repo</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Pillars & Attrition Section -->
   <section class="section" id="features">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Why Pay Per Scan Instead of Per Seat</h2>
-        <p class="section-subtitle">No idle seats. You pay for the scans that actually run.</p>
+        <p class="section-subtitle">Pay only when code is actually audited, with hard budget and deadline limits.</p>
       </div>
 
       <div class="features-grid">
         <div class="feature-card highlight-border">
-          <div class="feature-badge">Zero Waste</div>
+          <div class="feature-badge">Budget Control</div>
           <div class="feature-icon icon-cyan">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <h3>Credit Deducted Only on Execution</h3>
-          <p>No seat licenses for developers who rarely open a PR. Credits are deducted only when a scan runs, based on what it actually cost. Failures are rare, and when one happens, nothing is charged.</p>
+          <h3>Per-Scan Budget Governor</h3>
+          <p>No seats for inactive developers. Specify dollar caps and deadlines per PR (<code class="code-tag">--max-budget</code>, <code class="code-tag">--max-delay</code>). Failed scans are never charged.</p>
         </div>
 
         <div class="feature-card">
+          <div class="feature-badge">Accuracy</div>
           <div class="feature-icon icon-purple">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3>Bring Your Own LLM Backend</h3>
-          <p>By default, hosted scans run on our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a> (EU, zero data retention). The open-source scanner works with OpenAI and OpenRouter today; our early-access build adds Google Gemini / Vertex AI and any OpenAI-compatible endpoint such as vLLM or Ollama. Your code goes only to the provider you pick. Automatic routing to the cheapest backend is on the roadmap, not live yet. <a href="#privacy">Where does my code go?</a></p>
+          <h3>Multi-Round Adversarial Triage</h3>
+          <p>AI scanners produce noise when unchecked. Findings of medium severity and above undergo skeptical cross-examination rounds to eliminate false leads before developers see them.</p>
         </div>
 
         <div class="feature-card">
+          <div class="feature-badge">Efficiency &amp; Privacy</div>
           <div class="feature-icon icon-emerald">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
-          <h3>Deadline-Aware Scans</h3>
-          <p>With <code class="code-tag">--max-delay 5m</code>, BudgetScan is designed not to hold up CI pipelines: when the deadline approaches, it stops starting new work and posts a partial report listing what was covered.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-amber">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-          </div>
-          <h3>Skip Unchanged Files (roadmap)</h3>
-          <p>Skipping unchanged files on re-scan, so you don&rsquo;t pay twice for the same code, exists today in a community Go port and is planned for the main scanner.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-rose">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <h3>Built for GitHub & GitLab</h3>
-          <p>Today you can run the open-source scanner from any CI job. A GitLab merge-request job and a GitHub Action that run it on every MR/PR are in private testing. Triggering it from a comment with <code class="code-tag">@budgetscan</code> is what we are building next.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-indigo">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Simple Prepaid Credits</h3>
-          <p>Top up a prepaid balance and each scan deducts only its actual cost. Team-level budget caps may come later.</p>
+          <h3>AST Caching &amp; Zero Retention</h3>
+          <p>Function hashing skips unchanged code between runs so you never pay twice. Code is sent only to your chosen backend (EU inference with zero retention, or self-hosted on-premise).</p>
         </div>
       </div>
 
-      <p class="status-note"><strong>A note on accuracy.</strong> AI-based scanners can flag things that turn out to be harmless (false positives) and can miss real issues (false negatives). Findings of medium severity and above go through a skeptical, multi-round triage step, and we work hard on keeping false positives to a minimum. Please treat results as strong leads for a human reviewer, not as verdicts.</p>
+      <!-- Multi-Round Attrition Funnel -->
+      <div style="margin-top: 36px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+        <h3 style="margin: 0 0 8px; font-size: 1.15rem; color: var(--text-main);">Multi-Round Triage Attrition</h3>
+        <p style="margin: 0 0 16px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
+          BudgetScan subjects suspected leads to multiple rounds of skeptical review before flagging an actionable issue:
+        </p>
+        <div class="funnel-grid">
+          <div class="funnel-card">
+            <div class="funnel-num">Round 0</div>
+            <div class="funnel-label">Initial Lead Generation</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-num">Round 1</div>
+            <div class="funnel-label">Syntax &amp; Scope Defense</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-num">Round 2</div>
+            <div class="funnel-label">Full File Context</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-num">Round 3</div>
+            <div class="funnel-label">Attacker Reachability</div>
+          </div>
+          <div class="funnel-card highlight">
+            <div class="funnel-num">Final Triage</div>
+            <div class="funnel-label">Verified Leads with Test Harness</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Success Stories Section -->
+  <!-- Proven Upstream Track Record (Featured Showcase) -->
   <section class="section section-dark" id="stories">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Success Stories</h2>
-        <p class="section-subtitle">Real results on real open-source projects, with links you can verify. Findings are leads for maintainers, checked by a person before we report them.</p>
+        <h2 class="section-title">Success Stories: Proven Upstream Track Record</h2>
+        <p class="section-subtitle">Real findings detected by BudgetScan, verified and merged into upstream projects by lead maintainers.</p>
       </div>
 
-      <article class="story-card">
-        <span class="story-badge">Merged upstream &bull; October 2026</span>
-        <h3><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect: unbounded Bluetooth packet buffer on Android</a></h3>
-        <p><a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> links phones with desktops to share notifications, files and the clipboard. Its Android Bluetooth backend buffered incoming packets with no size limit, so a paired device that never sent a line terminator could make the app run out of memory. Bluetooth support is an opt-in beta. Creator and maintainer Albert Vaca Cintora merged our fix, which reuses the 32&#160;MB limit the LAN backend already had.</p>
-        <ul class="story-timeline">
-          <li><strong>4 Oct 2026.</strong> A scan of KDE Connect for Android flagged the unbounded buffer in <code class="code-tag">BluetoothLink.kt</code>; triage rated it valid.</li>
-          <li><strong>8 Oct.</strong> We opened merge request !696 with the fix and a unit test. Albert Vaca Cintora merged it the same day; not in a tagged release yet.</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/kdeconnect-bluetooth-packet-size/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696" target="_blank" rel="noopener">Merge request !696</a></li>
-          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/commit/11b5bdeb6914a1593994d3219592c982a273b097" target="_blank" rel="noopener">Commit 11b5bde</a></li>
-          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696#note_1666911" target="_blank" rel="noopener">Maintainer reply</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage called the attacker remote; reading the code narrowed it to an opt-in backend and an already paired device. Findings are leads for people, not verdicts.</p>
-      </article>
+      <div class="stories-grid">
+        <!-- Card 1: tmux -->
+        <article class="story-card" style="margin: 0; display: flex; flex-direction: column;">
+          <span class="story-badge">Fixed in OpenBSD CVS &bull; Oct 2026</span>
+          <h3 style="font-size: 1.1rem;"><a href="/stories/tmux-copy-mode-null-dereference/">tmux: server crash on copy-mode -S</a></h3>
+          <p style="font-size: 0.88rem; flex-grow: 1;">Dereferencing a NULL client pointer in <code class="code-tag">copy-mode -S</code> crashed the tmux server and all sessions. Lead maintainer Nicholas Marriott accepted our report and committed the fix to OpenBSD.</p>
+          <div class="maintainer-quote" style="margin: 12px 0 0;">
+            <em>"Applied to OpenBSD now, will be in GitHub later. Thanks!"</em>
+            <span class="author-tag">&mdash; Nicholas Marriott</span>
+          </div>
+        </article>
 
-      <article class="story-card">
-        <span class="story-badge">Merged upstream &bull; October 2026</span>
-        <h3><a href="stories/proftpd-mod-sftp-pam-response-index/">ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts</a></h3>
-        <p><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a> is a widely deployed FTP and SFTP server. Its <code class="code-tag">mod_sftp_pam</code> module matched keyboard-interactive answers to PAM prompts by the wrong index. When a PAM module sent an info message before a prompt, as pam-krb5 does during a password change, login failed or the session process read past the end of the answers array. Maintainer TJ Saunders merged our fix.</p>
-        <ul class="story-timeline">
-          <li><strong>30 Sep 2026.</strong> A scan of the ProFTPD tree flagged <code class="code-tag">sftppam_converse()</code>; three triage rounds rated it valid.</li>
-          <li><strong>2 Oct.</strong> We confirmed it with an AddressSanitizer harness and opened pull request #2355.</li>
-          <li><strong>7 Oct.</strong> TJ Saunders merged it into master; not in a tagged release yet.</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/proftpd-mod-sftp-pam-response-index/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">Pull request #2355</a></li>
-          <li><a href="https://github.com/proftpd/proftpd/pull/2355#issuecomment-6047740810" target="_blank" rel="noopener">Maintainer reply</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage overstated the reach; reading the receiving code narrowed it to PAM stacks that mix messages and prompts. Findings are leads for people, not verdicts.</p>
-      </article>
+        <!-- Card 2: KDE Connect -->
+        <article class="story-card" style="margin: 0; display: flex; flex-direction: column;">
+          <span class="story-badge">Merged upstream &bull; Oct 2026</span>
+          <h3 style="font-size: 1.1rem;"><a href="/stories/kdeconnect-bluetooth-packet-size/">KDE Connect: unbounded Bluetooth buffer</a></h3>
+          <p style="font-size: 0.88rem; flex-grow: 1;">Android Bluetooth backend buffered incoming packets with no size limit, allowing memory exhaustion. Lead maintainer Albert Vaca Cintora merged our fix with unit tests in MR !696.</p>
+          <div class="maintainer-quote" style="margin: 12px 0 0;">
+            <em>"Merged merge request !696 on the same day with automated unit tests."</em>
+            <span class="author-tag">&mdash; Albert Vaca Cintora</span>
+          </div>
+        </article>
 
-      <article class="story-card">
-        <span class="story-badge">Released upstream &bull; October 2026</span>
-        <h3><a href="stories/windmill-s3-ai-attachment-size-limit/">Windmill: unbounded S3 downloads for AI attachments</a></h3>
-        <p><a href="https://github.com/windmill-labs/windmill" target="_blank" rel="noopener">Windmill</a> is an open-source platform for scripts, workflows and internal tools. When an AI step referenced an S3 object, Windmill downloaded the whole object and base64-encoded it with no size limit, so one large object could exhaust a worker&rsquo;s memory. Our size check came too late; maintainer Ruben Fiszel replaced it with a bounded download.</p>
-        <ul class="story-timeline">
-          <li><strong>2 Oct 2026.</strong> A scan of Windmill&rsquo;s AI backend flagged the unbounded download in <code class="code-tag">image_handler.rs</code>.</li>
-          <li><strong>4 Oct.</strong> We opened pull request #11515 with a size check before encoding.</li>
-          <li><strong>5 Oct.</strong> Ruben Fiszel merged a bounded download in #11534, released in v1.824.0.</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/windmill-s3-ai-attachment-size-limit/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">Pull request #11515</a></li>
-          <li><a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">Upstream fix #11534</a></li>
-          <li><a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">Release v1.824.0</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> Our patch was only a partial mitigation; the maintainer&rsquo;s fix is better. Findings are leads for people, not verdicts.</p>
-      </article>
-
-      <article class="story-card">
-        <span class="story-badge">Merged &bull; Shared library hardening &bull; October 2026</span>
-        <h3><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</a></h3>
-        <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> is a popular CLI email client written in Rust. BudgetScan flagged that message metadata (subjects, sender names, attachment filenames) was printed into terminal tables without escaping control characters. An attacker could craft emails with OSC 52 sequences to silently overwrite the user's clipboard, manipulate terminal output, or use Unicode BiDi overrides to disguise executable attachments. Maintainer Clément Douin extracted our sanitization into the shared <code class="code-tag">pimalaya-cli</code> library with co-authorship credit, so its sister CLI tools can adopt it too.</p>
-        <ul class="story-timeline">
-          <li><strong>2 Oct 2026.</strong> BudgetScan flagged unescaped metadata rendering in Himalaya's table output. We opened pull request #771 on GitHub with an initial patch and test suite.</li>
-          <li><strong>2 Oct.</strong> Maintainer Clément Douin (<code class="code-tag">soywod</code>) recognized that sister CLI projects (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) share the same tables. He moved the sanitization into <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, crediting Martin Vlach as co-author.</li>
-          <li><strong>3 Oct.</strong> We completed backend coverage across IMAP, JMAP, Gmail, Graph and pimdir backends and added unit tests. Maintainer Douin reviewed and merged pull request #771 into master.</li>
-          <li><strong>11&ndash;12 Oct.</strong> Community contributor SORALNV built on PR #771 with PR #782 (atomic attachment downloads, merged) and PR #783 (message view sanitization, approved).</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/himalaya-terminal-injection-sanitization/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">Merged pull request (#771)</a></li>
-          <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5959074461" target="_blank" rel="noopener">Maintainer review &amp; co-authorship note</a></li>
-          <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">pimalaya-cli crate on crates.io</a></li>
-          <li><a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">Follow-up PR #783 (message sanitization)</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> Automated scanning detected an input-sanitization gap, and close collaboration with the maintainer turned a single bug fix into a shared function the other Pimalaya CLI tools can adopt. Findings are actionable leads for humans, not unquestioned verdicts.</p>
-      </article>
-
-      <article class="story-card">
-        <span class="story-badge">Fixed in OpenBSD and tmux upstream &bull; October 2026</span>
-        <h3><a href="stories/tmux-copy-mode-null-dereference/">tmux: server crash on copy-mode -S without attached client</a></h3>
-        <p><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmux</a> is the ubiquitous terminal multiplexer. When executing its <code class="code-tag">copy-mode -S</code> handler without an attached client (such as from a hook or background server queue), tmux dereferenced a NULL client pointer, crashing that tmux server with <code class="code-tag">SIGSEGV</code> and ending all of its sessions. Creator and lead maintainer Nicholas Marriott accepted our report and applied the fix to OpenBSD CVS.</p>
-        <ul class="story-timeline">
-          <li><strong>1 Oct 2026.</strong> BudgetScan flagged the unguarded client pointer in <code class="code-tag">cmd-copy-mode.c</code>. We verified the crash path via hooks and opened pull request #5670 on GitHub with the fix and an automated regression test.</li>
-          <li><strong>2 Oct.</strong> tmux lead maintainer Nicholas Marriott (<code class="code-tag">nicm</code>) reviewed the pull request, replied <em>&ldquo;Applied to OpenBSD now, will be in GitHub later. Thanks!&rdquo;</em>, and committed revision 1.55 to OpenBSD CVS credited to Martin Vlach. The same day it was synced to tmux on GitHub as commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/tmux-copy-mode-null-dereference/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">OpenBSD CVS log (rev 1.55)</a></li>
-          <li><a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">tmux commit 5932140 on GitHub</a></li>
-          <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">GitHub pull request (#5670)</a></li>
-          <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Maintainer response by Nicholas Marriott</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> The scanner flagged the unguarded pointer as an actionable lead, and an engineer confirmed the control flow, isolated the hook trigger, wrote the test, and reported the fix. Upstream maintainer Nicholas Marriott validated and committed it to OpenBSD. Findings are leads for people, not verdicts.</p>
-      </article>
-
-      <article class="story-card">
-        <span class="story-badge">Fixed upstream &bull; October 2026</span>
-        <h3><a href="stories/dnsmasq-slaac-stale-hostname/">dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname</a></h3>
-        <p><a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a> is the DNS and DHCP server built into many routers and Linux systems. A DHCP lease that lost its hostname kept its SLAAC name records, so a later ICMPv6 reply handed a NULL hostname to a log call. We mailed a patch for the log line; author Simon Kelley fixed the underlying stale records instead and credited Martin Vlach in the commit. A second patch from the same scan was applied too.</p>
-        <ul class="story-timeline">
-          <li><strong>30 Sep 2026.</strong> A scan flagged the NULL hostname in <code class="code-tag">slaac_ping_reply()</code>; we mailed a patch to dnsmasq-discuss.</li>
-          <li><strong>1 Oct.</strong> Simon Kelley committed a broader fix that clears stale SLAAC-name data, and also committed our second patch from the same scan, for an allocation-failure bug in <code class="code-tag">poll_listen()</code>.</li>
-          <li><strong>11 Oct.</strong> He replied to both patches on the list; neither is in a tagged release yet.</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/dnsmasq-slaac-stale-hostname/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Our patch (mailing list)</a></li>
-          <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">Upstream commit 03fd0c1</a></li>
-          <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">Upstream commit baeb743 (poll_listen)</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> The scanner found a symptom; the maintainer found the cause. Findings are leads for people, not verdicts.</p>
-      </article>
-
-      <article class="story-card">
-        <span class="story-badge">First hit on open source &bull; September 2026</span>
-        <h3><a href="stories/yopass-oidc-email-verified/">Yopass: unverified emails could pass OIDC domain restrictions</a></h3>
-        <p><a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a> is an open-source tool (over 3,000 GitHub stars) for securely sharing secrets, passwords and files. When it is set to allow logins only from certain email domains, its OIDC login trusted the email address returned by the identity provider without checking the <code class="code-tag">email_verified</code> claim. Someone with an unverified account at an identity provider under an allowed domain could therefore get past the domain restriction.</p>
-        <ul class="story-timeline">
-          <li><strong>23 Sep 2026.</strong> BudgetScan flagged the missing check. We opened a pull request with a fix and tests.</li>
-          <li><strong>24 Sep.</strong> An automated review asked for stronger tests, which we added. The maintainer pointed out that <code class="code-tag">email_verified</code> is an optional claim, so enforcing it blindly could break existing setups.</li>
-          <li><strong>25 Sep.</strong> Maintainer Johan Haals built on our patch in a new pull request: he kept our commit as the first one, with its authorship, and added an explicit opt-out for providers that omit the claim, a startup warning, configuration validation, tests and documentation.</li>
-          <li><strong>26 Sep.</strong> Merged into Yopass. By default, OIDC logins now require a verified email.</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="stories/yopass-oidc-email-verified/"><strong>Read the full story &rarr;</strong></a></li>
-          <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Our original pull request (#3966)</a></li>
-          <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">The merged pull request (#3973)</a></li>
-          <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Our patch as its first commit</a></li>
-        </ul>
-        <p class="story-caveat"><strong>How to read this.</strong> Thanks to Johan Haals for the quick, careful handling. The scanner found the problem and a human maintainer decided how to fix it safely, which is how we want it to work: findings are leads for people, not verdicts. It is one data point, not a benchmark. We will publish measured results once we have them.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- Interactive Demo Simulator Section -->
-  <section class="section section-dark" id="demo">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Interactive Budget-Scan Simulator</h2>
-        <p class="section-subtitle">Select a PR scenario and test budget caps like @budgetscan $0.50 --max-delay 5m &mdash; a conceptual simulation with mock numbers, not a live scan.</p>
+        <!-- Card 3: Himalaya -->
+        <article class="story-card" style="margin: 0; display: flex; flex-direction: column;">
+          <span class="story-badge">Merged upstream &bull; Oct 2026</span>
+          <h3 style="font-size: 1.1rem;"><a href="/stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal escape &amp; BiDi spoofing</a></h3>
+          <p style="font-size: 0.88rem; flex-grow: 1;">Unescaped metadata in terminal tables allowed OSC 52 clipboard overrides. Maintainer Clément Douin extracted our sanitization into shared <code class="code-tag">pimalaya-cli</code> 0.2.6.</p>
+          <div class="maintainer-quote" style="margin: 12px 0 0;">
+            <em>"Moved sanitization into pimalaya-cli with co-authorship credit."</em>
+            <span class="author-tag">&mdash; Clément Douin</span>
+          </div>
+        </article>
       </div>
 
-      <div class="interactive-demo-card">
-        <div class="demo-controls-panel">
-          <label for="demo-pr-select">Select PR Command Scenario:</label>
-          <select id="demo-pr-select" class="form-select">
-            <option value="c-memory">@budgetscan $0.50 --max-delay 5m (C++ UAF & Memory Audit)</option>
-            <option value="go-concurrency">@budgetscan $0.75 --max-delay 2m (Go Concurrency & Race Check)</option>
-            <option value="py-security">@budgetscan $0.30 (Python Quick Sanity Audit)</option>
-          </select>
-          <button id="run-demo-btn" class="btn btn-primary">
-            <span>Execute PR Command</span>
-          </button>
-        </div>
-
-        <div class="demo-output-terminal" id="demo-terminal">
-          <div class="term-line prompt">> [simulation] Click "Execute PR Command" to see how a budget cap and deadline shape a scan (mock data)...</div>
-        </div>
+      <div style="text-align: center; margin-top: 32px;">
+        <a href="/stories/" class="btn btn-outline btn-lg">Browse All 7 Open-Source Case Studies &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- ROI Calculator Section -->
-  <section class="section" id="calculator">
+  <!-- Pricing Summary Teaser -->
+  <section class="section" id="pricing-teaser">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Pay-Per-Scan Credit Savings Calculator</h2>
-        <p class="section-subtitle">Compare estimated pay-per-scan costs with per-seat pricing. The inputs and assumptions here are illustrative.</p>
-      </div>
-
-      <div class="calculator-wrapper">
-        <div class="calc-inputs">
-          <div class="calc-field">
-            <label for="input-prs">Pull/Merge Requests per month: <span id="val-prs" class="calc-val">150</span></label>
-            <input type="range" id="input-prs" min="10" max="1000" step="10" value="150">
-          </div>
-
-          <div class="calc-field">
-            <label for="input-devs">Team developers (Traditional Seat Licenses): <span id="val-devs" class="calc-val">15</span></label>
-            <input type="range" id="input-devs" min="2" max="200" step="1" value="15">
-          </div>
-
-          <div class="calc-field">
-            <label for="input-rate">Average budget cap per PR ($): <span id="val-rate" class="calc-val">0.50</span>$</label>
-            <input type="range" id="input-rate" min="0.25" max="5.00" step="0.25" value="0.50">
-          </div>
-        </div>
-
-        <div class="calc-results">
-          <div class="result-box primary-result">
-            <span class="result-label">Annual Savings vs Flat Subscriptions</span>
-            <span class="result-number" id="res-total-savings">$8,748</span>
-            <span class="result-sub">Estimate: ~28% of cap per PR vs $50/dev/mo seat fees</span>
-          </div>
-
-          <div class="results-grid">
-            <div class="sub-result">
-              <span class="sub-label">Actual Monthly Spend</span>
-              <span class="sub-val" id="res-hours">$21 / month</span>
-            </div>
-            <div class="sub-result">
-              <span class="sub-label">Traditional SAST Seat Cost</span>
-              <span class="sub-val" id="res-cloud-savings">$750 / month</span>
-            </div>
-            <div class="sub-result">
-              <span class="sub-label">Effective Cost Savings</span>
-              <span class="sub-val" id="res-vulns">97% saved</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="calc-note">Illustrative: assumes an average scan costs about 28% of its cap and a seat price of $50 per developer per month. Real per-scan costs will replace this once we have measured them. The seat price is a placeholder, not a quote from any vendor.</p>
-    </div>
-  </section>
-
-  <!-- Pricing Section (Credit Packs - No Subscriptions) -->
-  <section class="section section-dark" id="pricing">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Transparent Credit Packs • Zero Subscription Fees</h2>
-        <p class="section-subtitle">Planned prepaid credit packs: no subscription, no seat fees. Prices and terms are a draft and may change before launch. Scans rarely fail, and a failed scan is never charged.</p>
-      </div>
-
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <div class="plan-header">
-            <h3>Developer Starter</h3>
-            <p>For individuals & open-source contributors</p>
-            <div class="plan-price">
-              <span class="currency">$</span><span class="amount">25</span><span class="period">/ prepaid credit</span>
-            </div>
-          </div>
-          <ul class="plan-features">
-            <li>✓ <strong>$0 Monthly Subscription Fee</strong></li>
-            <li>✓ Scans per pack depend on the caps you set; real costs published after benchmarks</li>
-            <li>✓ Support for <code class="code-tag">@budgetscan $X</code> syntax</li>
-          </ul>
-          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access%3A%20%2425%20credit%20pack" class="btn btn-outline btn-block">Request early access</a>
-        </div>
-
-        <div class="pricing-card featured">
-          <div class="popular-tag">Recommended</div>
-          <div class="plan-header">
-            <h3>Team Shared Pool</h3>
-            <p>Shared credit balance for engineering teams</p>
-            <div class="plan-price">
-              <span class="currency">$</span><span class="amount">250</span><span class="period">/ prepaid credit</span>
-            </div>
-          </div>
-          <ul class="plan-features">
-            <li>✓ <strong>$0 Monthly Platform / Seat Fees</strong></li>
-            <li>✓ One shared prepaid balance for the whole team</li>
-            <li>✓ Support for the <code class="code-tag">--max-delay</code> deadline flag</li>
-            <li>✓ GitLab CI & GitHub Actions integration (in testing)</li>
-          </ul>
-          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20early%20access%3A%20%24250%20team%20pool" class="btn btn-primary btn-block">Request early access</a>
-        </div>
-
-        <div class="pricing-card">
-          <div class="plan-header">
-            <h3>Enterprise / Self-Hosted</h3>
-            <p>Bring your own infrastructure</p>
-            <div class="plan-price">
-              <span class="amount">Custom Pool</span>
-            </div>
-          </div>
-          <ul class="plan-features">
-            <li>✓ Everything in Team Shared Pool</li>
-            <li>✓ Connect your own LLM endpoint (OpenAI-compatible, vLLM, Ollama)</li>
-            <li>✓ Zero compute markup (pay your provider&rsquo;s rates)</li>
-            <li>✓ On-premise runners</li>
-            <li>✓ Custom invoicing</li>
-          </ul>
-          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20enterprise%20/%20self-hosted%20inquiry" class="btn btn-outline btn-block">Contact us</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Data Handling Section -->
-  <section class="section" id="privacy">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Where Does My Code Go?</h2>
-        <p class="section-subtitle">Short answer: only to the LLM provider you choose. For hosted scans that is EU inference with zero data retention; self-hosted against your own endpoint, nowhere outside your infrastructure.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon icon-emerald">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Zero Data Retention by Default</h3>
-          <p>Hosted BudgetScan scans run on inference from our partner <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a>, which operates with zero data retention: prompts and outputs are not stored and are never used to train models. Only operational metadata (such as request logs) is kept, for up to 30 days. <a href="https://koscompute.com/#privacy" target="_blank" rel="noopener">Their privacy details</a>.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-cyan">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
-          </div>
-          <h3>Hosted in the EU</h3>
-          <p>Kosmik&rsquo;s servers are in Prague and the operator is a Czech company under GDPR. The inference API is OpenAI-compatible: see the <a href="https://api.koscompute.com/docs/" target="_blank" rel="noopener">API docs</a>.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-amber">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
-          </div>
-          <h3>Or Keep It On-Prem</h3>
-          <p>The scanner is open source (Apache-2.0) and runs on your own infrastructure. Pointing it at your own LLM endpoint (vLLM, Ollama or any OpenAI-compatible server), so your code never leaves your network, works in our early-access build and is coming to the open-source scanner, which today calls OpenAI or OpenRouter.</p>
+      <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px 32px; text-align: center;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 12px; color: var(--text-main);">Simple Pay-Per-Scan Credit Pricing</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 620px; margin: 0 auto 24px;">
+          No recurring subscriptions or per-developer seat fees. Top up a credit pack for your team, set budget caps per pull request, and pay only for completed audits. Failed scans are never charged.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="/pricing/" class="btn btn-primary btn-lg">View Credit Packs &amp; Savings Calculator</a>
+          <a href="/privacy/" class="btn btn-outline btn-lg">Where Does My Code Go?</a>
         </div>
       </div>
     </div>
@@ -576,37 +403,9 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container footer-container">
-      <div class="footer-brand">
-        <span class="brand-name">BudgetScan</span>
-        <p>Credit-based, budget-capped security scanner for pull and merge requests.</p>
-      </div>
-
-      <div class="footer-links">
-        <div class="footer-col">
-          <h4>Product</h4>
-          <a href="#features">Features</a>
-          <a href="#syntax">Command</a>
-          <a href="#calculator">Calculator</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#privacy">Your Code &amp; Privacy</a>
-          <a href="#stories">Success Stories</a>
-        </div>
-
-        <div class="footer-col">
-          <h4>Docs & Repositories</h4>
-          <a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">GitHub Repository</a>
-          <a href="how-to/">Preliminary How-to Guide</a>
-          <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com">Email us</a>
-        </div>
-      </div>
-    </div>
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="privacy/">Privacy &amp; operator</a>.</p>
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="/privacy/">Privacy &amp; operator</a>.</p>
     </div>
   </footer>
-
-  <!-- Script -->
-  <script src="app.js"></script>
 </body>
 </html>

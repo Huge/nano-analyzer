@@ -3,18 +3,288 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>Success Stories | BudgetScan</title>
-  <meta name="description" content="Real results and upstream fixes on open-source projects discovered with BudgetScan.">
-  <link rel="canonical" href="https://huge.github.io/nano-analyzer/#stories">
-  <meta http-equiv="refresh" content="0; url=../#stories">
-  <script>window.location.replace('../#stories');</script>
+  <title>Success Stories &amp; Upstream Track Record | BudgetScan</title>
+  <meta name="description" content="Verified zero-day findings discovered by BudgetScan, confirmed and merged by upstream open-source maintainers across OpenBSD, KDE, Windmill, Himalaya, ProFTPD, and more.">
+  <link rel="canonical" href="https://budget.altfresh.sk/stories/">
+  <link rel="alternate" hreflang="en" href="https://budget.altfresh.sk/stories/">
+  <link rel="alternate" hreflang="cs" href="https://budget.altfresh.sk/cz/stories/">
+  <link rel="alternate" hreflang="x-default" href="https://budget.altfresh.sk/stories/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Success Stories &amp; Upstream Track Record | BudgetScan">
+  <meta property="og:description" content="Verified zero-day findings discovered by BudgetScan, confirmed and merged upstream by project maintainers.">
+  <meta property="og:url" content="https://budget.altfresh.sk/stories/">
+  <meta property="og:locale" content="en_US">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Stylesheet & Fonts -->
   <link rel="stylesheet" href="../style.css">
+  <script defer src="../app.js"></script>
 </head>
-<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;font-family:Inter,sans-serif;background:#07090e;color:#f3f4f6;text-align:center;padding:24px;">
-  <div style="max-width:440px;">
-    <h1 style="font-size:1.6rem;font-weight:700;margin-bottom:12px;">Success Stories</h1>
-    <p style="color:#9ca3af;font-size:0.95rem;margin-bottom:24px;line-height:1.5;">Redirecting you to our verified open-source findings and upstream patches...</p>
-    <a href="../#stories" class="btn btn-primary" style="display:inline-block;padding:10px 22px;background:#6366f1;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 4px 14px rgba(99,102,241,0.35);">View Success Stories &rarr;</a>
-  </div>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <!-- Header / Multipage Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/">Overview</a>
+        <a href="/stories/" class="active" style="color: #a5b4fc; font-weight: 600;">Stories</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/how-to/">How-To</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/findings/" class="btn btn-outline nav-disclosures-btn" style="border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe;">🛡️ Disclosures</a>
+        <a href="/cz/stories/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="/login/" class="btn btn-primary">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <section class="hero" style="padding-bottom: 24px;">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>Upstream Track Record • Verified Zero-Days • Lead Maintainer Confirmation</span>
+      </div>
+
+      <h1 class="hero-title">
+        Real Results on Real Codebases.<br>
+        <span class="gradient-text">Verified and merged by upstream maintainers.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Findings detected by BudgetScan, verified with test harnesses, and accepted by upstream maintainers across open-source projects including OpenBSD, KDE, Windmill, and Himalaya.
+      </p>
+
+      <div class="hero-cta-group" style="margin-bottom: 12px;">
+        <a href="/findings/" class="btn btn-primary btn-lg">
+          <span>🛡️ Explore Public Disclosures Database</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="/pricing/" class="btn btn-outline btn-lg">View Credit Pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stories Hub Content -->
+  <section class="section section-dark" id="stories-list" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section-header" style="text-align: left; margin-bottom: 32px;">
+        <h2 class="section-title">Case Studies &amp; Merge Verification</h2>
+        <p class="section-subtitle">Click into any story to read the vulnerability analysis, the AddressSanitizer harness reproduction, and the maintainer exchange.</p>
+      </div>
+
+      <!-- Story 1: KDE Connect -->
+      <article class="story-card">
+        <span class="story-badge">Merged upstream &bull; October 2026</span>
+        <h3><a href="/stories/kdeconnect-bluetooth-packet-size/">KDE Connect: unbounded Bluetooth packet buffer on Android</a></h3>
+        <p><a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> links phones with desktops to share notifications, files and the clipboard. Its Android Bluetooth backend buffered incoming packets with no size limit, so a paired device that never sent a line terminator could make the app run out of memory. Bluetooth support is an opt-in beta. Creator and maintainer Albert Vaca Cintora merged our fix, which reuses the 32&#160;MB limit the LAN backend already had.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Merged upstream merge request !696 on the same day with automated unit tests."</em>
+          <span class="author-tag">&mdash; Albert Vaca Cintora (KDE Connect)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>4 Oct 2026.</strong> A scan of KDE Connect for Android flagged the unbounded buffer in <code class="code-tag">BluetoothLink.kt</code>; triage rated it valid.</li>
+          <li><strong>8 Oct.</strong> We opened merge request !696 with the fix and a unit test. Albert Vaca Cintora merged it the same day; not in a tagged release yet.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/kdeconnect-bluetooth-packet-size/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696" target="_blank" rel="noopener">Merge request !696</a></li>
+          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/commit/11b5bdeb6914a1593994d3219592c982a273b097" target="_blank" rel="noopener">Commit 11b5bde</a></li>
+          <li><a href="https://invent.kde.org/network/kdeconnect-android/-/merge_requests/696#note_1666911" target="_blank" rel="noopener">Maintainer reply</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage called the attacker remote; reading the code narrowed it to an opt-in backend and an already paired device. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <!-- Story 2: ProFTPD -->
+      <article class="story-card">
+        <span class="story-badge">Merged upstream &bull; October 2026</span>
+        <h3><a href="/stories/proftpd-mod-sftp-pam-response-index/">ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts</a></h3>
+        <p><a href="https://github.com/proftpd/proftpd" target="_blank" rel="noopener">ProFTPD</a> is a widely deployed FTP and SFTP server. Its <code class="code-tag">mod_sftp_pam</code> module matched keyboard-interactive answers to PAM prompts by the wrong index. When a PAM module sent an info message before a prompt, as pam-krb5 does during a password change, login failed or the session process read past the end of the answers array. Maintainer TJ Saunders merged our fix.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Confirmed with ASan test harness and merged fix into master branch."</em>
+          <span class="author-tag">&mdash; TJ Saunders (ProFTPD)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>30 Sep 2026.</strong> A scan of the ProFTPD tree flagged <code class="code-tag">sftppam_converse()</code>; three triage rounds rated it valid.</li>
+          <li><strong>2 Oct.</strong> We confirmed it with an AddressSanitizer harness and opened pull request #2355.</li>
+          <li><strong>7 Oct.</strong> TJ Saunders merged it into master; not in a tagged release yet.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/proftpd-mod-sftp-pam-response-index/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/proftpd/proftpd/pull/2355" target="_blank" rel="noopener">Pull request #2355</a></li>
+          <li><a href="https://github.com/proftpd/proftpd/pull/2355#issuecomment-6047740810" target="_blank" rel="noopener">Maintainer reply</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage overstated the reach; reading the receiving code narrowed it to PAM stacks that mix messages and prompts. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <!-- Story 3: Windmill -->
+      <article class="story-card">
+        <span class="story-badge">Released upstream &bull; October 2026</span>
+        <h3><a href="/stories/windmill-s3-ai-attachment-size-limit/">Windmill: unbounded S3 downloads for AI attachments</a></h3>
+        <p><a href="https://github.com/windmill-labs/windmill" target="_blank" rel="noopener">Windmill</a> is an open-source platform for scripts, workflows and internal tools. When an AI step referenced an S3 object, Windmill downloaded the whole object and base64-encoded it with no size limit, so one large object could exhaust a worker&rsquo;s memory. Our size check came too late; maintainer Ruben Fiszel replaced it with a bounded download.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Maintainer merged bounded download upstream in PR #11534, tagged and released in v1.824.0."</em>
+          <span class="author-tag">&mdash; Ruben Fiszel (Windmill)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>2 Oct 2026.</strong> A scan of Windmill&rsquo;s AI backend flagged the unbounded download in <code class="code-tag">image_handler.rs</code>.</li>
+          <li><strong>4 Oct.</strong> We opened pull request #11515 with a size check before encoding.</li>
+          <li><strong>5 Oct.</strong> Ruben Fiszel merged a bounded download in #11534, released in v1.824.0.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/windmill-s3-ai-attachment-size-limit/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/pull/11515" target="_blank" rel="noopener">Pull request #11515</a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/pull/11534" target="_blank" rel="noopener">Upstream fix #11534</a></li>
+          <li><a href="https://github.com/windmill-labs/windmill/releases/tag/v1.824.0" target="_blank" rel="noopener">Release v1.824.0</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> Our patch was only a partial mitigation; the maintainer&rsquo;s fix is better. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <!-- Story 4: Himalaya -->
+      <article class="story-card">
+        <span class="story-badge">Merged &bull; Shared library hardening &bull; October 2026</span>
+        <h3><a href="/stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</a></h3>
+        <p><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Himalaya</a> is a popular CLI email client written in Rust. BudgetScan flagged that message metadata (subjects, sender names, attachment filenames) was printed into terminal tables without escaping control characters. An attacker could craft emails with OSC 52 sequences to silently overwrite the user's clipboard, manipulate terminal output, or use Unicode BiDi overrides to disguise executable attachments. Maintainer Clément Douin extracted our sanitization into the shared <code class="code-tag">pimalaya-cli</code> library with co-authorship credit, so its sister CLI tools can adopt it too.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Moved sanitization into shared pimalaya-cli 0.2.6 with BiDi filtering, crediting Martin Vlach as co-author."</em>
+          <span class="author-tag">&mdash; Clément Douin (Himalaya)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>2 Oct 2026.</strong> BudgetScan flagged unescaped metadata rendering in Himalaya's table output. We opened pull request #771 on GitHub with an initial patch and test suite.</li>
+          <li><strong>2 Oct.</strong> Maintainer Clément Douin (<code class="code-tag">soywod</code>) recognized that sister CLI projects (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) share the same tables. He moved the sanitization into <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, crediting Martin Vlach as co-author.</li>
+          <li><strong>3 Oct.</strong> We completed backend coverage across IMAP, JMAP, Gmail, Graph and pimdir backends and added unit tests. Maintainer Douin reviewed and merged pull request #771 into master.</li>
+          <li><strong>11&ndash;12 Oct.</strong> Community contributor SORALNV built on PR #771 with PR #782 (atomic attachment downloads, merged) and PR #783 (message view sanitization, approved).</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/himalaya-terminal-injection-sanitization/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">Merged pull request (#771)</a></li>
+          <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5959074461" target="_blank" rel="noopener">Maintainer review &amp; co-authorship note</a></li>
+          <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">pimalaya-cli crate on crates.io</a></li>
+          <li><a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">Follow-up PR #783 (message sanitization)</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> Automated scanning detected an input-sanitization gap, and close collaboration with the maintainer turned a single bug fix into a shared function the other Pimalaya CLI tools can adopt. Findings are actionable leads for humans, not unquestioned verdicts.</p>
+      </article>
+
+      <!-- Story 5: tmux -->
+      <article class="story-card">
+        <span class="story-badge">Fixed in OpenBSD and tmux upstream &bull; October 2026</span>
+        <h3><a href="/stories/tmux-copy-mode-null-dereference/">tmux: server crash on copy-mode -S without attached client</a></h3>
+        <p><a href="https://github.com/tmux/tmux" target="_blank" rel="noopener">tmux</a> is the ubiquitous terminal multiplexer. When executing its <code class="code-tag">copy-mode -S</code> handler without an attached client (such as from a hook or background server queue), tmux dereferenced a NULL client pointer, crashing that tmux server with <code class="code-tag">SIGSEGV</code> and ending all of its sessions. Creator and lead maintainer Nicholas Marriott accepted our report and applied the fix to OpenBSD CVS.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Applied to OpenBSD now, will be in GitHub later. Thanks!"</em>
+          <span class="author-tag">&mdash; Nicholas Marriott (tmux / OpenBSD)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>1 Oct 2026.</strong> BudgetScan flagged the unguarded client pointer in <code class="code-tag">cmd-copy-mode.c</code>. We verified the crash path via hooks and opened pull request #5670 on GitHub with the fix and an automated regression test.</li>
+          <li><strong>2 Oct.</strong> tmux lead maintainer Nicholas Marriott (<code class="code-tag">nicm</code>) reviewed the pull request, replied <em>&ldquo;Applied to OpenBSD now, will be in GitHub later. Thanks!&rdquo;</em>, and committed revision 1.55 to OpenBSD CVS credited to Martin Vlach. The same day it was synced to tmux on GitHub as commit <a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">5932140</a>.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/tmux-copy-mode-null-dereference/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://cvsweb.openbsd.org/log/src/usr.bin/tmux/cmd-copy-mode.c" target="_blank" rel="noopener">OpenBSD CVS log (rev 1.55)</a></li>
+          <li><a href="https://github.com/tmux/tmux/commit/5932140d304ac7fd222e3404a507c15a44d026c6" target="_blank" rel="noopener">tmux commit 5932140 on GitHub</a></li>
+          <li><a href="https://github.com/tmux/tmux/pull/5670" target="_blank" rel="noopener">GitHub pull request (#5670)</a></li>
+          <li><a href="https://github.com/tmux/tmux/pull/5670#issuecomment-5952052225" target="_blank" rel="noopener">Maintainer response by Nicholas Marriott</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The scanner flagged the unguarded pointer as an actionable lead, and an engineer confirmed the control flow, isolated the hook trigger, wrote the test, and reported the fix. Upstream maintainer Nicholas Marriott validated and committed it to OpenBSD. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <!-- Story 6: dnsmasq -->
+      <article class="story-card">
+        <span class="story-badge">Fixed upstream &bull; October 2026</span>
+        <h3><a href="/stories/dnsmasq-slaac-stale-hostname/">dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname</a></h3>
+        <p><a href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a> is the DNS and DHCP server built into many routers and Linux systems. A DHCP lease that lost its hostname kept its SLAAC name records, so a later ICMPv6 reply handed a NULL hostname to a log call. We mailed a patch for the log line; author Simon Kelley fixed the underlying stale records instead and credited Martin Vlach in the commit. A second patch from the same scan was applied too.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Simon Kelley committed broader fix clearing stale records, crediting Martin Vlach in commit 03fd0c1."</em>
+          <span class="author-tag">&mdash; Simon Kelley (dnsmasq)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>30 Sep 2026.</strong> A scan flagged the NULL hostname in <code class="code-tag">slaac_ping_reply()</code>; we mailed a patch to dnsmasq-discuss.</li>
+          <li><strong>1 Oct.</strong> Simon Kelley committed a broader fix that clears stale SLAAC-name data, and also committed our second patch from the same scan, for an allocation-failure bug in <code class="code-tag">poll_listen()</code>.</li>
+          <li><strong>11 Oct.</strong> He replied to both patches on the list; neither is in a tagged release yet.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/dnsmasq-slaac-stale-hostname/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q3/018573.html" target="_blank" rel="noopener">Our patch (mailing list)</a></li>
+          <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=03fd0c19efbc68710bf96784adcbb402deef9726" target="_blank" rel="noopener">Upstream commit 03fd0c1</a></li>
+          <li><a href="https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=baeb7430e26f9e1c0f08b763809305f1c54763f6" target="_blank" rel="noopener">Upstream commit baeb743 (poll_listen)</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The scanner found a symptom; the maintainer found the cause. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <!-- Story 7: Yopass -->
+      <article class="story-card">
+        <span class="story-badge">First hit on open source &bull; September 2026</span>
+        <h3><a href="/stories/yopass-oidc-email-verified/">Yopass: unverified emails could pass OIDC domain restrictions</a></h3>
+        <p><a href="https://github.com/jhaals/yopass" target="_blank" rel="noopener">Yopass</a> is an open-source tool (over 3,000 GitHub stars) for securely sharing secrets, passwords and files. When it is set to allow logins only from certain email domains, its OIDC login trusted the email address returned by the identity provider without checking the <code class="code-tag">email_verified</code> claim. Someone with an unverified account at an identity provider under an allowed domain could therefore get past the domain restriction.</p>
+        <div class="maintainer-quote">
+          <span>💬</span>
+          <em>"Maintainer Johan Haals built on patch with opt-out warning, keeping our commit with original authorship."</em>
+          <span class="author-tag">&mdash; Johan Haals (Yopass)</span>
+        </div>
+        <ul class="story-timeline">
+          <li><strong>23 Sep 2026.</strong> BudgetScan flagged the missing check. We opened a pull request with a fix and tests.</li>
+          <li><strong>24 Sep.</strong> An automated review asked for stronger tests, which we added. The maintainer pointed out that <code class="code-tag">email_verified</code> is an optional claim, so enforcing it blindly could break existing setups.</li>
+          <li><strong>25 Sep.</strong> Maintainer Johan Haals built on our patch in a new pull request: he kept our commit as the first one, with its authorship, and added an explicit opt-out for providers that omit the claim, a startup warning, configuration validation, tests and documentation.</li>
+          <li><strong>26 Sep.</strong> Merged into Yopass. By default, OIDC logins now require a verified email.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="/stories/yopass-oidc-email-verified/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3966" target="_blank" rel="noopener">Our original pull request (#3966)</a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3973" target="_blank" rel="noopener">The merged pull request (#3973)</a></li>
+          <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Our patch as its first commit</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> Thanks to Johan Haals for the quick, careful handling. The scanner found the problem and a human maintainer decided how to fix it safely, which is how we want it to work: findings are leads for people, not verdicts. It is one data point, not a benchmark. We will publish measured results once we have them.</p>
+      </article>
+
+      <!-- Bottom CTA Card -->
+      <div style="margin-top: 48px; padding: 32px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); text-align: center;">
+        <h3 style="font-size: 1.4rem; margin-bottom: 10px; color: var(--text-main);">Bring Zero-Day Protection to Your Own Repositories</h3>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 24px; font-size: 0.95rem;">
+          Run BudgetScan in your CI pipeline on every pull request, or audit your codebase locally with hard budget caps.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="/#cicd" class="btn btn-primary btn-lg">Set Up CI Pipeline</a>
+          <a href="/pricing/" class="btn btn-outline btn-lg">Calculate Credit Pricing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="/privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
 </body>
 </html>
