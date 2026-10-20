@@ -6,7 +6,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   initCalculator();
   initDemoTerminal();
+  initCiTabs();
 });
+
+function initCiTabs() {
+  const tabs = document.querySelectorAll('.ci-tab-btn');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.ci-tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById(btn.getAttribute('data-citab'));
+      if (target) target.classList.add('active');
+    });
+  });
+}
 
 /* -------------------------------------------------------------------------- */
 /* 1. Interactive Calculator (Pay-Per-Scan Credit vs Seat Subscriptions)     */
