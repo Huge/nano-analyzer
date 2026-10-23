@@ -265,6 +265,39 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Fixed upstream &bull; October 2026</span>
+        <h3><a href="stories/orca-ssh-identity-file-read/">Orca: reading an SSH identity file could freeze the app</a></h3>
+        <p><a href="https://orca.dev/" target="_blank" rel="noopener">Orca</a> is a desktop app for running a fleet of coding agents. It read SSH keys from <code class="code-tag">IdentityFile</code> paths with no check on file type or size, so a path pointing to a named pipe froze the app and a huge file was loaded whole. Maintainer Neil built a broader fix on our pull request, kept our tests and credited us as co-author.</p>
+        <ul class="story-timeline">
+          <li><strong>22 Oct 2026.</strong> We filed issue #31965 and pull request #31966 with a fix and tests.</li>
+          <li><strong>23 Oct.</strong> The maintainer merged #32274, which builds on ours, with us as co-author; not in a release yet.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/orca-ssh-identity-file-read/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/stablyai/orca/pull/31966" target="_blank" rel="noopener">Our pull request #31966</a></li>
+          <li><a href="https://github.com/stablyai/orca/pull/32274" target="_blank" rel="noopener">Upstream fix #32274</a></li>
+          <li><a href="https://github.com/stablyai/orca/commit/699c17ca1" target="_blank" rel="noopener">Commit 699c17c</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The key paths come from the user&rsquo;s own SSH configuration, so this is a robustness fix, not a vulnerability. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
+        <span class="story-badge">Released upstream &bull; October 2026</span>
+        <h3><a href="stories/mise-aqua-template-unterminated-string/">mise: unterminated string in an aqua template hung the lexer</a></h3>
+        <p><a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise</a> manages versions of developer tools and installs many of them from aqua registry entries. Its template lexer looped forever on a string literal without a closing quote, so a broken registry template hung mise instead of failing. Maintainer Jeff Dickey added tests to our fix and merged it the same day; it shipped in v2026.10.17.</p>
+        <ul class="story-timeline">
+          <li><strong>20 Oct 2026.</strong> We opened pull request #14752 with the fix and a regression test; Jeff Dickey merged it the same day.</li>
+          <li><strong>21 Oct.</strong> Released in mise v2026.10.17.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/mise-aqua-template-unterminated-string/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/jdx/mise/pull/14752" target="_blank" rel="noopener">Pull request #14752</a></li>
+          <li><a href="https://github.com/jdx/mise/releases/tag/v2026.10.17" target="_blank" rel="noopener">Release v2026.10.17</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> Triage imagined a malicious registry; in practice the templates come from the bundled or user-chosen registries, so it is a hang on a broken entry. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Merged upstream &bull; October 2026</span>
         <h3><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect: unbounded Bluetooth packet buffer on Android</a></h3>
         <p><a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> links phones with desktops to share notifications, files and the clipboard. Its Android Bluetooth backend buffered incoming packets with no size limit, so a paired device that never sent a line terminator could make the app run out of memory. Bluetooth support is an opt-in beta. Creator and maintainer Albert Vaca Cintora merged our fix, which reuses the 32&#160;MB limit the LAN backend already had.</p>

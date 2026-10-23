@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Orca: čtení SSH identity souboru mohlo zmrazit aplikaci | BudgetScan</title>
+  <meta name="description" content="Sken odhalil neomezené čtení SSH klíčů v Orca. Správce Neil na naší opravě postavil vlastní a 23. 10. 2026 ji začlenil s námi jako spoluautorem.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/orca-ssh-identity-file-read/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/orca-ssh-identity-file-read/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/orca-ssh-identity-file-read/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/orca-ssh-identity-file-read/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Orca: čtení SSH identity souboru mohlo zmrazit aplikaci">
+  <meta property="og:description" content="Sken odhalil neomezené čtení SSH klíčů v Orca. Správce Neil na naší opravě postavil vlastní a 23. 10. 2026 ji začlenil s námi jako spoluautorem.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/orca-ssh-identity-file-read/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/orca-ssh-identity-file-read/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Opraveno v upstreamu 23. 10. 2026</span> &nbsp;Oprava chyby v upstreamu Orca</p>
+      <h1>Orca: čtení SSH identity souboru mohlo zmrazit aplikaci</h1>
+      <p>Náš skener upozornil, že <a href="https://orca.dev/" target="_blank" rel="noopener">Orca</a>, desktopová aplikace pro práci s celou flotilou kódovacích agentů, četla soukromé SSH klíče bez kontroly typu a velikosti souboru. Založili jsme issue a pull request s opravou a testy. Správce Neil (<code class="code-tag">nwparker</code>) na nich druhý den postavil širší opravu, ponechal naše testovací případy a uvedl nás jako spoluautora commitu.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>Pro připojení ke vzdáleným strojům Orca zjišťuje cesty <code class="code-tag">IdentityFile</code> z uživatelovy SSH konfigurace a klíče čte v <code class="code-tag">src/main/ssh/ssh-auth-resolution.ts</code>. <code class="code-tag">readPrivateKey()</code> a <code class="code-tag">findDefaultKeyFile()</code> na cestě rovnou volaly <code class="code-tag">readFileSync()</code>:</p>
+      <ul>
+        <li>Pokud cesta vedla na pojmenovanou rouru (FIFO) nebo zařízení, synchronní čtení zablokovalo hlavní proces Electronu a aplikace zamrzla.</li>
+        <li>Pokud omylem vedla na velký soubor, třeba obraz disku nebo log, načetl se celý do paměti dřív, než parsování klíče vůbec začalo.</li>
+      </ul>
+      <p>Cesty pocházejí z uživatelovy vlastní konfigurace, takže nejde o bezpečnostní hranici, kterou by překračoval cizí útočník. Je to problém robustnosti: jediný zvláštní nebo překlepnutý řádek <code class="code-tag">IdentityFile</code> mohl zaseknout celou aplikaci. Na jiných místech kód velikost souborů už omezoval, například <code class="code-tag">WORKTREE_INCLUDE_MAX_FILE_BYTES</code>, tady ale ne.</p>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Náš pull request přidal před obě čtení kontrolu <code class="code-tag">statSync()</code>: číst se smí jen běžný soubor do 256&#160;KB. Testy pokrývaly adresář a příliš velký klíč, a to pro výchozí i explicitně zadané cesty.</p>
+      <p>Správce vydal širší verzi v <a href="https://github.com/stablyai/orca/pull/32274" target="_blank" rel="noopener">pull requestu #32274</a>. Každé místo, kde Orca čte SSH klíč nebo identity soubor, teď prochází jednou čtečkou <code class="code-tag">ssh-identity-file-read.ts</code>. Ta přijímá jen běžné soubory (i přes symlinky), otevírá je neblokujícím způsobem, takže ani cesta podvržená za rouru až po kontrole nic nezablokuje, používá stávající limit 1&#160;MB pro identity soubory a pokrývá i čtení <code class="code-tag">.pub</code> u <code class="code-tag">IdentitiesOnly</code>. Neúspěšné přihlášení teď řekne, který soubor s klíčem byl přeskočen a proč:</p>
+      <pre><code>// Why one reader: identity paths come from user config, so a FIFO or device must never block the
+// main process and an oversized file must never be loaded whole.
+export function readSshIdentityFileSync(filePath: string): SshIdentityFileRead {
+  try {
+    return {
+      contents: readNodeFileSyncWithinLimit(filePath, MAX_SSH_IDENTITY_FILE_BYTES, READ_OPTIONS)
+        .buffer
+    }
+  } catch (error) {
+    return { contents: null, problem: describeIdentityFileProblem(error) }
+  }
+}</code></pre>
+      <p>Neil (<code class="code-tag">nwparker</code>) pod náš pull request napsal:</p>
+      <blockquote>
+        <p><em>&ldquo;Thanks a lot for finding this, @Huge, and for the clear write-up and fix.&rdquo;</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>Říjen 2026.</strong> Sken stromu Orca upozornil na neomezené <code class="code-tag">readFileSync()</code> na cestě ke klíči; triáž nález potvrdila jako problém robustnosti, ne zranitelnost.</li>
+        <li><strong>22. 10.</strong> Založili jsme <a href="https://github.com/stablyai/orca/issues/31965" target="_blank" rel="noopener">issue #31965</a> a otevřeli <a href="https://github.com/stablyai/orca/pull/31966" target="_blank" rel="noopener">pull request #31966</a> s opravou a testy.</li>
+        <li><strong>23. 10.</strong> Správce začlenil <a href="https://github.com/stablyai/orca/pull/32274" target="_blank" rel="noopener">#32274</a>, který na našem pull requestu staví, jako commit <a href="https://github.com/stablyai/orca/commit/699c17ca1" target="_blank" rel="noopener">699c17c</a> s námi jako spoluautorem, a náš pull request ve prospěch svého zavřel. K 23. 10. 2026 oprava ještě není v žádném vydání; poslední je v1.4.237.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>První popis skeneru mluvil o cestě, kterou &bdquo;volí útočník&ldquo;. Čtení kódu ukázalo, že cesta pochází z uživatelovy vlastní SSH konfigurace, a tak jsme to nahlásili jen jako opravu robustnosti. Správce pak šel dál než náš patch: uzavřel souběh mezi kontrolou a čtením a ošetřil i čtení <code class="code-tag">.pub</code>, které jsme přehlédli. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/stablyai/orca/issues/31965" target="_blank" rel="noopener">Issue stablyai/orca#31965</a></li>
+        <li><a href="https://github.com/stablyai/orca/pull/31966" target="_blank" rel="noopener">Náš pull request #31966 a odpověď správce</a></li>
+        <li><a href="https://github.com/stablyai/orca/pull/32274" target="_blank" rel="noopener">Oprava v upstreamu, pull request #32274</a></li>
+        <li><a href="https://github.com/stablyai/orca/commit/699c17ca1" target="_blank" rel="noopener">Commit 699c17c</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -265,6 +265,39 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Opraveno v upstreamu &bull; říjen 2026</span>
+        <h3><a href="stories/orca-ssh-identity-file-read/">Orca: čtení SSH identity souboru mohlo zmrazit aplikaci</a></h3>
+        <p><a href="https://orca.dev/" target="_blank" rel="noopener">Orca</a> je desktopová aplikace pro práci s flotilou kódovacích agentů. SSH klíče z cest <code class="code-tag">IdentityFile</code> četla bez kontroly typu a velikosti souboru, takže cesta na pojmenovanou rouru aplikaci zmrazila a obří soubor se načetl celý. Správce Neil na našem pull requestu postavil širší opravu, ponechal naše testy a uvedl nás jako spoluautora.</p>
+        <ul class="story-timeline">
+          <li><strong>22. 10. 2026.</strong> Založili jsme issue #31965 a pull request #31966 s opravou a testy.</li>
+          <li><strong>23. 10.</strong> Správce začlenil #32274, který na našem staví, s námi jako spoluautorem; zatím není v žádném vydání.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/orca-ssh-identity-file-read/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://github.com/stablyai/orca/pull/31966" target="_blank" rel="noopener">Náš pull request #31966</a></li>
+          <li><a href="https://github.com/stablyai/orca/pull/32274" target="_blank" rel="noopener">Oprava v upstreamu #32274</a></li>
+          <li><a href="https://github.com/stablyai/orca/commit/699c17ca1" target="_blank" rel="noopener">Commit 699c17c</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Cesty ke klíčům pocházejí z uživatelovy vlastní SSH konfigurace, jde tedy o opravu robustnosti, ne o zranitelnost. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
+
+      <article class="story-card">
+        <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
+        <h3><a href="stories/mise-aqua-template-unterminated-string/">mise: neukončený řetězec v aqua šabloně zacyklil lexer</a></h3>
+        <p><a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise</a> spravuje verze vývojářských nástrojů a řadu z nich instaluje podle položek aqua registry. Jeho lexer šablon se na řetězci bez uzavírací uvozovky donekonečna zacyklil, takže vadná šablona v registry mise zasekla místo toho, aby skončil chybou. Správce Jeff Dickey k naší opravě přidal testy a týž den ji začlenil; vyšla ve v2026.10.17.</p>
+        <ul class="story-timeline">
+          <li><strong>20. 10. 2026.</strong> Otevřeli jsme pull request #14752 s opravou a regresním testem; Jeff Dickey ho týž den začlenil.</li>
+          <li><strong>21. 10.</strong> Vydáno v mise v2026.10.17.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/mise-aqua-template-unterminated-string/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://github.com/jdx/mise/pull/14752" target="_blank" rel="noopener">Pull request #14752</a></li>
+          <li><a href="https://github.com/jdx/mise/releases/tag/v2026.10.17" target="_blank" rel="noopener">Vydání v2026.10.17</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Triáž počítala se škodlivou registry; ve skutečnosti šablony pocházejí z dodávané nebo uživatelem zvolené registry, jde tedy o zaseknutí na vadné položce. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Začleněno do upstreamu &bull; říjen 2026</span>
         <h3><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect: neomezený buffer pro pakety přes Bluetooth na Androidu</a></h3>
         <p><a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> propojuje telefony s počítači kvůli sdílení notifikací, souborů a schránky. Jeho Bluetooth backend pro Android ukládal příchozí pakety bez limitu velikosti, takže spárované zařízení, které nikdy neposlalo konec řádku, mohlo aplikaci vyčerpat paměť. Podpora Bluetooth je volitelná beta. Autor a správce Albert Vaca Cintora začlenil naši opravu, která přebírá limit 32&#160;MB, jaký už měl backend pro LAN.</p>

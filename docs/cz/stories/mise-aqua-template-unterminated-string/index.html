@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>mise: neukončený řetězec v aqua šabloně zacyklil lexer | BudgetScan</title>
+  <meta name="description" content="Sken odhalil nekonečnou smyčku v lexeru aqua šablon v mise. Jeff Dickey opravu 20. 10. 2026 začlenil a vyšla ve v2026.10.17.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/mise-aqua-template-unterminated-string/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/mise-aqua-template-unterminated-string/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/mise-aqua-template-unterminated-string/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/mise-aqua-template-unterminated-string/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="mise: neukončený řetězec v aqua šabloně zacyklil lexer">
+  <meta property="og:description" content="Sken odhalil nekonečnou smyčku v lexeru aqua šablon v mise. Jeff Dickey opravu 20. 10. 2026 začlenil a vyšla ve v2026.10.17.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/mise-aqua-template-unterminated-string/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/mise-aqua-template-unterminated-string/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Vydáno ve v2026.10.17, 21. 10. 2026</span> &nbsp;Oprava chyby v upstreamu mise</p>
+      <h1>mise: neukončený řetězec v aqua šabloně zacyklil lexer</h1>
+      <p>Náš skener upozornil, že <a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise</a>, správce verzí vývojářských nástrojů, se mohl při čtení šablony z položky aqua registry donekonečna zacyklit. Poslali jsme pull request s opravou a regresním testem. Správce Jeff Dickey přidal další testy a týž den ho začlenil. Oprava vyšla v mise v2026.10.17.</p>
+
+      <h2 id="problem">Co bylo špatně</h2>
+      <p>mise instaluje řadu nástrojů přes backend <a href="https://aquaproj.github.io/" target="_blank" rel="noopener">aqua</a>. Položky registry popisují URL ke stažení a názvy souborů malými šablonami ve stylu Go a mise je parsuje vlastním lexerem v <code class="code-tag">crates/aqua-registry/src/template.rs</code>.</p>
+      <p>Když token začínal znakem <code class="code-tag">"</code>, <code class="code-tag">lex()</code> hledal uzavírací uvozovku. Pokud žádná nebyla, nebo byly všechny kandidátní uvozovky escapované, vstup se neposunul a vnější smyčka <code class="code-tag">while !code.is_empty()</code> vstupovala pořád do stejné větve. Vadná šablona jako <code class="code-tag">{{"abc}}</code> tak mise zasekla místo toho, aby ohlásil chybu.</p>
+      <p>Kontrola escapování měla ještě druhou vadu: bajtový offset z <code class="code-tag">match_indices</code> používala jako index znaku (<code class="code-tag">code.chars().nth(end)</code>) a nerozlišovala <code class="code-tag">\"</code> od <code class="code-tag">\\"</code>.</p>
+      <p>Šablony pocházejí ze zabudované registry nebo z registry, které si nastaví sám uživatel. Jde tedy o zaseknutí na vadné položce registry, ne o vzdálený útok. Upstream to popisuje stejně.</p>
+
+      <h2 id="fix">Jak to bylo opraveno</h2>
+      <p>Lexer teď před každou kandidátní uvozovkou spočítá zpětná lomítka po bajtech, za uzavírací ji považuje jen při sudém počtu, a když uzavírací uvozovku nenajde, skončí chybou:</p>
+      <pre><code>             for (end, _) in code[1..].match_indices('"') {
+-                if code.chars().nth(end) != Some('\\') {
+-                    tokens.push(Token::String(&amp;code[1..end + 1]));
++                let slash_count = code[1..=end]
++                    .bytes()
++                    .rev()
++                    .take_while(|&amp;b| b == b'\\')
++                    .count();
++                if slash_count % 2 == 0 {
++                    tokens.push(Token::String(&amp;code[1..=end]));
+                     code = &amp;code[end + 2..];
++                    found = true;
+                     break;
+                 }
+             }
++            if !found {
++                bail!("unterminated string literal");
++            }</code></pre>
+      <p>Náš pull request přidal regresní test <code class="code-tag">test_render_unterminated_string_fails</code>. Jeff Dickey (<code class="code-tag">jdx</code>) pak doplnil commity, které ověřují přesné znění chyby &bdquo;unterminated string literal&ldquo; a pokrývají prázdný řetězec, a pull request začlenil. Poznámky k vydání mise v2026.10.17 změnu popisují takto:</p>
+      <blockquote>
+        <p><em>&ldquo;An aqua registry template with an unterminated string literal now fails with an "unterminated string literal" error instead of hanging. Escaped quotes after backslashes are also detected correctly.&rdquo;</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>Říjen 2026.</strong> Sken stromu mise upozornil na nekonečnou smyčku v <code class="code-tag">lex()</code>; triáž (model qwen3.8-27b) nález potvrdila a zaseknutí šlo zopakovat na malém vstupu.</li>
+        <li><strong>20. 10.</strong> Otevřeli jsme <a href="https://github.com/jdx/mise/pull/14752" target="_blank" rel="noopener">pull request #14752</a> s opravou a regresním testem. Jeff Dickey přidal tři commity s formátováním a dalšími testy a týž den ho začlenil jako <a href="https://github.com/jdx/mise/commit/b9153256713b47b38c7eeced25f001c6bcf0f455" target="_blank" rel="noopener">b915325</a>.</li>
+        <li><strong>21. 10.</strong> Oprava vyšla v <a href="https://github.com/jdx/mise/releases/tag/v2026.10.17" target="_blank" rel="noopener">mise v2026.10.17</a>.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Triáž skeneru počítala se škodlivou registry nebo útočníkem uprostřed spojení. Ve skutečnosti šablony pocházejí z registry, kterou mise dodává, nebo z registry, kterou si zvolil uživatel. Poctivý popis je tedy zaseknutí na vadné šabloně a stejně to popisuje i upstream. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/jdx/mise/pull/14752" target="_blank" rel="noopener">Pull request jdx/mise#14752</a></li>
+        <li><a href="https://github.com/jdx/mise/commit/b9153256713b47b38c7eeced25f001c6bcf0f455" target="_blank" rel="noopener">Commit b915325</a></li>
+        <li><a href="https://github.com/jdx/mise/releases/tag/v2026.10.17" target="_blank" rel="noopener">Poznámky k vydání mise v2026.10.17</a></li>
+        <li><a href="https://github.com/jdx/mise" target="_blank" rel="noopener">mise na GitHubu</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>mise: unterminated string in an aqua template hung the lexer | BudgetScan</title>
+  <meta name="description" content="A scan flagged an endless loop in the aqua template lexer of mise. Jeff Dickey merged the fix on 20 Oct 2026 and it shipped in v2026.10.17.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/mise-aqua-template-unterminated-string/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/mise-aqua-template-unterminated-string/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/mise-aqua-template-unterminated-string/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/mise-aqua-template-unterminated-string/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="mise: unterminated string in an aqua template hung the lexer">
+  <meta property="og:description" content="A scan flagged an endless loop in the aqua template lexer of mise. Jeff Dickey merged the fix on 20 Oct 2026 and it shipped in v2026.10.17.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/mise-aqua-template-unterminated-string/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Overview</a>
+        <a href="../../#stories">Success Stories</a>
+        <a href="../../how-to/">How-to Guide</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../cz/stories/mise-aqua-template-unterminated-string/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../../#stories" class="btn btn-primary">All stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Released in v2026.10.17, 21 Oct 2026</span> &nbsp;Upstream bug fix in mise</p>
+      <h1>mise: unterminated string in an aqua template hung the lexer</h1>
+      <p>Our scanner flagged that <a href="https://mise.jdx.dev/" target="_blank" rel="noopener">mise</a>, the polyglot tool-version manager, could loop forever while reading a template from an aqua registry entry. We sent a pull request with a fix and a regression test. Maintainer Jeff Dickey added more tests and merged it the same day, and the fix shipped in mise v2026.10.17.</p>
+
+      <h2 id="problem">What was wrong</h2>
+      <p>mise installs many tools through the <a href="https://aquaproj.github.io/" target="_blank" rel="noopener">aqua</a> backend. Registry entries describe download URLs and asset names with small Go-style templates, which mise parses with its own lexer in <code class="code-tag">crates/aqua-registry/src/template.rs</code>.</p>
+      <p>When a token started with <code class="code-tag">"</code>, <code class="code-tag">lex()</code> looked for the closing quote. If there was none, or every candidate quote was escaped, nothing advanced the input, and the outer <code class="code-tag">while !code.is_empty()</code> loop kept re-entering the same branch. A malformed template such as <code class="code-tag">{{"abc}}</code> made mise hang instead of reporting an error.</p>
+      <p>The escape check had a second problem: it took a byte offset from <code class="code-tag">match_indices</code> and used it as a character index (<code class="code-tag">code.chars().nth(end)</code>), and it did not tell <code class="code-tag">\"</code> apart from <code class="code-tag">\\"</code>.</p>
+      <p>The templates come from the baked-in registry or from registries the user configures, so this is a hang on a broken registry entry, not a remote attack. Upstream describes it the same way.</p>
+
+      <h2 id="fix">How it was fixed</h2>
+      <p>The lexer now counts the backslashes in front of each candidate quote byte-wise, treats the quote as closing only when that count is even, and stops with an error when no closing quote is found:</p>
+      <pre><code>             for (end, _) in code[1..].match_indices('"') {
+-                if code.chars().nth(end) != Some('\\') {
+-                    tokens.push(Token::String(&amp;code[1..end + 1]));
++                let slash_count = code[1..=end]
++                    .bytes()
++                    .rev()
++                    .take_while(|&amp;b| b == b'\\')
++                    .count();
++                if slash_count % 2 == 0 {
++                    tokens.push(Token::String(&amp;code[1..=end]));
+                     code = &amp;code[end + 2..];
++                    found = true;
+                     break;
+                 }
+             }
++            if !found {
++                bail!("unterminated string literal");
++            }</code></pre>
+      <p>Our pull request added the regression test <code class="code-tag">test_render_unterminated_string_fails</code>. Jeff Dickey (<code class="code-tag">jdx</code>) then added commits that assert the exact &ldquo;unterminated string literal&rdquo; error and cover an empty string literal, and merged the pull request. The mise release notes for v2026.10.17 describe the change as:</p>
+      <blockquote>
+        <p><em>&ldquo;An aqua registry template with an unterminated string literal now fails with an "unterminated string literal" error instead of hanging. Escaped quotes after backslashes are also detected correctly.&rdquo;</em></p>
+      </blockquote>
+
+      <h2 id="timeline">Timeline</h2>
+      <ul class="story-timeline">
+        <li><strong>October 2026.</strong> A scan of the mise tree flagged the endless loop in <code class="code-tag">lex()</code>; triage (model qwen3.8-27b) rated it valid, and a small input reproduced the hang.</li>
+        <li><strong>20 Oct.</strong> We opened <a href="https://github.com/jdx/mise/pull/14752" target="_blank" rel="noopener">pull request #14752</a> with the fix and a regression test. Jeff Dickey added three commits with formatting and extra tests and merged it the same day as <a href="https://github.com/jdx/mise/commit/b9153256713b47b38c7eeced25f001c6bcf0f455" target="_blank" rel="noopener">b915325</a>.</li>
+        <li><strong>21 Oct.</strong> The fix shipped in <a href="https://github.com/jdx/mise/releases/tag/v2026.10.17" target="_blank" rel="noopener">mise v2026.10.17</a>.</li>
+      </ul>
+
+      <h2 id="takeaway">How to read this</h2>
+      <p>The scanner&rsquo;s triage pictured a malicious registry or a man in the middle. In practice the templates come from the registry mise ships with or from registries the user chose, so the honest description is a hang on a broken template. That is how upstream describes it, too. Findings are leads for people, not verdicts.</p>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://github.com/jdx/mise/pull/14752" target="_blank" rel="noopener">Pull request jdx/mise#14752</a></li>
+        <li><a href="https://github.com/jdx/mise/commit/b9153256713b47b38c7eeced25f001c6bcf0f455" target="_blank" rel="noopener">Commit b915325</a></li>
+        <li><a href="https://github.com/jdx/mise/releases/tag/v2026.10.17" target="_blank" rel="noopener">mise v2026.10.17 release notes</a></li>
+        <li><a href="https://github.com/jdx/mise" target="_blank" rel="noopener">mise on GitHub</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
