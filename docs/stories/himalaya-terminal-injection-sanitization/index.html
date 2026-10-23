@@ -125,11 +125,11 @@
         <p><em>&ldquo;Thanks, all good. The Windows-1252 side effect is fine for now; we'll revisit if it turns out to bite. Merging.&rdquo;</em></p>
       </blockquote>
 
-      <h2 id="follow-up">Follow-up: Community hardening</h2>
-      <p>Our work on PR #771 catalyzed further defenses across the project. On 11 October 2026, contributor <a href="https://github.com/SORALNV" target="_blank" rel="noopener">SORALNV</a> submitted a series of hardening patches building on this foundation:</p>
+      <h2 id="follow-up">Related later work in Himalaya</h2>
+      <p>After our fix, contributor <a href="https://github.com/SORALNV" target="_blank" rel="noopener">SORALNV</a> sent two more hardening patches to Himalaya. They are separate work and do not refer to PR #771, but they cover neighbouring ground. Clément Douin merged both:</p>
       <ul>
-        <li><strong>Human-readable message sanitization (<a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">PR #783</a>):</strong> Extends escape sequence and BiDi control character sanitization from single-line tables into the full message body and address header display (<code class="code-tag">message read</code> and <code class="code-tag">message parse</code>), preventing control characters from reaching the terminal during full message inspection. Maintainer Clément Douin approved the patch on 11 October (<em>&ldquo;Thanks! #782 just landed and this now conflicts on CHANGELOG/cairn, could you rebase? Will merge right after.&rdquo;</em>).</li>
-        <li><strong>Atomic attachment downloads (<a href="https://github.com/pimalaya/himalaya/pull/782" target="_blank" rel="noopener">PR #782</a>, merged):</strong> Complements the BiDi filename spoofing defense from PR #771 on the filesystem level, reserving destination files exclusively with <code class="code-tag">create_new</code> to eliminate symlink race conditions and prevent accidental file overwrites.</li>
+        <li><strong><a href="https://github.com/pimalaya/himalaya/pull/782" target="_blank" rel="noopener">PR #782</a>, merged 11 Oct 2026:</strong> attachment downloads reserve the destination file with <code class="code-tag">create_new</code> and write through that handle, so a dangling symlink counts as taken and an existing file is never truncated. The pull request notes that the destination directory itself still has to be trusted.</li>
+        <li><strong><a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">PR #783</a>, merged 14 Oct 2026:</strong> the human-readable <code class="code-tag">message read</code> and <code class="code-tag">message parse</code> views now replace terminal and BiDi control characters in message bodies, address headers, the subject and MIME metadata. JSON output and explicitly requested raw bytes stay unchanged.</li>
       </ul>
 
       <h2 id="timeline">Timeline</h2>
@@ -137,11 +137,11 @@
         <li><strong>2 Oct 2026.</strong> BudgetScan flagged unescaped metadata rendering in Himalaya's table output. We opened <a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">pull request #771</a> with an initial patch and test suite.</li>
         <li><strong>2 Oct.</strong> Maintainer Clément Douin confirmed the vulnerability, extracted the sanitization routine into the shared library <code class="code-tag">pimalaya-cli</code> 0.2.6 with BiDi override filtering, and credited Martin Vlach as co-author.</li>
         <li><strong>3 Oct.</strong> We completed the PR with the updated library, comprehensive backend coverage, and specification updates. Maintainer Douin reviewed and merged the PR into master.</li>
-        <li><strong>11&ndash;12 Oct.</strong> Community contributor SORALNV built on PR #771 with follow-up hardening: PR #782 (atomic attachment downloads, merged) and PR #783 (extending terminal and BiDi sanitization to full message views, approved by maintainer).</li>
+        <li><strong>11 and 14 Oct.</strong> Separately, Clément Douin merged two patches by contributor SORALNV: PR #782 (attachment downloads) and PR #783 (control-character sanitization in the message view).</li>
       </ul>
 
       <h2 id="takeaway">How to read this</h2>
-      <p>Automated scanning found an unescaped control sequence flaw in CLI tables, and thoughtful maintainer collaboration turned a single-repo bug fix into a shared function for the broader Pimalaya suite. The open-source community subsequently stepped up to extend the same defensive posture across message reading and attachment downloads. This is open-source security at its best: automated detection generating clear leads, followed by thoughtful human review, robust test cases, and collaborative architectural hardening. Special thanks to Clément Douin for outstanding open-source leadership and swift action.</p>
+      <p>Automated scanning found an unescaped control sequence flaw in CLI tables, and thoughtful maintainer collaboration turned a single-repo bug fix into a shared function for the broader Pimalaya suite. This is open-source security at its best: automated detection generating clear leads, followed by thoughtful human review, robust test cases, and collaborative architectural hardening. Special thanks to Clément Douin for outstanding open-source leadership and swift action.</p>
 
       <h2 id="sources">Sources</h2>
       <ul>
@@ -150,7 +150,7 @@
         <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5969248173" target="_blank" rel="noopener">Maintainer merge comment</a></li>
         <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">pimalaya-cli crate on crates.io</a></li>
         <li><a href="https://github.com/pimalaya/himalaya" target="_blank" rel="noopener">Official Himalaya repository on GitHub</a></li>
-        <li><strong>Follow-up work by community:</strong> <a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">Pull request #783: Sanitize human-readable message view (approved)</a> and <a href="https://github.com/pimalaya/himalaya/pull/782" target="_blank" rel="noopener">Pull request #782: Reserve attachment download filenames exclusively (merged)</a></li>
+        <li><strong>Related later work:</strong> <a href="https://github.com/pimalaya/himalaya/pull/782" target="_blank" rel="noopener">Pull request #782: Reserve attachment download filenames exclusively</a> and <a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">Pull request #783: Sanitize the human-readable message view</a> (both merged)</li>
       </ul>
       <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
     </div>

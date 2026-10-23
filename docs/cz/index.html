@@ -298,12 +298,12 @@
       </article>
 
       <article class="story-card">
-        <span class="story-badge">Začleněno do upstreamu &bull; říjen 2026</span>
+        <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
         <h3><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect: neomezený buffer pro pakety přes Bluetooth na Androidu</a></h3>
         <p><a href="https://kdeconnect.kde.org/" target="_blank" rel="noopener">KDE Connect</a> propojuje telefony s počítači kvůli sdílení notifikací, souborů a schránky. Jeho Bluetooth backend pro Android ukládal příchozí pakety bez limitu velikosti, takže spárované zařízení, které nikdy neposlalo konec řádku, mohlo aplikaci vyčerpat paměť. Podpora Bluetooth je volitelná beta. Autor a správce Albert Vaca Cintora začlenil naši opravu, která přebírá limit 32&#160;MB, jaký už měl backend pro LAN.</p>
         <ul class="story-timeline">
           <li><strong>4. 10. 2026.</strong> Sken KDE Connect pro Android upozornil na neomezený buffer v <code class="code-tag">BluetoothLink.kt</code>; triáž nález potvrdila.</li>
-          <li><strong>8. 10.</strong> Otevřeli jsme merge request !696 s opravou a unit testem. Albert Vaca Cintora ho týž den začlenil; zatím není v žádném vydání.</li>
+          <li><strong>8. 10.</strong> Otevřeli jsme merge request !696 s opravou a unit testem. Albert Vaca Cintora ho týž den začlenil; vyšlo ve v1.36.0.</li>
         </ul>
         <ul class="story-links">
           <li><a href="stories/kdeconnect-bluetooth-packet-size/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
@@ -357,14 +357,14 @@
           <li><strong>2. 10. 2026.</strong> BudgetScan upozornil na neošetřená metadata ve výstupu tabulek Himalaya. Otevřeli jsme pull request #771 na GitHubu s prvním návrhem opravy a testy.</li>
           <li><strong>2. 10.</strong> Správce Clément Douin (<code class="code-tag">soywod</code>) rozpoznal, že příbuzné CLI projekty (<code class="code-tag">cardamum</code>, <code class="code-tag">calendula</code>) sdílejí stejné tabulky. Vyčlenil sanitizaci do <code class="code-tag">pimalaya-cli</code> 0.2.6 s ošetřením BiDi znaků a uvedl Martina Vlacha jako spoluautora.</li>
           <li><strong>3. 10.</strong> Dokončili jsme pokrytí napříč backendy IMAP, JMAP, Gmail, Graph i pimdir a doplnili jednotkové testy. Správce Douin změny zkontroloval a pull request #771 začlenil do masteru.</li>
-          <li><strong>11.&ndash;12. 10.</strong> Komunitní přispěvatel SORALNV navázal na PR #771 s PR #782 (atomické stahování příloh, začleněno) a PR #783 (sanitizace čtení zpráv, schváleno).</li>
+          <li><strong>11. a 14. 10.</strong> Nezávisle na nás byly začleněny dva patche přispěvatele SORALNV: PR #782 (stahování příloh) a PR #783 (sanitizace zobrazení zpráv).</li>
         </ul>
         <ul class="story-links">
           <li><a href="stories/himalaya-terminal-injection-sanitization/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
           <li><a href="https://github.com/pimalaya/himalaya/pull/771" target="_blank" rel="noopener">Začleněný pull request (#771)</a></li>
           <li><a href="https://github.com/pimalaya/himalaya/pull/771#issuecomment-5959074461" target="_blank" rel="noopener">Hodnocení správce a uvedení spoluautorství</a></li>
           <li><a href="https://crates.io/crates/pimalaya-cli" target="_blank" rel="noopener">Knihovna pimalaya-cli na crates.io</a></li>
-          <li><a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">Návazný PR #783 (sanitizace zpráv)</a></li>
+          <li><a href="https://github.com/pimalaya/himalaya/pull/783" target="_blank" rel="noopener">Související PR #783 (sanitizace zpráv)</a></li>
         </ul>
         <p class="story-caveat"><strong>Jak to číst.</strong> Automatizované skenování zachytilo mezeru v sanitizaci vstupů a spolupráce se správcem proměnila opravu jedné chyby ve sdílenou funkci, kterou mohou převzít i další CLI nástroje Pimalaya. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
