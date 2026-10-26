@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>oauth2 pro Ruby: tajemství šla za přesměrováním a unikala do chyb | BudgetScan</title>
+  <meta name="description" content="Dva nálezy skenu v Ruby gemu oauth2 opravené našimi pull requesty; správce Peter Boling je začlenil a 25. 10. 2026 vydal ve v2.0.26 a v2.1.0.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/oauth2-ruby-credential-leaks/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/oauth2-ruby-credential-leaks/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="oauth2 pro Ruby: tajemství šla za přesměrováním a unikala do chyb">
+  <meta property="og:description" content="Dva nálezy skenu v Ruby gemu oauth2 opravené našimi pull requesty; správce Peter Boling je začlenil a 25. 10. 2026 vydal ve v2.0.26 a v2.1.0.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/oauth2-ruby-credential-leaks/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/oauth2-ruby-credential-leaks/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Vydáno ve v2.0.26 a v2.1.0, 25. 10. 2026</span> &nbsp;Dvě opravy v upstreamu gemu oauth2</p>
+      <h1>oauth2 pro Ruby: tajemství šla za přesměrováním a unikala do chyb</h1>
+      <p>Náš skener našel dvě místa, kde <a href="https://github.com/ruby-oauth/oauth2" target="_blank" rel="noopener">oauth2</a>, OAuth&#160;2.0 klient pro Ruby, na kterém stojí <code class="code-tag">omniauth-oauth2</code> a který má na RubyGems přes 280 milionů stažení, mohl předat tajné údaje na špatné místo. Ke každému jsme otevřeli pull request s opravou a regresními testy. Správce Peter Boling (<code class="code-tag">pboling</code>) oba 25. 10. 2026 začlenil, ještě týž večer je zpevnil a vydal ve v2.0.26 a v2.1.0. Changelog verze 2.1.0 je oba připisuje nám.</p>
+
+      <h2 id="redirect">1. Přesměrování na jiný původ si neslo tělo požadavku</h2>
+      <p><code class="code-tag">OAuth2::Client#request</code> následuje přesměrování 301, 302, 303 a 307. Když přesměrování vedlo na jiný původ (origin), <code class="code-tag">sanitize_redirect_options</code> odstranila hlavičku <code class="code-tag">Authorization</code> a nic dalšího:</p>
+      <pre><code>def sanitize_redirect_options(req_opts, current_location, next_location)
+  return req_opts unless cross_origin_redirect?(current_location, next_location)
+
+  headers = req_opts[:headers]
+  return req_opts unless headers &amp;&amp; headers.any? { |key, _value| authorization_header?(key) }
+
+  safe_opts = req_opts.dup
+  safe_headers = headers.dup
+  safe_headers.delete_if { |key, _value| authorization_header?(key) }
+  safe_opts[:headers] = safe_headers
+  safe_opts
+end</code></pre>
+      <p>Kromě odpovědi 303, která přepne na GET a tělo zahodí, šlo tělo požadavku i parametry dotazu na nový host beze změny. U požadavku na token tělo obsahuje jednorázový autorizační kód nebo refresh token a při <code class="code-tag">auth_scheme: :request_body</code> také <code class="code-tag">client_id</code> a <code class="code-tag">client_secret</code>. Kdyby tedy token endpoint nebo proxy před ním odpověděl přesměrováním 307 na jiný host, klient by tam kód i tajemství klienta poslal znovu.</p>
+      <p>Náš <a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">pull request #775</a> při přesměrování na jiný původ zahazuje i <code class="code-tag">:body</code> a <code class="code-tag">:params</code>, pod symbolovými i řetězcovými klíči, a při přesměrování v rámci stejného původu je ponechává. Čtyři nové testy na původním kódu selhaly, jeden z nich na POST tělu s přihlašovacími údaji, které dorazilo na cizí host, a s opravou prošly; celá sada 601 příkladů zůstala zelená.</p>
+
+      <h2 id="error">2. Odpověď bez tokenu skončila celá v chybové hlášce</h2>
+      <p>Když odpověď token endpointu neobsahuje access token ani refresh token a je zapnuté <code class="code-tag">raise_errors</code> (výchozí stav), <code class="code-tag">OAuth2::AccessToken#initialize</code> vyhodí <code class="code-tag">OAuth2::Error</code> s popisem <code class="code-tag">"Options are: #{opts.inspect}"</code>. V tu chvíli <code class="code-tag">opts</code> pořád obsahuje zbytek odpovědi poskytovatele, třeba OpenID Connect <code class="code-tag">id_token</code> nebo token pod jiným klíčem, takže celé hodnoty končily ve zprávách výjimek, v logách a v nástrojích na sledování chyb.</p>
+      <p>Náš <a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">pull request #776</a> před výpisem nahradí hodnoty citlivých klíčů textem <code class="code-tag">[FILTERED]</code>; testy ukazují, že se tajné údaje ve zprávě už neobjeví. Peter Boling na něj odpověděl:</p>
+      <blockquote>
+        <p><em>&bdquo;This is pretty good.&ldquo;</em></p>
+      </blockquote>
+      <p>Dodal, že nové vydání jeho gemu <code class="code-tag">auth-sanitizer</code> přinese pomocnou funkci, která naše ručně psané maskování zjednoduší, a vydal ji v <a href="https://github.com/ruby-oauth/auth-sanitizer/pull/27" target="_blank" rel="noopener">auth-sanitizer #27</a>.</p>
+
+      <h2 id="hardening">Co přidal správce</h2>
+      <p>Pár minut po začlenění otevřel Peter Boling <a href="https://github.com/ruby-oauth/oauth2/pull/777" target="_blank" rel="noopener">pull request #777</a>, který:</p>
+      <ul>
+        <li>převádí maskování v chybové hlášce na <code class="code-tag">Auth::Sanitizer.sanitize</code> z <code class="code-tag">auth-sanitizer</code> 0.2.5;</li>
+        <li>rozšiřuje výchozí filtrované klíče o <code class="code-tag">password</code>, <code class="code-tag">client_assertion</code>, <code class="code-tag">device_code</code>, <code class="code-tag">subject_token</code>, <code class="code-tag">actor_token</code> a názvy tokenů v camelCase;</li>
+        <li>odstraňuje hlavičku <code class="code-tag">Authorization</code> bez ohledu na to, zda jsou hlavičky pod symbolovým, nebo řetězcovým klíčem.</li>
+      </ul>
+      <p>Verze 2.1.0 navíc nastavuje <code class="code-tag">allow_cross_origin_redirects</code> výchozí hodnotu <code class="code-tag">false</code>, takže klient přesměrování na jiný původ odmítne dřív, než cokoli znovu odešle; aplikace, která si ho znovu povolí, dostane požadavek očištěný naší opravou.</p>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>Říjen 2026.</strong> Sken stromu oauth2 v commitu <code class="code-tag">9e2c294</code> označil oba problémy; triáž ohodnotila únik přes přesměrování jako vysoký a únik do chybové hlášky jako střední a oba se potvrdily selhávajícími testy.</li>
+        <li><strong>24. 10.</strong> Otevřeli jsme <a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">pull request #775</a> k úniku přes přesměrování.</li>
+        <li><strong>25. 10.</strong> Otevřeli jsme <a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">pull request #776</a> k chybové hlášce. Peter Boling oba ještě týž večer začlenil, navázal <a href="https://github.com/ruby-oauth/oauth2/pull/777" target="_blank" rel="noopener">#777</a> a vydal <a href="https://github.com/ruby-oauth/oauth2/releases/tag/v2.0.26" target="_blank" rel="noopener">v2.0.26</a> a <a href="https://github.com/ruby-oauth/oauth2/releases/tag/v2.1.0" target="_blank" rel="noopener">v2.1.0</a>, které obě opravy obsahují.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Únik přes přesměrování vyžaduje, aby token endpoint nebo něco před ním poslalo přesměrování na jiný původ: kompromitovaný nebo špatně nastavený server či proxy, ne libovolný cizí útočník. Útočník, který token endpoint plně ovládá, požadavek vidí tak jako tak, takže oprava se týká přesměrování ze serveru, kterému aplikace jinak věří. Únik do chybové hlášky se do logů dostane jen tehdy, když poskytovatel vrátí odpověď bez tokenu. Obojí je zpevnění široce používané knihovny, ne díra zneužitelná na dálku. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">Náš pull request #775: zahození těla a parametrů při přesměrování na jiný původ</a></li>
+        <li><a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">Náš pull request #776: maskování citlivých údajů v chybě bez tokenu a odpověď správce</a></li>
+        <li><a href="https://github.com/ruby-oauth/oauth2/pull/777" target="_blank" rel="noopener">Navazující úprava správce, pull request #777</a></li>
+        <li><a href="https://github.com/ruby-oauth/oauth2/blob/v2.1.0/CHANGELOG.md" target="_blank" rel="noopener">Changelog oauth2, v2.1.0</a></li>
+        <li><a href="https://rubygems.org/gems/oauth2" target="_blank" rel="noopener">oauth2 na RubyGems</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

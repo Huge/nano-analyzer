@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>oauth2 for Ruby: secrets followed redirects and leaked into errors | BudgetScan</title>
+  <meta name="description" content="Two scan findings in the Ruby oauth2 gem, fixed by our pull requests, merged by maintainer Peter Boling and released in v2.0.26 and v2.1.0 on 25 Oct 2026.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/oauth2-ruby-credential-leaks/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="oauth2 for Ruby: secrets followed redirects and leaked into errors">
+  <meta property="og:description" content="Two scan findings in the Ruby oauth2 gem, fixed by our pull requests, merged by maintainer Peter Boling and released in v2.0.26 and v2.1.0 on 25 Oct 2026.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Overview</a>
+        <a href="../../#stories">Success Stories</a>
+        <a href="../../how-to/">How-to Guide</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../cz/stories/oauth2-ruby-credential-leaks/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../../#stories" class="btn btn-primary">All stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Released in v2.0.26 and v2.1.0, 25 Oct 2026</span> &nbsp;Two upstream fixes in the oauth2 gem</p>
+      <h1>oauth2 for Ruby: secrets followed redirects and leaked into errors</h1>
+      <p>Our scanner flagged two places where <a href="https://github.com/ruby-oauth/oauth2" target="_blank" rel="noopener">oauth2</a>, the Ruby OAuth&#160;2.0 client gem that <code class="code-tag">omniauth-oauth2</code> builds on, with over 280 million downloads on RubyGems, could hand secrets to the wrong place. We opened a pull request for each, with a fix and regression tests. Maintainer Peter Boling (<code class="code-tag">pboling</code>) merged both on 25 Oct 2026, hardened them the same evening and shipped them in v2.0.26 and v2.1.0. The 2.1.0 changelog credits both to us.</p>
+
+      <h2 id="redirect">1. A cross-origin redirect kept the request body</h2>
+      <p><code class="code-tag">OAuth2::Client#request</code> follows 301, 302, 303 and 307 redirects. When the redirect pointed to a different origin, <code class="code-tag">sanitize_redirect_options</code> removed the <code class="code-tag">Authorization</code> header and nothing else:</p>
+      <pre><code>def sanitize_redirect_options(req_opts, current_location, next_location)
+  return req_opts unless cross_origin_redirect?(current_location, next_location)
+
+  headers = req_opts[:headers]
+  return req_opts unless headers &amp;&amp; headers.any? { |key, _value| authorization_header?(key) }
+
+  safe_opts = req_opts.dup
+  safe_headers = headers.dup
+  safe_headers.delete_if { |key, _value| authorization_header?(key) }
+  safe_opts[:headers] = safe_headers
+  safe_opts
+end</code></pre>
+      <p>Except for a 303, which switches to GET and drops the body, the request body and query parameters went to the new host unchanged. On a token request that body holds the one-time authorization code or a refresh token, and with <code class="code-tag">auth_scheme: :request_body</code> also the <code class="code-tag">client_id</code> and <code class="code-tag">client_secret</code>. So if a token endpoint, or a proxy in front of it, answered with a 307 to another host, the client replayed the code and the client secret there.</p>
+      <p>Our <a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">pull request #775</a> also drops <code class="code-tag">:body</code> and <code class="code-tag">:params</code>, under both symbol and string keys, on a cross-origin redirect and keeps them on a same-origin one. Four new specs failed on the old code, one of them a POST body with credentials arriving at the other host, and passed with the fix; the full suite of 601 examples stayed green.</p>
+
+      <h2 id="error">2. A token-less response was dumped into the error message</h2>
+      <p>When a token response contains neither an access token nor a refresh token and <code class="code-tag">raise_errors</code> is on (the default), <code class="code-tag">OAuth2::AccessToken#initialize</code> raises <code class="code-tag">OAuth2::Error</code> with the description <code class="code-tag">"Options are: #{opts.inspect}"</code>. At that point <code class="code-tag">opts</code> still holds the rest of the provider&rsquo;s response, such as an OpenID Connect <code class="code-tag">id_token</code> or a token under an alternative key, so the full values ended up in exception messages, logs and error trackers.</p>
+      <p>Our <a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">pull request #776</a> replaces the values of sensitive keys with <code class="code-tag">[FILTERED]</code> before the options are inspected, with specs showing the secrets no longer appear in the message. Peter Boling replied on it:</p>
+      <blockquote>
+        <p><em>&ldquo;This is pretty good.&rdquo;</em></p>
+      </blockquote>
+      <p>He added that a new release of his <code class="code-tag">auth-sanitizer</code> gem would offer a helper to simplify our hand-written redaction, and published it in <a href="https://github.com/ruby-oauth/auth-sanitizer/pull/27" target="_blank" rel="noopener">auth-sanitizer #27</a>.</p>
+
+      <h2 id="hardening">What the maintainer added</h2>
+      <p>Minutes after merging, Peter Boling opened <a href="https://github.com/ruby-oauth/oauth2/pull/777" target="_blank" rel="noopener">pull request #777</a>, which:</p>
+      <ul>
+        <li>switches the error-message redaction to <code class="code-tag">Auth::Sanitizer.sanitize</code> from <code class="code-tag">auth-sanitizer</code> 0.2.5;</li>
+        <li>extends the default filtered keys with <code class="code-tag">password</code>, <code class="code-tag">client_assertion</code>, <code class="code-tag">device_code</code>, <code class="code-tag">subject_token</code>, <code class="code-tag">actor_token</code> and camel-case token names;</li>
+        <li>strips the <code class="code-tag">Authorization</code> header whether the headers sit under a symbol or a string key.</li>
+      </ul>
+      <p>Version 2.1.0 also makes <code class="code-tag">allow_cross_origin_redirects</code> default to <code class="code-tag">false</code>, so the client now refuses a cross-origin redirect before replaying anything; an app that opts back in still gets the stripped request from our fix.</p>
+
+      <h2 id="timeline">Timeline</h2>
+      <ul class="story-timeline">
+        <li><strong>October 2026.</strong> A scan of the oauth2 tree at commit <code class="code-tag">9e2c294</code> flagged both issues; triage rated the redirect leak high and the error-message leak medium, and failing specs reproduced both.</li>
+        <li><strong>24 Oct.</strong> We opened <a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">pull request #775</a> for the redirect leak.</li>
+        <li><strong>25 Oct.</strong> We opened <a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">pull request #776</a> for the error message. Peter Boling merged both that evening, followed up with <a href="https://github.com/ruby-oauth/oauth2/pull/777" target="_blank" rel="noopener">#777</a>, and released <a href="https://github.com/ruby-oauth/oauth2/releases/tag/v2.0.26" target="_blank" rel="noopener">v2.0.26</a> and <a href="https://github.com/ruby-oauth/oauth2/releases/tag/v2.1.0" target="_blank" rel="noopener">v2.1.0</a>, both of which contain the fixes.</li>
+      </ul>
+
+      <h2 id="takeaway">How to read this</h2>
+      <p>The redirect leak needs the token endpoint, or something in front of it, to send a cross-origin redirect: a compromised or misconfigured server or proxy, not an arbitrary outsider. An attacker who fully controls the token endpoint already sees the request, so the fix matters for a redirect from a server the app otherwise trusts. The error-message leak only reaches logs when a provider returns a response without a token. Both are hardening of a widely used library rather than remotely exploitable holes. Findings are leads for people, not verdicts.</p>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">Our pull request #775: strip request body and query params on cross-origin redirects</a></li>
+        <li><a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">Our pull request #776: redact sensitive options in the token-less error, and the maintainer&rsquo;s reply</a></li>
+        <li><a href="https://github.com/ruby-oauth/oauth2/pull/777" target="_blank" rel="noopener">Maintainer follow-up, pull request #777</a></li>
+        <li><a href="https://github.com/ruby-oauth/oauth2/blob/v2.1.0/CHANGELOG.md" target="_blank" rel="noopener">oauth2 changelog, v2.1.0</a></li>
+        <li><a href="https://rubygems.org/gems/oauth2" target="_blank" rel="noopener">oauth2 on RubyGems</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

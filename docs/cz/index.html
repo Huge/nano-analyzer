@@ -265,6 +265,23 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
+        <h3><a href="stories/oauth2-ruby-credential-leaks/">oauth2 pro Ruby: tajemství šla za přesměrováním a unikala do chyb</a></h3>
+        <p><a href="https://github.com/ruby-oauth/oauth2" target="_blank" rel="noopener">oauth2</a> je OAuth&#160;2.0 klient pro Ruby, na kterém stojí <code class="code-tag">omniauth-oauth2</code>, s více než 280 miliony stažení. Přesměrování na jiný původ poslalo tělo požadavku na token, s autorizačním kódem a případně i tajemstvím klienta, znovu na nový host a odpověď bez tokenu skončila celá v chybové hlášce. Správce Peter Boling obě naše opravy začlenil, zpevnil a týž den vydal.</p>
+        <ul class="story-timeline">
+          <li><strong>24.&#8211;25. 10. 2026.</strong> Otevřeli jsme pull requesty #775 a #776 s opravami a regresními testy.</li>
+          <li><strong>25. 10.</strong> Oba začleněny, doplněny v #777 a vydány ve v2.0.26 a v2.1.0; changelog je připisuje nám.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/oauth2-ruby-credential-leaks/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">Pull request #775</a></li>
+          <li><a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">Pull request #776</a></li>
+          <li><a href="https://github.com/ruby-oauth/oauth2/releases/tag/v2.1.0" target="_blank" rel="noopener">Vydání v2.1.0</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Únik přes přesměrování vyžaduje kompromitovaný nebo špatně nastavený token endpoint či proxy a únik do chyby odpověď bez tokenu, jde tedy o zpevnění, ne o vzdáleně zneužitelné díry. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Opraveno v upstreamu &bull; říjen 2026</span>
         <h3><a href="stories/orca-ssh-identity-file-read/">Orca: čtení SSH identity souboru mohlo zmrazit aplikaci</a></h3>
         <p><a href="https://orca.dev/" target="_blank" rel="noopener">Orca</a> je desktopová aplikace pro práci s flotilou kódovacích agentů. SSH klíče z cest <code class="code-tag">IdentityFile</code> četla bez kontroly typu a velikosti souboru, takže cesta na pojmenovanou rouru aplikaci zmrazila a obří soubor se načetl celý. Správce Neil na našem pull requestu postavil širší opravu, ponechal naše testy a uvedl nás jako spoluautora.</p>

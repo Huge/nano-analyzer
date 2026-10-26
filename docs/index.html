@@ -265,6 +265,23 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Released upstream &bull; October 2026</span>
+        <h3><a href="stories/oauth2-ruby-credential-leaks/">oauth2 for Ruby: secrets followed redirects and leaked into errors</a></h3>
+        <p><a href="https://github.com/ruby-oauth/oauth2" target="_blank" rel="noopener">oauth2</a> is the Ruby OAuth&#160;2.0 client gem behind <code class="code-tag">omniauth-oauth2</code>, with over 280 million downloads. A cross-origin redirect replayed the token request body, with the authorization code and possibly the client secret, to the new host, and a response without a token was dumped whole into the error message. Maintainer Peter Boling merged both our fixes, hardened them and released them the same day.</p>
+        <ul class="story-timeline">
+          <li><strong>24&#8211;25 Oct 2026.</strong> We opened pull requests #775 and #776 with fixes and regression tests.</li>
+          <li><strong>25 Oct.</strong> Both merged, followed up in #777 and released in v2.0.26 and v2.1.0, credited to us in the changelog.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/oauth2-ruby-credential-leaks/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/ruby-oauth/oauth2/pull/775" target="_blank" rel="noopener">Pull request #775</a></li>
+          <li><a href="https://github.com/ruby-oauth/oauth2/pull/776" target="_blank" rel="noopener">Pull request #776</a></li>
+          <li><a href="https://github.com/ruby-oauth/oauth2/releases/tag/v2.1.0" target="_blank" rel="noopener">Release v2.1.0</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The redirect leak needs a compromised or misconfigured token endpoint or proxy, and the error leak needs a token-less response, so these are hardening fixes, not remote exploits. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Benchmark Report &bull; Hacktoberfest 2026</span>
         <h3><a href="stories/gemma-armv9-65k-vulnerability-triage/">The ARMv9 Speed Paradox: Auditing Real-World Code with Gemma 4 on Bare Metal</a></h3>
         <p>What happens when you audit real-world codebases with a 65,536-token context window on bare-metal ARM64 CPUs? We benchmarked Google's Gemma 4 family across 7 model configurations on Neoverse-V2 silicon, uncovering an unexpected SIMD unpacking paradox where 4-bit runs twice as fast as 2-bit, and evaluating 3-round skeptical triage against verified ground-truth zero-days.</p>
