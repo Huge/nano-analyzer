@@ -265,6 +265,22 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Fixed upstream &bull; October 2026</span>
+        <h3><a href="stories/ai-job-search-robots-and-gitignore-guards/">ai-job-search: a slow robots.txt rule, a loose curl call and a gitignore guard git disagreed with</a></h3>
+        <p><a href="https://github.com/ai-job-search-dev/ai-job-search" target="_blank" rel="noopener">ai-job-search</a> is a job-application framework built on Claude Code, with about 67,000 stars. A robots.txt rule could send its wildcard matcher into exponential time, its robots check handed curl any URL scheme, and its personal-data guard stripped whitespace that git treats as part of a <code class="code-tag">.gitignore</code> pattern. Maintainer Mads Lorentzen confirmed all three of our private reports and fixed them the same day, using our linear matcher for the first.</p>
+        <ul class="story-timeline">
+          <li><strong>19 Oct 2026.</strong> We reported the three findings privately through GitHub, with proofs of concept and proposed fixes.</li>
+          <li><strong>27 Oct.</strong> All three confirmed and fixed on master in #779 and 0bcfd75, credited to us in the commit messages.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/ai-job-search-robots-and-gitignore-guards/"><strong>Read the full story &rarr;</strong></a></li>
+          <li><a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">Pull request #779</a></li>
+          <li><a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">Commit 0bcfd75</a></li>
+        </ul>
+        <p class="story-caveat"><strong>How to read this.</strong> The maintainer rated each finding lower than our triage did: a local check that hangs, a blind request on direct calls, and a bypass that shows up in a reviewed diff. These are fixes to the project's own safety tools, not remote holes. Findings are leads for people, not verdicts.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Released upstream &bull; October 2026</span>
         <h3><a href="stories/oauth2-ruby-credential-leaks/">oauth2 for Ruby: secrets followed redirects and leaked into errors</a></h3>
         <p><a href="https://github.com/ruby-oauth/oauth2" target="_blank" rel="noopener">oauth2</a> is the Ruby OAuth&#160;2.0 client gem behind <code class="code-tag">omniauth-oauth2</code>, with over 280 million downloads. A cross-origin redirect replayed the token request body, with the authorization code and possibly the client secret, to the new host, and a response without a token was dumped whole into the error message. Maintainer Peter Boling merged both our fixes, hardened them and released them the same day.</p>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>ai-job-search: pomalé pravidlo v robots.txt, volné volání curl a gitignore guard, se kterým git nesouhlasil | BudgetScan</title>
+  <meta name="description" content="Tři neveřejně nahlášené nálezy skenu v ai-job-search; správce Mads Lorentzen je potvrdil a 27. 10. 2026 opravil, oprava ReDoS je náš navržený matcher.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/stories/ai-job-search-robots-and-gitignore-guards/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/ai-job-search-robots-and-gitignore-guards/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/ai-job-search-robots-and-gitignore-guards/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/ai-job-search-robots-and-gitignore-guards/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="ai-job-search: pomalé pravidlo v robots.txt, volné volání curl a gitignore guard, se kterým git nesouhlasil">
+  <meta property="og:description" content="Tři neveřejně nahlášené nálezy skenu v ai-job-search; správce Mads Lorentzen je potvrdil a 27. 10. 2026 opravil, oprava ReDoS je náš navržený matcher.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/ai-job-search-robots-and-gitignore-guards/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Přehled</a>
+        <a href="../../#stories">Příběhy úspěchu</a>
+        <a href="../../how-to/">Průvodce</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../../stories/ai-job-search-robots-and-gitignore-guards/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../../#stories" class="btn btn-primary">Všechny příběhy</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Opraveno v upstreamu 27. 10. 2026</span> &nbsp;Tři neveřejně nahlášené opravy v ai-job-search</p>
+      <h1>ai-job-search: pomalé pravidlo v robots.txt, volné volání curl a gitignore guard, se kterým git nesouhlasil</h1>
+      <p><a href="https://github.com/ai-job-search-dev/ai-job-search" target="_blank" rel="noopener">ai-job-search</a> je framework pro hledání práce postavený na Claude Code: hodnotí inzeráty, upravuje životopisy a píše motivační dopisy. Uživatelé si ho forkují a ukládají do něj vlastní data. Na GitHubu má asi 67 000 hvězd a 21 000 forků. Sken stromu z 19. 10. 2026 označil tři problémy v jeho pomocných nástrojích a každý jsme neveřejně nahlásili přes GitHub s proof of conceptem a návrhem opravy. Správce Mads Lorentzen (<code class="code-tag">MadsLorentzen</code>) všechny tři 27. 10. potvrdil, ohodnotil je níž než my a týž den je opravil v <code class="code-tag">master</code>; v commitech uvádí nás jako zdroj hlášení. Oprava ReDoS je náš navržený matcher.</p>
+
+      <h2 id="redos">1. Pravidlo v robots.txt mohlo kontrolu zdržet na minuty</h2>
+      <p><code class="code-tag">tools/robots_check.py</code> stáhne <code class="code-tag">robots.txt</code> pracovního portálu dřív, než agent přečte inzerát. Funkce <code class="code-tag">_match</code> převáděla každou <code class="code-tag">*</code> v pravidle na regulární výraz <code class="code-tag">.*</code>:</p>
+      <pre><code>pat = pattern[:-1] if end_anchor else pattern
+rx = '^' + ''.join('.*' if c == '*' else re.escape(c) for c in pat) + ('$' if end_anchor else '')
+return len(pattern) if re.match(rx, path) else -1</code></pre>
+      <p>Soubor dodává kontrolovaný web. Pravidlo s mnoha segmenty se zástupnými znaky, které na cestu nesedí, třeba <code class="code-tag">Disallow: /*a*a*a&#8230;*b$</code>, pošle backtrackingový regex engine Pythonu do exponenciálního času. Děje se to v hlavním procesu až po návratu curl, takže časový limit curl nepomůže.</p>
+      <p>Navrhli jsme matcher, který místo regexu prochází tabulku v čase úměrném délce vzoru krát délce cesty. Mads Lorentzen naměřil na aktuálním <code class="code-tag">master</code> 5,6&#160;sekundy při 14 segmentech a náš matcher převzal v <a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">pull requestu #779</a>. Podle jeho commitu nenašel diferenciální fuzzing s 200 000 případy proti starému regexovému matcheru žádnou změnu výsledků a tři nové testy hlídají prefixové, ukotvené a přes lomítka jdoucí případy.</p>
+
+      <h2 id="curl">2. Tentýž nástroj předával curl libovolné schéma URL</h2>
+      <p><code class="code-tag">gate()</code> skládala cíl jako <code class="code-tag">scheme://host/robots.txt</code> bez kontroly schématu a <code class="code-tag">_fetch()</code> spouštěla <code class="code-tag">curl -L</code> bez omezení protokolů. Přímé volání s <code class="code-tag">gopher:</code> nebo <code class="code-tag">ftp:</code> došlo do curl beze změny a přesměrování mohlo protokol přepnout.</p>
+      <p>Správce ukázal, že dosah je užší, než tvrdilo naše hlášení. Složená URL změní <code class="code-tag">file:///etc/passwd</code> na <code class="code-tag">file:///robots.txt</code>, takže se žádný soubor nepřečte; curl už sám odmítá přesměrování na <code class="code-tag">file</code>, <code class="code-tag">scp</code> a <code class="code-tag">smb</code>; tělo odpovědi se nikdy nevypisuje; a hlavní cesta stahování, <code class="code-tag">fetch_page.py</code>, už povolovala jen http(s). Zbyl slepý požadavek a HTTP status. Naši navrženou opravu přesto převzal ve stejném pull requestu: <code class="code-tag">gate()</code> teď u jiného schématu než http(s) nebo u URL bez hostu bezpečně selže a curl dostává <code class="code-tag">--proto =http,https --proto-redir =http,https</code>.</p>
+
+      <h2 id="gitignore">3. Guard osobních dat četl .gitignore jinak než git</h2>
+      <p>Forky projektu obsahují údaje o platu, životopisy a stažené seznamy nabídek a <code class="code-tag">SECURITY.md</code> projektu slibuje, že CI shodí každou změnu, která pravidla <code class="code-tag">.gitignore</code> pro tato data oslabí. <code class="code-tag">check_gitignore()</code> v <code class="code-tag">tools/security_guards.py</code> to dělala porovnáním řádků kořenového <code class="code-tag">.gitignore</code> po jejich oříznutí:</p>
+      <pre><code>lines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines()]</code></pre>
+      <p>Git ignoruje jen neescapované mezery na konci řádku. Mezera na začátku je součástí vzoru, takže <code class="code-tag">&#160;salary_data.json</code> už <code class="code-tag">salary_data.json</code> neignoruje, zatímco guard mezeru ořízl a prošel. Guard navíc četl jen kořenový soubor, takže <code class="code-tag">.gitignore</code> v podsložce s negací <code class="code-tag">!</code> mohl osobní soubory vrátit do repozitáře a CI zůstalo zelené.</p>
+      <p>Mads Lorentzen reprodukoval obě části a ohodnotil problém jako nízký, protože obě změny jsou vidět v revidovaném diffu, ale dodal:</p>
+      <blockquote>
+        <p><em>&bdquo;catching exactly that is the guard&rsquo;s job.&ldquo;</em></p>
+      </blockquote>
+      <p>Oprava v <a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">commitu 0bcfd75</a> čte řádky stejně jako git a kontroluje negace ve všech <code class="code-tag">.gitignore</code> pod kořenem, se seznamem povolených výjimek. <code class="code-tag">SECURITY.md</code> teď obě pravidla uvádí.</p>
+
+      <h2 id="timeline">Časová osa</h2>
+      <ul class="story-timeline">
+        <li><strong>19. 10. 2026.</strong> Sken stromu v commitu <code class="code-tag">9c802a4</code> označil tři problémy; proof-of-concept testy potvrdily každý z nich a nahlásili jsme je přes neveřejné hlášení zranitelností na GitHubu, jak žádá <code class="code-tag">SECURITY.md</code> projektu.</li>
+        <li><strong>27. 10.</strong> Mads Lorentzen všechny tři v advisories potvrdil a týž den začlenil opravy: <a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">pull request #779</a> pro <code class="code-tag">robots_check.py</code> a <a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">commit 0bcfd75</a> pro guard. Oba commity uvádějí naše hlášení a vydání je plánované jako v1.7.4.</li>
+      </ul>
+
+      <h2 id="takeaway">Jak to číst</h2>
+      <p>Ani jeden ze tří problémů není díra zneužitelná na dálku. ReDoS zasekne jednu lokální kontrolu, kterou zastaví timeout nebo uživatel. Problém s curl vyžaduje přímé volání a dá jen slepý požadavek. Obejití gitignore vyžaduje změnu sledovaného souboru, kterou by recenzent viděl. Správce každý z nich ohodnotil níž než naše triáž a jeho poznámky hlášení zpřesnily. Hodnota je v nástrojích, které dělají, co bezpečnostní poznámky projektu slibují. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+
+      <h2 id="sources">Zdroje</h2>
+      <ul>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">Pull request #779: lineární porovnávání zástupných znaků a curl jen pro http(s) v robots_check.py</a></li>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">Commit 0bcfd75: čtení .gitignore jako git</a></li>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/security/advisories/GHSA-xhqf-8q8x-4jwm" target="_blank" rel="noopener">GHSA-xhqf-8q8x-4jwm</a>, <a href="https://github.com/ai-job-search-dev/ai-job-search/security/advisories/GHSA-h8vc-753p-wpmh" target="_blank" rel="noopener">GHSA-h8vc-753p-wpmh</a> a <a href="https://github.com/ai-job-search-dev/ai-job-search/security/advisories/GHSA-rv99-7xf2-8f4p" target="_blank" rel="noopener">GHSA-rv99-7xf2-8f4p</a></li>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/blob/master/SECURITY.md" target="_blank" rel="noopener">SECURITY.md projektu ai-job-search</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Zpět na příběhy úspěchu</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

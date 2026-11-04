@@ -265,6 +265,22 @@
       </div>
 
       <article class="story-card">
+        <span class="story-badge">Opraveno v upstreamu &bull; říjen 2026</span>
+        <h3><a href="stories/ai-job-search-robots-and-gitignore-guards/">ai-job-search: pomalé pravidlo v robots.txt, volné volání curl a gitignore guard, se kterým git nesouhlasil</a></h3>
+        <p><a href="https://github.com/ai-job-search-dev/ai-job-search" target="_blank" rel="noopener">ai-job-search</a> je framework pro hledání práce postavený na Claude Code s asi 67 000 hvězdami. Pravidlo v robots.txt mohlo poslat porovnávání zástupných znaků do exponenciálního času, kontrola robots.txt předávala curl libovolné schéma URL a guard osobních dat ořezával mezery, které git v <code class="code-tag">.gitignore</code> bere jako součást vzoru. Správce Mads Lorentzen všechna tři naše neveřejná hlášení potvrdil a týž den opravil, u prvního naším lineárním matcherem.</p>
+        <ul class="story-timeline">
+          <li><strong>19. 10. 2026.</strong> Tři nálezy jsme neveřejně nahlásili přes GitHub, s proof of conceptem a návrhem opravy.</li>
+          <li><strong>27. 10.</strong> Všechny tři potvrzeny a opraveny v master v #779 a 0bcfd75; commity uvádějí naše hlášení.</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="stories/ai-job-search-robots-and-gitignore-guards/"><strong>Přečíst celý příběh &rarr;</strong></a></li>
+          <li><a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">Pull request #779</a></li>
+          <li><a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">Commit 0bcfd75</a></li>
+        </ul>
+        <p class="story-caveat"><strong>Jak to číst.</strong> Správce ohodnotil každý nález níž než naše triáž: zaseknutá lokální kontrola, slepý požadavek při přímém volání a obejití, které je vidět v revidovaném diffu. Jde o opravy bezpečnostních nástrojů projektu, ne o díry zneužitelné na dálku. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
+      </article>
+
+      <article class="story-card">
         <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
         <h3><a href="stories/oauth2-ruby-credential-leaks/">oauth2 pro Ruby: tajemství šla za přesměrováním a unikala do chyb</a></h3>
         <p><a href="https://github.com/ruby-oauth/oauth2" target="_blank" rel="noopener">oauth2</a> je OAuth&#160;2.0 klient pro Ruby, na kterém stojí <code class="code-tag">omniauth-oauth2</code>, s více než 280 miliony stažení. Přesměrování na jiný původ poslalo tělo požadavku na token, s autorizačním kódem a případně i tajemstvím klienta, znovu na nový host a odpověď bez tokenu skončila celá v chybové hlášce. Správce Peter Boling obě naše opravy začlenil, zpevnil a týž den vydal.</p>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>ai-job-search: a slow robots.txt rule, a loose curl call and a gitignore guard git disagreed with | BudgetScan</title>
+  <meta name="description" content="Three privately reported scan findings in ai-job-search, confirmed by maintainer Mads Lorentzen and fixed on 27 Oct 2026; the ReDoS fix is our proposed matcher.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/stories/ai-job-search-robots-and-gitignore-guards/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/stories/ai-job-search-robots-and-gitignore-guards/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/stories/ai-job-search-robots-and-gitignore-guards/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/stories/ai-job-search-robots-and-gitignore-guards/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="ai-job-search: a slow robots.txt rule, a loose curl call and a gitignore guard git disagreed with">
+  <meta property="og:description" content="Three privately reported scan findings in ai-job-search, confirmed by maintainer Mads Lorentzen and fixed on 27 Oct 2026; the ReDoS fix is our proposed matcher.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/ai-job-search-robots-and-gitignore-guards/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../../">Overview</a>
+        <a href="../../#stories">Success Stories</a>
+        <a href="../../how-to/">How-to Guide</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../cz/stories/ai-job-search-robots-and-gitignore-guards/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../../#stories" class="btn btn-primary">All stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc">
+    <div class="container doc-container">
+      <p><span class="tag-status tag-available">Fixed upstream 27 Oct 2026</span> &nbsp;Three privately reported fixes in ai-job-search</p>
+      <h1>ai-job-search: a slow robots.txt rule, a loose curl call and a gitignore guard git disagreed with</h1>
+      <p><a href="https://github.com/ai-job-search-dev/ai-job-search" target="_blank" rel="noopener">ai-job-search</a> is a job-application framework built on Claude Code: it evaluates postings, tailors CVs and writes cover letters, and users fork it and keep their own data in it. It has about 67,000 stars and 21,000 forks on GitHub. A scan of the tree on 19 Oct 2026 flagged three issues in its helper tools, and we reported each one privately through GitHub with a proof of concept and a proposed fix. Maintainer Mads Lorentzen (<code class="code-tag">MadsLorentzen</code>) confirmed all three on 27 Oct, rated them lower than we had, and fixed them on <code class="code-tag">master</code> the same day, crediting us in the commit messages. The ReDoS fix is the matcher we proposed.</p>
+
+      <h2 id="redos">1. A robots.txt rule could stall the check for minutes</h2>
+      <p><code class="code-tag">tools/robots_check.py</code> fetches a job site&rsquo;s <code class="code-tag">robots.txt</code> before the agent reads a posting there. Its <code class="code-tag">_match</code> turned every <code class="code-tag">*</code> in a rule into a regular-expression <code class="code-tag">.*</code>:</p>
+      <pre><code>pat = pattern[:-1] if end_anchor else pattern
+rx = '^' + ''.join('.*' if c == '*' else re.escape(c) for c in pat) + ('$' if end_anchor else '')
+return len(pattern) if re.match(rx, path) else -1</code></pre>
+      <p>The file comes from the site being checked. A rule with many wildcard segments that does not match the path, such as <code class="code-tag">Disallow: /*a*a*a&#8230;*b$</code>, makes Python&rsquo;s backtracking regex engine take exponential time. That happens in the main process after curl has returned, so curl&rsquo;s own time limit does not help.</p>
+      <p>We proposed a matcher that walks a table instead of using a regex, in time proportional to the pattern length times the path length. Mads Lorentzen measured 5.6&#160;seconds at 14 segments on current <code class="code-tag">master</code> and took our matcher into <a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">pull request #779</a>. His commit message says a 200,000-case differential fuzz against the old regex matcher found no change in answers, and three new tests pin the prefix, anchored and slash-spanning cases.</p>
+
+      <h2 id="curl">2. The same tool passed any URL scheme to curl</h2>
+      <p><code class="code-tag">gate()</code> rebuilt the target as <code class="code-tag">scheme://host/robots.txt</code> without checking the scheme, and <code class="code-tag">_fetch()</code> ran <code class="code-tag">curl -L</code> without limiting protocols. A direct call with <code class="code-tag">gopher:</code> or <code class="code-tag">ftp:</code> reached curl as is, and a redirect could switch protocols.</p>
+      <p>The maintainer showed the reach was narrower than our report said. The rebuilt URL turns <code class="code-tag">file:///etc/passwd</code> into <code class="code-tag">file:///robots.txt</code>, so no file is read; curl already refuses to follow a redirect to <code class="code-tag">file</code>, <code class="code-tag">scp</code> or <code class="code-tag">smb</code>; the response body is never printed; and the main fetch path, <code class="code-tag">fetch_page.py</code>, already allowed only http(s). What was left is a blind request plus an HTTP status. He still took the fix we proposed in the same pull request: <code class="code-tag">gate()</code> now fails closed on any scheme but http(s) or a URL without a host, and curl gets <code class="code-tag">--proto =http,https --proto-redir =http,https</code>.</p>
+
+      <h2 id="gitignore">3. The personal-data guard read .gitignore differently from git</h2>
+      <p>Forks of the project hold salary data, CVs and scraped job lists, and the project&rsquo;s <code class="code-tag">SECURITY.md</code> promises that a CI job fails any change that weakens the <code class="code-tag">.gitignore</code> rules for them. <code class="code-tag">check_gitignore()</code> in <code class="code-tag">tools/security_guards.py</code> did this by comparing lines of the root <code class="code-tag">.gitignore</code> after stripping them:</p>
+      <pre><code>lines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines()]</code></pre>
+      <p>Git ignores only unescaped trailing whitespace. A leading space is part of the pattern, so <code class="code-tag">&#160;salary_data.json</code> no longer ignores <code class="code-tag">salary_data.json</code>, while the guard stripped the space and passed. The guard also read only the root file, so a <code class="code-tag">.gitignore</code> in a subfolder with a <code class="code-tag">!</code> negation could re-include personal files with CI green.</p>
+      <p>Mads Lorentzen reproduced both parts and rated the issue low, since either change shows up in a reviewed diff, but added:</p>
+      <blockquote>
+        <p><em>&ldquo;catching exactly that is the guard&rsquo;s job.&rdquo;</em></p>
+      </blockquote>
+      <p>The fix in <a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">commit 0bcfd75</a> reads lines the way git does and checks every <code class="code-tag">.gitignore</code> below the root for negations, with an allowlist for intentional ones. <code class="code-tag">SECURITY.md</code> now states both rules.</p>
+
+      <h2 id="timeline">Timeline</h2>
+      <ul class="story-timeline">
+        <li><strong>19 Oct 2026.</strong> A scan of the tree at commit <code class="code-tag">9c802a4</code> flagged the three issues; proof-of-concept tests reproduced each one, and we reported them through GitHub private vulnerability reporting, as the project&rsquo;s <code class="code-tag">SECURITY.md</code> asks.</li>
+        <li><strong>27 Oct.</strong> Mads Lorentzen confirmed all three in the advisories and merged the fixes the same day: <a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">pull request #779</a> for <code class="code-tag">robots_check.py</code> and <a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">commit 0bcfd75</a> for the guard. Both commit messages credit our reports, and the release is planned as v1.7.4.</li>
+      </ul>
+
+      <h2 id="takeaway">How to read this</h2>
+      <p>None of the three is a remote hole. The ReDoS hangs one local check that a timeout or the user can stop. The curl issue needs a direct call and gives a blind request. The gitignore bypass needs a change to a tracked file that a reviewer would see. The maintainer rated each one lower than our triage did, and his notes made the reports more accurate. The value is in tools that do what the project&rsquo;s security notes promise. Findings are leads for people, not verdicts.</p>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/pull/779" target="_blank" rel="noopener">Pull request #779: linear wildcard matching and http(s)-only curl in robots_check.py</a></li>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/commit/0bcfd75e6" target="_blank" rel="noopener">Commit 0bcfd75: read .gitignore like git</a></li>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/security/advisories/GHSA-xhqf-8q8x-4jwm" target="_blank" rel="noopener">GHSA-xhqf-8q8x-4jwm</a>, <a href="https://github.com/ai-job-search-dev/ai-job-search/security/advisories/GHSA-h8vc-753p-wpmh" target="_blank" rel="noopener">GHSA-h8vc-753p-wpmh</a> and <a href="https://github.com/ai-job-search-dev/ai-job-search/security/advisories/GHSA-rv99-7xf2-8f4p" target="_blank" rel="noopener">GHSA-rv99-7xf2-8f4p</a></li>
+        <li><a href="https://github.com/ai-job-search-dev/ai-job-search/blob/master/SECURITY.md" target="_blank" rel="noopener">ai-job-search SECURITY.md</a></li>
+      </ul>
+      <p><a href="../../#stories">&larr; Back to Success Stories</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
