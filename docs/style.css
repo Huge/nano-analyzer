@@ -328,6 +328,19 @@ body {
   line-height: 1.6;
 }
 
+.hero-subtitle a {
+  white-space: nowrap;
+  color: #a5b4fc;
+  text-decoration: underline;
+  text-decoration-color: rgba(165, 180, 252, 0.5);
+  text-underline-offset: 3px;
+}
+
+.hero-subtitle a:hover {
+  color: #c7d2fe;
+  text-decoration-color: currentColor;
+}
+
 .hero-cta-group {
   display: flex;
   justify-content: center;
