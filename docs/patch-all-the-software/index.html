@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Patch All the Software! | BudgetScan</title>
+  <meta name="description" content="Our pro-bono initiative: find security bugs in the open-source software everyone depends on, check every lead by hand, and send maintainers a tested fix, not an alert.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/patch-all-the-software/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/patch-all-the-software/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/patch-all-the-software/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Patch All the Software! | BudgetScan">
+  <meta property="og:description" content="A pro-bono initiative by Matej Vrzala &amp; Martin Vlach: checked security fixes for the open-source software everyone depends on, sent upstream with tests.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/patch-all-the-software/">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Stylesheet & Fonts -->
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../app.js"></script>
+  <style>
+    .pats-title { font-size: clamp(2.6rem, 7vw, 4.6rem); letter-spacing: -0.03em; }
+    .pats-title .gradient-text { display: inline-block; margin-top: 10px; font-size: 0.5em; letter-spacing: -0.01em; }
+    .pats-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .pats-stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px; text-align: center; }
+    .pats-stat .result-number { font-size: 2.6rem; }
+    .pats-stat p { margin: 6px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.45; }
+    .pats-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 900px; margin: 24px auto 0; padding: 0; list-style: none; }
+    .pats-chips a { display: inline-block; padding: 5px 12px; border-radius: var(--radius-full); border: 1px solid rgba(99, 102, 241, 0.35); background: rgba(99, 102, 241, 0.08); color: #c7d2fe; font-size: 0.85rem; text-decoration: none; }
+    .pats-chips a:hover { border-color: rgba(99, 102, 241, 0.7); color: #fff; }
+    .pats-road { max-width: 900px; margin: 0 auto; display: grid; gap: 14px; }
+    .pats-road-item { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px 20px; }
+    .pats-road-item h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--text-main); }
+    .pats-road-item p { margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+    .step-card a, .pats-road-item a { color: #a5b4fc; text-decoration: underline; text-underline-offset: 2px; }
+    .pats-mail { margin: 0 auto; font-size: 0.9rem; color: var(--text-muted); }
+    .pats-mail a { color: #a5b4fc; user-select: all; }
+    .hero-cta-group:has(+ .pats-mail) { margin-bottom: 16px; }
+    .hero-cta-group + .pats-mail { margin: 0 auto 36px; }
+    .pats-chips-label { width: 100%; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 8px; }
+    .pats-chips a.pats-chip-all { border-style: dashed; background: transparent; }
+    .tag-moonshot { color: #f0abfc; background: rgba(217, 70, 239, 0.12); border-color: rgba(217, 70, 239, 0.4); }
+    @media (max-width: 640px) {
+      .pats-road-item { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <!-- Header / Multipage Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../">Overview</a>
+        <a href="../stories/">Stories</a>
+        <a href="../pricing/">Pricing</a>
+        <a href="../how-to/">How-To</a>
+        <a href="../privacy/">Privacy</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../cz/patch-all-the-software/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
+        <a href="../" class="btn btn-primary">Back to overview</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" style="padding-bottom: 32px;">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>Pro-bono initiative &bull; Open-source security &bull; Fixes, not alerts</span>
+      </div>
+
+      <h1 class="hero-title pats-title">
+        Patch All the Software!<br>
+        <span class="gradient-text">Every widely used open-source project, checked and fixed upstream.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        The world runs on open-source code maintained by a few tired people. AI now makes finding bugs cheap; we want it to make <em>fixing</em> them cheap too. We scan open-source projects pro-bono, a person checks every lead, and the maintainer gets a fix with a test, not another report to triage. Twenty-six projects so far. &ldquo;All&rdquo; is a long way off. That&rsquo;s the point.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=Patch%20All%20the%20Software" class="btn btn-primary btn-lg">
+          <span>Join or nominate a project</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="../stories/" class="btn btn-outline btn-lg">See the fixes so far</a>
+      </div>
+      <p class="pats-mail">Opens your mail app. No mail app? Write to <a href="mailto:dev@ehlas.cz">dev@ehlas.cz</a> and <a href="mailto:safeAIwork@gmail.com">safeAIwork@gmail.com</a>.</p>
+
+      <p class="status-note" style="margin-top: 20px;">
+        <strong>This is a goal, not a claim.</strong> Below we keep apart what we already do, what is planned, and what is still a moonshot. The numbers on this page come from the published <a href="../stories/">case studies</a> and the upstream pull requests and commits linked below.
+      </p>
+    </div>
+  </section>
+
+  <!-- Where we are -->
+  <section class="section section-dark" id="now">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Where We Are Today</h2>
+        <p class="section-subtitle">A small start, all of it verifiable.</p>
+      </div>
+
+      <div class="pats-stats">
+        <div class="pats-stat">
+          <span class="result-number">26</span>
+          <p>open-source projects merged or adopted our fixes, among them curl, ghostty, tmux and Nextcloud</p>
+        </div>
+        <div class="pats-stat">
+          <span class="result-number">50+</span>
+          <p>fixes landed upstream since our first one, in Yopass, in September 2026</p>
+        </div>
+        <div class="pats-stat">
+          <span class="result-number">30+</span>
+          <p>more pull requests waiting for maintainer review</p>
+        </div>
+        <div class="pats-stat">
+          <span class="result-number">$0</span>
+          <p>charged to any maintainer, ever: the open-source work is pro-bono</p>
+        </div>
+      </div>
+
+      <ul class="pats-chips">
+        <li class="pats-chips-label">With a case study:</li>
+        <li><a href="../stories/tmux-copy-mode-null-dereference/">tmux</a></li>
+        <li><a href="../stories/dnsmasq-slaac-stale-hostname/">dnsmasq</a></li>
+        <li><a href="../stories/proftpd-mod-sftp-pam-response-index/">ProFTPD</a></li>
+        <li><a href="../stories/kdeconnect-bluetooth-packet-size/">KDE Connect</a></li>
+        <li><a href="../stories/oauth2-ruby-credential-leaks/">oauth2 (Ruby)</a></li>
+        <li><a href="../stories/himalaya-terminal-injection-sanitization/">Himalaya</a></li>
+        <li><a href="../stories/windmill-s3-ai-attachment-size-limit/">Windmill</a></li>
+        <li><a href="../stories/mise-aqua-template-unterminated-string/">mise</a></li>
+        <li><a href="../stories/orca-ssh-identity-file-read/">Orca</a></li>
+        <li><a href="../stories/yopass-oidc-email-verified/">Yopass</a></li>
+        <li><a href="../stories/ai-job-search-robots-and-gitignore-guards/">ai-job-search</a></li>
+        <li class="pats-chips-label">Also fixed upstream:</li>
+        <li><a href="https://github.com/curl/curl/pull/23535" target="_blank" rel="noopener">curl</a></li>
+        <li><a href="https://github.com/ghostty-org/ghostty/pull/14595" target="_blank" rel="noopener">ghostty</a></li>
+        <li><a href="https://github.com/nextcloud/news/pull/3953" target="_blank" rel="noopener">Nextcloud News</a></li>
+        <li><a href="https://github.com/nextcloud/desktop/pull/10997" target="_blank" rel="noopener">Nextcloud Desktop</a></li>
+        <li><a href="https://github.com/rustic-rs/rustic_core/pull/590" target="_blank" rel="noopener">rustic</a></li>
+        <li><a href="https://git.proxmox.com/?p=qemu-server.git;a=commit;h=aa956ba1e0" target="_blank" rel="noopener">Proxmox qemu-server</a></li>
+        <li><a href="https://github.com/duesee/imap-codec/pull/734" target="_blank" rel="noopener">imap-codec</a></li>
+        <li><a href="https://github.com/celzero/rethink-app/pull/3157" target="_blank" rel="noopener">Rethink DNS</a></li>
+        <li><a href="https://github.com/OpenMontageInc/OpenMontage/pull/711" target="_blank" rel="noopener">OpenMontage</a></li>
+        <li><a href="https://github.com/vtereshkov/umka-lang/pull/626" target="_blank" rel="noopener">Umka</a></li>
+        <li><a href="https://github.com/fork-maintainers/iceraven-browser/pull/1090" target="_blank" rel="noopener">Iceraven</a></li>
+        <li><a href="https://github.com/cjpais/Handy/pull/2199" target="_blank" rel="noopener">Handy</a></li>
+        <li><a href="https://github.com/altfresh/redactor/pull/358" target="_blank" rel="noopener">Redactor</a></li>
+        <li><a href="https://github.com/storytold/vectorcraft/pull/3163" target="_blank" rel="noopener">VectorCraft</a></li>
+        <li><a href="https://github.com/lukabudik/alza-mcp-community/pull/109" target="_blank" rel="noopener">alza-mcp-community</a></li>
+        <li><a class="pats-chip-all" href="https://github.com/search?q=author%3AHuge+is%3Apr+is%3Amerged+merged%3A%3E%3D2026-09-01+-user%3AHuge+-user%3Afolovco&amp;type=pullrequests" target="_blank" rel="noopener">All our merged GitHub pull requests</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- How a patch gets made -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How a Patch Gets Made</h2>
+        <p class="section-subtitle">The scanner is cheap and noisy. People and maintainers are not. The process is built around that.</p>
+      </div>
+
+      <div class="workflow-steps">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h3>Pick widely used code</h3>
+          <p>We keep a ranked queue of libraries, frameworks and network daemons that many others depend on, and scan them whenever spare inference capacity is free.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h3>Scan and triage</h3>
+          <p><a href="../#workflow">nano-analyzer</a> with multi-round skeptical triage turns a codebase into a short list of leads. Even after triage, most leads are wrong.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h3>A person checks every lead</h3>
+          <p>We read the calling code, try to reproduce the bug and narrow its real reach. Most leads die here, and none of those reach a maintainer.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <h3>Fix, test, then send</h3>
+          <p>A survivor goes upstream as a fix with a regression test. Real vulnerabilities go privately, through the project&rsquo;s security policy, before anything is public.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">05</div>
+          <h3>The maintainer decides</h3>
+          <p>Maintainers often find a better fix than ours, as in <a href="../stories/windmill-s3-ai-attachment-size-limit/">Windmill</a> and <a href="../stories/dnsmasq-slaac-stale-hostname/">dnsmasq</a>. We say so in the write-up.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="section section-dark" id="principles">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Ground Rules</h2>
+        <p class="section-subtitle">&ldquo;All the software&rdquo; only works if maintainers are glad to hear from us.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon icon-emerald">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>Maintainer time comes first</h3>
+          <p>No dumps of scanner output. One checked problem, a patch and a test, written up so it can be reviewed in minutes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-cyan">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Their rules, not ours</h3>
+          <p>We follow each project&rsquo;s security policy and disclosure process. Projects that do not accept AI-assisted contributions get none from us.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-amber">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          </div>
+          <h3>Honest severity</h3>
+          <p>Our triage tends to overstate. Every story says how to read it, and most of our fixes are hardening, not remote exploits.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="section" id="roadmap">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">From 26 to All</h2>
+        <p class="section-subtitle">What exists, what we plan, and what we are aiming at.</p>
+      </div>
+
+      <div class="pats-road">
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-available">Now</span></div>
+          <div>
+            <h3>Pro-bono scans and upstream fixes</h3>
+            <p>Queue-driven scans of open-source projects, hand-checked leads, fixes and private reports sent upstream, and a public <a href="../stories/">case study</a> for each one that lands.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-available">Now</span></div>
+          <div>
+            <h3>Nominate a project</h3>
+            <p>Maintainers can ask us to look at their project by <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=Patch%20All%20the%20Software%3A%20nomination">email</a>. Tell us your disclosure preferences and we will stick to them.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-planned">Planned</span></div>
+          <div>
+            <h3>A public ledger</h3>
+            <p>Every report we send and what became of it: merged, fixed differently, declined, or wrong. Including the misses.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-planned">Planned</span></div>
+          <div>
+            <h3>Re-check on every release</h3>
+            <p>Projects we have patched get a fresh scan of the changed code when they cut a new release, so a fix stays fixed.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-moonshot">Moonshot</span></div>
+          <div>
+            <h3>Whole dependency trees</h3>
+            <p>Not one project at a time, but everything under a typical web app or Linux base system: each widely used package gets a checked pass, every release.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-moonshot">Moonshot</span></div>
+          <div>
+            <h3>Cheaper to check than to ignore</h3>
+            <p>Bring the cost of a careful scan so low that skipping it is the expensive choice, for maintainers and for everyone who ships their code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to help -->
+  <section class="section section-dark" id="help">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Help Us Patch More</h2>
+        <p class="section-subtitle">The bottleneck is not finding bugs. It is people to check them and compute to find them.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon icon-indigo">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          </div>
+          <h3>Maintainers</h3>
+          <p>Nominate your project, or tell us which parts worry you most. A short threat model makes the scan far more useful.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-purple">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
+          </div>
+          <h3>Compute and sponsors</h3>
+          <p>The queue only moves when spare inference capacity is free. Idle GPUs or API credits turn directly into scanned projects.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-rose">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Security engineers</h3>
+          <p>Checking leads is where the work is. If you like reading unfamiliar code and proving a bug real or not, we would love the help.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 32px;">
+        <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=Patch%20All%20the%20Software" class="btn btn-primary btn-lg">Get in touch</a>
+        <p class="pats-mail" style="margin-top: 12px;">Opens your mail app. No mail app? Write to <a href="mailto:dev@ehlas.cz">dev@ehlas.cz</a> and <a href="mailto:safeAIwork@gmail.com">safeAIwork@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../privacy/">Privacy &amp; operator</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

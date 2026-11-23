@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Patch All the Software! | BudgetScan</title>
+  <meta name="description" content="Naše pro-bono iniciativa: hledáme bezpečnostní chyby v open-source softwaru, na kterém všichni stojíme, každý nález ručně ověříme a správcům pošleme otestovanou opravu, ne další upozornění.">
+  <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
+  <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/patch-all-the-software/">
+  <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
+  <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/patch-all-the-software/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BudgetScan">
+  <meta property="og:title" content="Patch All the Software! | BudgetScan">
+  <meta property="og:description" content="Pro-bono iniciativa Mateje Vrzaly a Martina Vlacha: ověřené bezpečnostní opravy open-source softwaru, na kterém všichni stojíme, poslané do upstreamu i s testy.">
+  <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Stylesheet & Fonts -->
+  <link rel="stylesheet" href="../../style.css">
+  <script defer src="../../app.js"></script>
+  <style>
+    .pats-title { font-size: clamp(2.6rem, 7vw, 4.6rem); letter-spacing: -0.03em; }
+    .pats-title .gradient-text { display: inline-block; margin-top: 10px; font-size: 0.5em; letter-spacing: -0.01em; }
+    .pats-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .pats-stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px; text-align: center; }
+    .pats-stat .result-number { font-size: 2.6rem; }
+    .pats-stat p { margin: 6px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.45; }
+    .pats-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 900px; margin: 24px auto 0; padding: 0; list-style: none; }
+    .pats-chips a { display: inline-block; padding: 5px 12px; border-radius: var(--radius-full); border: 1px solid rgba(99, 102, 241, 0.35); background: rgba(99, 102, 241, 0.08); color: #c7d2fe; font-size: 0.85rem; text-decoration: none; }
+    .pats-chips a:hover { border-color: rgba(99, 102, 241, 0.7); color: #fff; }
+    .pats-road { max-width: 900px; margin: 0 auto; display: grid; gap: 14px; }
+    .pats-road-item { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px 20px; }
+    .pats-road-item h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--text-main); }
+    .pats-road-item p { margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+    .step-card a, .pats-road-item a { color: #a5b4fc; text-decoration: underline; text-underline-offset: 2px; }
+    .pats-mail { margin: 0 auto; font-size: 0.9rem; color: var(--text-muted); }
+    .pats-mail a { color: #a5b4fc; user-select: all; }
+    .hero-cta-group:has(+ .pats-mail) { margin-bottom: 16px; }
+    .hero-cta-group + .pats-mail { margin: 0 auto 36px; }
+    .pats-chips-label { width: 100%; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 8px; }
+    .pats-chips a.pats-chip-all { border-style: dashed; background: transparent; }
+    .tag-moonshot { color: #f0abfc; background: rgba(217, 70, 239, 0.12); border-color: rgba(217, 70, 239, 0.4); }
+    @media (max-width: 640px) {
+      .pats-road-item { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <!-- Header / Multipage Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../">Přehled</a>
+        <a href="../stories/">Příběhy</a>
+        <a href="../pricing/">Ceník</a>
+        <a href="../how-to/">Návod</a>
+        <a href="../privacy/">Soukromí</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../patch-all-the-software/" class="btn btn-secondary lang-btn">🌐 English</a>
+        <a href="../" class="btn btn-primary">Zpět na přehled</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" style="padding-bottom: 32px;">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>Pro-bono iniciativa &bull; Bezpečnost open source &bull; Opravy, ne upozornění</span>
+      </div>
+
+      <h1 class="hero-title pats-title">
+        Patch All the Software!<br>
+        <span class="gradient-text">Opravme všechen software. Každý rozšířený open-source projekt, prověřený a opravený v upstreamu.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Svět běží na open-source kódu, který udržuje hrstka unavených lidí. AI teď zlevnila hledání chyb; chceme, aby zlevnila i jejich <em>opravování</em>. Open-source projekty skenujeme pro-bono, každý nález ověří člověk a správce dostane opravu s testem, ne další hlášení k třídění. Zatím 26 projektů. Ke slovu &bdquo;všechen&ldquo; máme daleko. O to jde.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=Patch%20All%20the%20Software" class="btn btn-primary btn-lg">
+          <span>Přidejte se nebo navrhněte projekt</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="../stories/" class="btn btn-outline btn-lg">Dosavadní opravy</a>
+      </div>
+      <p class="pats-mail">Otevře poštovní aplikaci. Nemáte ji? Napište na <a href="mailto:dev@ehlas.cz">dev@ehlas.cz</a> a <a href="mailto:safeAIwork@gmail.com">safeAIwork@gmail.com</a>.</p>
+
+      <p class="status-note" style="margin-top: 20px;">
+        <strong>Je to cíl, ne tvrzení.</strong> Níže odlišujeme, co už děláme, co plánujeme a co je zatím moonshot. Čísla na této stránce vycházejí ze zveřejněných <a href="../stories/">případových studií</a> a z pull requestů a commitů v upstreamu, na které níže odkazujeme.
+      </p>
+    </div>
+  </section>
+
+  <!-- Where we are -->
+  <section class="section section-dark" id="now">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Kde jsme dnes</h2>
+        <p class="section-subtitle">Malý začátek, celý ověřitelný.</p>
+      </div>
+
+      <div class="pats-stats">
+        <div class="pats-stat">
+          <span class="result-number">26</span>
+          <p>open-source projektů, které naše opravy začlenily nebo převzaly, mezi nimi curl, ghostty, tmux a Nextcloud</p>
+        </div>
+        <div class="pats-stat">
+          <span class="result-number">50+</span>
+          <p>oprav v upstreamu od té první, v Yopassu, v září 2026</p>
+        </div>
+        <div class="pats-stat">
+          <span class="result-number">30+</span>
+          <p>dalších pull requestů čeká na kontrolu správců</p>
+        </div>
+        <div class="pats-stat">
+          <span class="result-number">0 Kč</span>
+          <p>účtováno správcům, nikdy: práce na open source je pro-bono</p>
+        </div>
+      </div>
+
+      <ul class="pats-chips">
+        <li class="pats-chips-label">S případovou studií:</li>
+        <li><a href="../stories/tmux-copy-mode-null-dereference/">tmux</a></li>
+        <li><a href="../stories/dnsmasq-slaac-stale-hostname/">dnsmasq</a></li>
+        <li><a href="../stories/proftpd-mod-sftp-pam-response-index/">ProFTPD</a></li>
+        <li><a href="../stories/kdeconnect-bluetooth-packet-size/">KDE Connect</a></li>
+        <li><a href="../stories/oauth2-ruby-credential-leaks/">oauth2 (Ruby)</a></li>
+        <li><a href="../stories/himalaya-terminal-injection-sanitization/">Himalaya</a></li>
+        <li><a href="../stories/windmill-s3-ai-attachment-size-limit/">Windmill</a></li>
+        <li><a href="../stories/mise-aqua-template-unterminated-string/">mise</a></li>
+        <li><a href="../stories/orca-ssh-identity-file-read/">Orca</a></li>
+        <li><a href="../stories/yopass-oidc-email-verified/">Yopass</a></li>
+        <li><a href="../stories/ai-job-search-robots-and-gitignore-guards/">ai-job-search</a></li>
+        <li class="pats-chips-label">Další opravy v upstreamu:</li>
+        <li><a href="https://github.com/curl/curl/pull/23535" target="_blank" rel="noopener">curl</a></li>
+        <li><a href="https://github.com/ghostty-org/ghostty/pull/14595" target="_blank" rel="noopener">ghostty</a></li>
+        <li><a href="https://github.com/nextcloud/news/pull/3953" target="_blank" rel="noopener">Nextcloud News</a></li>
+        <li><a href="https://github.com/nextcloud/desktop/pull/10997" target="_blank" rel="noopener">Nextcloud Desktop</a></li>
+        <li><a href="https://github.com/rustic-rs/rustic_core/pull/590" target="_blank" rel="noopener">rustic</a></li>
+        <li><a href="https://git.proxmox.com/?p=qemu-server.git;a=commit;h=aa956ba1e0" target="_blank" rel="noopener">Proxmox qemu-server</a></li>
+        <li><a href="https://github.com/duesee/imap-codec/pull/734" target="_blank" rel="noopener">imap-codec</a></li>
+        <li><a href="https://github.com/celzero/rethink-app/pull/3157" target="_blank" rel="noopener">Rethink DNS</a></li>
+        <li><a href="https://github.com/OpenMontageInc/OpenMontage/pull/711" target="_blank" rel="noopener">OpenMontage</a></li>
+        <li><a href="https://github.com/vtereshkov/umka-lang/pull/626" target="_blank" rel="noopener">Umka</a></li>
+        <li><a href="https://github.com/fork-maintainers/iceraven-browser/pull/1090" target="_blank" rel="noopener">Iceraven</a></li>
+        <li><a href="https://github.com/cjpais/Handy/pull/2199" target="_blank" rel="noopener">Handy</a></li>
+        <li><a href="https://github.com/altfresh/redactor/pull/358" target="_blank" rel="noopener">Redactor</a></li>
+        <li><a href="https://github.com/storytold/vectorcraft/pull/3163" target="_blank" rel="noopener">VectorCraft</a></li>
+        <li><a href="https://github.com/lukabudik/alza-mcp-community/pull/109" target="_blank" rel="noopener">alza-mcp-community</a></li>
+        <li><a class="pats-chip-all" href="https://github.com/search?q=author%3AHuge+is%3Apr+is%3Amerged+merged%3A%3E%3D2026-09-01+-user%3AHuge+-user%3Afolovco&amp;type=pullrequests" target="_blank" rel="noopener">Všechny naše začleněné pull requesty na GitHubu</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- How a patch gets made -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Jak vzniká oprava</h2>
+        <p class="section-subtitle">Skener je levný a hlučný. Lidé a správci ne. Celý postup je postavený kolem toho.</p>
+      </div>
+
+      <div class="workflow-steps">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h3>Vybrat rozšířený kód</h3>
+          <p>Vedeme seřazenou frontu knihoven, frameworků a síťových démonů, na kterých stojí spousta dalšího softwaru, a skenujeme je, kdykoli je volná inferenční kapacita.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h3>Sken a triáž</h3>
+          <p><a href="../#workflow">nano-analyzer</a> s několikakolovou skeptickou triáží zúží kódovou základnu na krátký seznam nálezů. I po triáži je většina z nich mylná.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h3>Každý nález ověří člověk</h3>
+          <p>Čteme volající kód, zkoušíme chybu reprodukovat a zužujeme její skutečný dosah. Většina nálezů tady skončí a žádný z nich se ke správci nedostane.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <h3>Opravit, otestovat, poslat</h3>
+          <p>Co přežije, jde do upstreamu jako oprava s regresním testem. Skutečné zranitelnosti hlásíme neveřejně podle bezpečnostní politiky projektu, dřív než cokoli zveřejníme.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">05</div>
+          <h3>Rozhoduje správce</h3>
+          <p>Správci často najdou lepší opravu než my, jako u <a href="../stories/windmill-s3-ai-attachment-size-limit/">Windmillu</a> a <a href="../stories/dnsmasq-slaac-stale-hostname/">dnsmasq</a>. V článku to přiznáme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="section section-dark" id="principles">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Pravidla hry</h2>
+        <p class="section-subtitle">&bdquo;Všechen software&ldquo; jde jen tehdy, když nás správci rádi slyší.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon icon-emerald">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>Čas správců má přednost</h3>
+          <p>Žádné výpisy ze skeneru. Jeden ověřený problém, oprava a test, popsané tak, aby se daly zkontrolovat za pár minut.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-cyan">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Jejich pravidla, ne naše</h3>
+          <p>Řídíme se bezpečnostní politikou a postupem hlášení každého projektu. Projekty, které nepřijímají příspěvky s pomocí AI, od nás žádné nedostanou.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-amber">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          </div>
+          <h3>Poctivá závažnost</h3>
+          <p>Naše triáž má sklon přehánět. Každý příběh říká, jak ho číst, a většina našich oprav je zpevnění, ne vzdálené exploity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="section" id="roadmap">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Od 26 ke všem</h2>
+        <p class="section-subtitle">Co existuje, co plánujeme a kam míříme.</p>
+      </div>
+
+      <div class="pats-road">
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-available">Teď</span></div>
+          <div>
+            <h3>Pro-bono skeny a opravy v upstreamu</h3>
+            <p>Skeny open-source projektů z fronty, ručně ověřené nálezy, opravy a neveřejná hlášení poslaná do upstreamu a veřejná <a href="../stories/">případová studie</a> ke každé, která se ujme.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-available">Teď</span></div>
+          <div>
+            <h3>Navrhněte projekt</h3>
+            <p>Správci nás mohou požádat o prověření svého projektu <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=Patch%20All%20the%20Software%3A%20n%C3%A1vrh%20projektu">e-mailem</a>. Napište nám, jak chcete dostávat hlášení, a budeme se toho držet.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-planned">Plánováno</span></div>
+          <div>
+            <h3>Veřejná evidence</h3>
+            <p>Každé hlášení, které pošleme, a co se s ním stalo: začleněno, opraveno jinak, odmítnuto, nebo jsme se mýlili. Včetně omylů.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-planned">Plánováno</span></div>
+          <div>
+            <h3>Kontrola při každém vydání</h3>
+            <p>Projekty, které jsme opravovali, dostanou při novém vydání čerstvý sken změněného kódu, aby oprava zůstala opravou.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-moonshot">Moonshot</span></div>
+          <div>
+            <h3>Celé stromy závislostí</h3>
+            <p>Ne jeden projekt po druhém, ale všechno pod typickou webovou aplikací nebo základem linuxové distribuce: každý rozšířený balíček prověřený při každém vydání.</p>
+          </div>
+        </div>
+        <div class="pats-road-item">
+          <div><span class="tag-status tag-moonshot">Moonshot</span></div>
+          <div>
+            <h3>Levnější prověřit než ignorovat</h3>
+            <p>Srazit cenu pečlivého skenu tak nízko, aby drahou volbou bylo ho vynechat, pro správce i pro každého, kdo jejich kód nasazuje.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to help -->
+  <section class="section section-dark" id="help">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Pomozte nám opravovat víc</h2>
+        <p class="section-subtitle">Úzkým hrdlem není hledání chyb. Jsou to lidé, kteří je ověří, a výpočetní výkon, který je najde.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon icon-indigo">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          </div>
+          <h3>Správci</h3>
+          <p>Navrhněte svůj projekt nebo nám řekněte, které jeho části vás trápí nejvíc. Krátký model hrozeb udělá sken mnohem užitečnějším.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-purple">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
+          </div>
+          <h3>Výpočetní výkon a sponzoři</h3>
+          <p>Fronta se hýbe, jen když je volná inferenční kapacita. Nevyužité GPU nebo API kredity se přímo mění v proskenované projekty.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-rose">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Bezpečnostní inženýři</h3>
+          <p>Ověřování nálezů je místo, kde je práce. Jestli rádi čtete cizí kód a dokazujete, že chyba je (nebo není) skutečná, budeme za pomoc moc rádi.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 32px;">
+        <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=Patch%20All%20the%20Software" class="btn btn-primary btn-lg">Ozvěte se</a>
+        <p class="pats-mail" style="margin-top: 12px;">Otevře poštovní aplikaci. Nemáte ji? Napište na <a href="mailto:dev@ehlas.cz">dev@ehlas.cz</a> a <a href="mailto:safeAIwork@gmail.com">safeAIwork@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../privacy/">Soukromí a provozovatel</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
