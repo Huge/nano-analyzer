@@ -42,7 +42,8 @@
     .hero-cta-group:has(+ .pats-mail) { margin-bottom: 16px; }
     .hero-cta-group + .pats-mail { margin: 0 auto 36px; }
     .pats-chips-label { width: 100%; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 8px; }
-    .pats-chips a.pats-chip-all { border-style: dashed; background: transparent; }
+    .pats-sources { max-width: 900px; margin: 20px auto 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+    .pats-sources a { color: #a5b4fc; }
     .tag-moonshot { color: #f0abfc; background: rgba(217, 70, 239, 0.12); border-color: rgba(217, 70, 239, 0.4); }
     @media (max-width: 640px) {
       .pats-road-item { grid-template-columns: 1fr; gap: 8px; }
@@ -139,13 +140,14 @@
         </div>
         <div class="pats-stat">
           <span class="result-number">30+</span>
-          <p>more pull requests waiting for maintainer review</p>
+          <p>more pull and merge requests waiting for maintainer review, on GitHub, GitLab and Codeberg</p>
         </div>
         <div class="pats-stat">
           <span class="result-number">$0</span>
           <p>charged to any maintainer, ever: the open-source work is pro-bono</p>
         </div>
       </div>
+      <p class="pats-sources">Check the numbers: <a href="https://github.com/search?q=author%3AHuge+is%3Apr+is%3Amerged+merged%3A%3E%3D2026-09-01+-user%3AHuge+-user%3Afolovco&amp;type=pullrequests" target="_blank" rel="noopener">merged pull requests on GitHub</a> and <a href="https://github.com/search?q=author%3AHuge+is%3Apr+is%3Aopen+created%3A%3E%3D2026-09-01+-user%3AHuge+-user%3Afolovco&amp;type=pullrequests" target="_blank" rel="noopener">pull requests in review on GitHub</a>. Fixes that landed as commits, by mail or as a maintainer&rsquo;s rewrite are linked from the project list below.</p>
 
       <ul class="pats-chips">
         <li class="pats-chips-label">With a case study:</li>
@@ -161,7 +163,7 @@
         <li><a href="../stories/yopass-oidc-email-verified/">Yopass</a></li>
         <li><a href="../stories/ai-job-search-robots-and-gitignore-guards/">ai-job-search</a></li>
         <li class="pats-chips-label">Also fixed upstream:</li>
-        <li><a href="https://github.com/curl/curl/pull/23535" target="_blank" rel="noopener">curl</a></li>
+        <li><a href="https://github.com/curl/curl/commit/705b02e4160bead0f274791bc446fae5d2b2b717" target="_blank" rel="noopener">curl</a></li>
         <li><a href="https://github.com/ghostty-org/ghostty/pull/14595" target="_blank" rel="noopener">ghostty</a></li>
         <li><a href="https://github.com/nextcloud/news/pull/3953" target="_blank" rel="noopener">Nextcloud News</a></li>
         <li><a href="https://github.com/nextcloud/desktop/pull/10997" target="_blank" rel="noopener">Nextcloud Desktop</a></li>
@@ -176,7 +178,6 @@
         <li><a href="https://github.com/altfresh/redactor/pull/358" target="_blank" rel="noopener">Redactor</a></li>
         <li><a href="https://github.com/storytold/vectorcraft/pull/3163" target="_blank" rel="noopener">VectorCraft</a></li>
         <li><a href="https://github.com/lukabudik/alza-mcp-community/pull/109" target="_blank" rel="noopener">alza-mcp-community</a></li>
-        <li><a class="pats-chip-all" href="https://github.com/search?q=author%3AHuge+is%3Apr+is%3Amerged+merged%3A%3E%3D2026-09-01+-user%3AHuge+-user%3Afolovco&amp;type=pullrequests" target="_blank" rel="noopener">All our merged GitHub pull requests</a></li>
       </ul>
     </div>
   </section>
