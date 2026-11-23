@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <title>Patch All the Software! | BudgetScan</title>
-  <meta name="description" content="Naše pro-bono iniciativa: hledáme bezpečnostní chyby v open-source softwaru, na kterém všichni stojíme, každý nález ručně ověříme a správcům pošleme otestovanou opravu, ne další upozornění.">
+  <meta name="description" content="Naše pro-bono iniciativa: hledáme bezpečnostní chyby v open-source softwaru, na kterém všichni stojíme, každý nález ručně ověříme a správcům pošleme hotovou opravu, ne další upozornění.">
   <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
   <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/patch-all-the-software/">
   <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BudgetScan">
   <meta property="og:title" content="Patch All the Software! | BudgetScan">
-  <meta property="og:description" content="Pro-bono iniciativa Mateje Vrzaly a Martina Vlacha: ověřené bezpečnostní opravy open-source softwaru, na kterém všichni stojíme, poslané do upstreamu i s testy.">
+  <meta property="og:description" content="Pro-bono iniciativa Mateje Vrzaly a Martina Vlacha: ověřené bezpečnostní opravy open-source softwaru, na kterém všichni stojíme, poslané do upstreamu jako hotové opravy.">
   <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/patch-all-the-software/">
   <meta property="og:locale" content="cs_CZ">
   <meta name="twitter:card" content="summary">
@@ -103,7 +103,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        Svět běží na open-source kódu, který udržuje hrstka unavených lidí. AI teď zlevnila hledání chyb; chceme, aby zlevnila i jejich <em>opravování</em>. Open-source projekty skenujeme pro-bono, každý nález ověří člověk a správce dostane opravu s testem, ne další hlášení k třídění. Zatím 26 projektů. Ke slovu &bdquo;všechen&ldquo; máme daleko. O to jde.
+        Svět běží na open-source kódu, který udržují malé, přetížené týmy. AI teď zlevnila hledání chyb; chceme, aby zlevnila i jejich <em>opravování</em>. Open-source projekty skenujeme pro-bono, každý nález ověří člověk a správce dostane hotovou opravu, ne další hlášení k třídění. Zatím 25 projektů. Ke slovu &bdquo;všechen&ldquo; máme daleko. O to jde.
       </p>
 
       <div class="hero-cta-group">
@@ -131,7 +131,7 @@
 
       <div class="pats-stats">
         <div class="pats-stat">
-          <span class="result-number">26</span>
+          <span class="result-number">25</span>
           <p>open-source projektů, které naše opravy začlenily nebo převzaly, mezi nimi curl, ghostty, tmux a Nextcloud</p>
         </div>
         <div class="pats-stat">
@@ -168,7 +168,6 @@
         <li><a href="https://github.com/nextcloud/news/pull/3953" target="_blank" rel="noopener">Nextcloud News</a></li>
         <li><a href="https://github.com/nextcloud/desktop/pull/10997" target="_blank" rel="noopener">Nextcloud Desktop</a></li>
         <li><a href="https://github.com/rustic-rs/rustic_core/pull/590" target="_blank" rel="noopener">rustic</a></li>
-        <li><a href="https://git.proxmox.com/?p=qemu-server.git;a=commit;h=aa956ba1e0" target="_blank" rel="noopener">Proxmox qemu-server</a></li>
         <li><a href="https://github.com/duesee/imap-codec/pull/734" target="_blank" rel="noopener">imap-codec</a></li>
         <li><a href="https://github.com/celzero/rethink-app/pull/3157" target="_blank" rel="noopener">Rethink DNS</a></li>
         <li><a href="https://github.com/OpenMontageInc/OpenMontage/pull/711" target="_blank" rel="noopener">OpenMontage</a></li>
@@ -209,7 +208,7 @@
         <div class="step-card">
           <div class="step-num">04</div>
           <h3>Opravit, otestovat, poslat</h3>
-          <p>Co přežije, jde do upstreamu jako oprava s regresním testem. Skutečné zranitelnosti hlásíme neveřejně podle bezpečnostní politiky projektu, dřív než cokoli zveřejníme.</p>
+          <p>Co přežije, jde do upstreamu jako oprava, s regresním testem tam, kde má projekt testy. Skutečné zranitelnosti hlásíme neveřejně podle bezpečnostní politiky projektu, dřív než cokoli zveřejníme.</p>
         </div>
         <div class="step-card">
           <div class="step-num">05</div>
@@ -234,7 +233,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
           <h3>Čas správců má přednost</h3>
-          <p>Žádné výpisy ze skeneru. Jeden ověřený problém, oprava a test, popsané tak, aby se daly zkontrolovat za pár minut.</p>
+          <p>Žádné výpisy ze skeneru. Jeden ověřený problém a oprava, s testem tam, kde je projekt má, popsané tak, aby se daly zkontrolovat za pár minut.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon icon-cyan">
@@ -248,7 +247,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
           </div>
           <h3>Poctivá závažnost</h3>
-          <p>Naše triáž má sklon přehánět. Každý příběh říká, jak ho číst, a většina našich oprav je zpevnění, ne vzdálené exploity.</p>
+          <p>Naše triáž má sklon přehánět. Každý příběh říká, jak ho číst, a většinou jde o zpevnění kódu, ne o vzdáleně zneužitelné chyby.</p>
         </div>
       </div>
     </div>
@@ -258,7 +257,7 @@
   <section class="section" id="roadmap">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Od 26 ke všem</h2>
+        <h2 class="section-title">Od 25 ke všem</h2>
         <p class="section-subtitle">Co existuje, co plánujeme a kam míříme.</p>
       </div>
 
@@ -267,7 +266,7 @@
           <div><span class="tag-status tag-available">Teď</span></div>
           <div>
             <h3>Pro-bono skeny a opravy v upstreamu</h3>
-            <p>Skeny open-source projektů z fronty, ručně ověřené nálezy, opravy a neveřejná hlášení poslaná do upstreamu a veřejná <a href="../stories/">případová studie</a> ke každé, která se ujme.</p>
+            <p>Skeny open-source projektů z fronty, ručně ověřené nálezy, opravy a neveřejná hlášení poslaná do upstreamu a veřejné <a href="../stories/">případové studie</a> k vybraným opravám.</p>
           </div>
         </div>
         <div class="pats-road-item">
@@ -337,7 +336,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
           <h3>Bezpečnostní inženýři</h3>
-          <p>Ověřování nálezů je místo, kde je práce. Jestli rádi čtete cizí kód a dokazujete, že chyba je (nebo není) skutečná, budeme za pomoc moc rádi.</p>
+          <p>Právě v ověřování nálezů leží nejvíc práce. Jestli rádi čtete cizí kód a dokazujete, že chyba je (nebo není) skutečná, budeme za pomoc moc rádi.</p>
         </div>
       </div>
 
