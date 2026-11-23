@@ -25,7 +25,9 @@
   <style>
     .pats-title { font-size: clamp(2.6rem, 7vw, 4.6rem); letter-spacing: -0.03em; }
     .pats-title .gradient-text { display: inline-block; margin-top: 10px; font-size: 0.5em; letter-spacing: -0.01em; }
-    .pats-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .pats-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1000px; margin: 0 auto; }
+    @media (max-width: 900px) { .pats-stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .pats-stats { grid-template-columns: 1fr; } }
     .pats-stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px; text-align: center; }
     .pats-stat .result-number { font-size: 2.6rem; }
     .pats-stat p { margin: 6px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.45; }
