@@ -3,448 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>BudgetScan | Bezpečnost kódu řízená rozpočtem</title>
-  <meta name="description" content="Bezpečnostní skener od autorů Matej Vrzala &amp; Martin Vlach. Bezpečnostní audit kódu řízený rozpočtem pro GitLab a GitHub s odhadem ceny předem, postavený na nano-analyzer.">
+  <title>BudgetScan | Bezpečnostní skeny kódu v rámci rozpočtu</title>
+  <meta name="description" content="BudgetScan hledá bezpečnostní chyby ve vašem kódu v cenovém a časovém limitu, který určíte, a každý nález prověří dřív, než ho uvidíte. Vyvíjejí Matej Vrzala a Martin Vlach.">
   <link rel="canonical" href="https://huge.github.io/nano-analyzer/cz/">
   <link rel="alternate" hreflang="en" href="https://huge.github.io/nano-analyzer/">
   <link rel="alternate" hreflang="cs" href="https://huge.github.io/nano-analyzer/cz/">
   <link rel="alternate" hreflang="x-default" href="https://huge.github.io/nano-analyzer/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BudgetScan">
-  <meta property="og:title" content="BudgetScan | Bezpečnost kódu řízená rozpočtem">
-  <meta property="og:description" content="Projekt vyvíjejí Matej Vrzala a Martin Vlach. Zvyšujeme bezpečnost softwaru pro-bono i profesionálně. Postaveno na nano-analyzer.">
+  <meta property="og:title" content="BudgetScan | Bezpečnostní skeny kódu v rámci rozpočtu">
+  <meta property="og:description" content="Bezpečnostní skeny v cenovém a časovém limitu, který určíte. Každý nález prověříme dřív, než ho uvidíte.">
   <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/">
   <meta property="og:locale" content="cs_CZ">
   <meta name="twitter:card" content="summary">
-  <meta name="theme-color" content="#07090e">
+  <meta name="theme-color" content="#0b0b0d">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
-
-  <!-- Stylesheet & Fonts -->
   <link rel="stylesheet" href="../style.css">
-  <script defer src="../app.js"></script>
 </head>
 <body>
-  <div class="bg-glow bg-glow-1"></div>
-  <div class="bg-glow bg-glow-2"></div>
-  <div class="bg-grid"></div>
-
-  <!-- Multipage Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="./" class="brand-logo">
-        <div class="logo-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#6366f1"/>
-                <stop offset="1" stop-color="#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+        <span class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v5c0 5.5 3.8 10.5 9 12 5.2-1.5 9-6.5 9-12V7z"/><path d="M12 17V8M8.5 11.5 12 8l3.5 3.5"/></svg></span>
+        <span class="brand-name">BudgetScan</span>
       </a>
-
-      <nav class="nav-links">
-        <a href="./" class="active" style="color: #a5b4fc; font-weight: 600;">Přehled</a>
-        <a href="stories/">Příběhy</a>
-        <a href="pricing/">Ceník</a>
-        <a href="how-to/">Návod</a>
-        <a href="privacy/">Soukromí</a>
+      <nav class="nav-links" aria-label="Hlavní">
+        <a href="stories/">Novinky</a>
       </nav>
-
       <div class="nav-actions">
-        <a href="../" class="btn btn-secondary lang-btn">🌐 English</a>
-        <a href="pricing/" class="btn btn-primary">Zobrazit ceník</a>
+        <a href="../" class="lang-btn" lang="en" hreflang="en" aria-label="English version">EN</a>
+        <a href="#contact" class="btn btn-primary">Napište nám</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section Opening With Project Members -->
-  <section class="hero" style="padding-bottom: 32px;">
-    <div class="container hero-container">
-      
-      <!-- Project Members Callout -->
-      <div class="members-badge">
-        <span>🛡️</span>
-        <span>Projekt vyvíjejí <strong>Matej Vrzala</strong> a <strong>Martin Vlach</strong> &bull; Zvyšujeme bezpečnost softwaru pro-bono i profesionálně</span>
+  <main>
+    <section class="hero">
+      <div class="container hero-container">
+        <span class="eyebrow"><span class="pulse-dot"></span>Raný přístup</span>
+        <h1 class="hero-title">Skenujeme kód a hledáme bezpečnostní chyby.</h1>
+        <div class="hero-cta-group">
+          <a href="#fixes" class="btn btn-primary btn-lg">Naše opravy</a>
+          <a href="stories/patch-all-the-software/" class="btn btn-outline btn-lg">Patch All the Software: otevřená výzva</a>
+        </div>
+        <ul class="stat-row">
+          <li><strong>25</strong><span>open-source projektů přijalo naše opravy</span></li>
+          <li><strong>50+</strong><span>oprav začleněných do upstreamu</span></li>
+          <li><strong>30+</strong><span>dalších čeká na revizi</span></li>
+          <li><strong>$0</strong><span>účtováno správcům projektů</span></li>
+        </ul>
       </div>
+    </section>
 
-      <h1 class="hero-title">
-        Bezpečnost kódu řízená rozpočtem.<br>
-        <span class="gradient-text">Určete cenu v PR/MR. My optimalizujeme audit.</span>
-      </h1>
-
-      <p class="hero-subtitle">
-        Zvyšujeme bezpečnost softwaru <a href="patch-all-the-software/">pro-bono</a> pro open-source ekosystémy a profesionálně pro vývojové týmy. Stačí napsat <code class="code-tag">@budgetscan $0.50 --max-delay 5m</code> do komentáře PR/MR: BudgetScan naplánuje hloubku skenu tak, aby se vešel do limitu i termínu, a z kreditu odečte jen to, co sken skutečně stál.
-      </p>
-
-      <div class="hero-cta-group">
-        <a href="#commands" class="btn btn-primary btn-lg">
-          <span>Příkazy kontroly nákladů</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#workflow" class="btn btn-outline btn-lg">Interní workflow</a>
-        <a href="stories/" class="btn btn-outline btn-lg" style="border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe;">
-          <span>🛡️ Ověřené opravy v upstreamu</span>
-        </a>
-      </div>
-
-      <p class="status-note" style="margin-top: 20px;">
-        <strong>Raný přístup, na kterém ještě pracujeme.</strong> Open-source skener (<a href="#workflow">nano-analyzer</a>) už dnes funguje z příkazové řádky a můžete ho volat z vlastního CI (viz <a href="how-to/">návod</a>). Úloha pro merge requesty v GitLabu, GitHub Action a rozpočtový i časový governor jsou v privátním testování a sdílíme je v rámci raného přístupu. Kreditní balíčky si zatím koupit nelze a všechny cenové údaje jsou ilustrační. Máte dotaz nebo zájem o raný přístup? <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan%20ran%C3%BD%20p%C5%99%C3%ADstup">Napište nám</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- Commands: Cost Control & Estimation Section -->
-  <section class="section section-dark" id="commands">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Odhad nákladů &amp; řízení rozpočtu</h2>
-        <p class="section-subtitle">Zjistěte odhadovanou cenu skenu předem, než utratíte jediný cent, a nastavte tvrdé rozpočtové i časové stropy pro CI.</p>
-      </div>
-
-      <div class="commands-grid">
-        <!-- Card 1: Pre-Scan Cost Estimation -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #a5b4fc; text-transform: uppercase; letter-spacing: 0.05em;">Krok 1 &bull; Odhad předem</span>
-            <span style="background: rgba(99, 102, 241, 0.15); color: #c7d2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono);">$0.00 Zdarma</span>
-          </div>
-          <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main);">Modelujte náklady před spuštěním</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-            Modul <code class="code-tag">budget.py</code> prozkoumá skenovatelné zdrojové soubory, odfiltruje testy a závislosti a odhadne tokenové náklady pro zvolený model a počet kol triáže bez jediného volání LLM:
-          </p>
-          <pre style="background: var(--bg-dark-section); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin: 0; font-family: var(--font-mono); font-size: 0.82rem; color: #e2e8f0; overflow-x: auto;"><code># Prozkoumání souborů &amp; odhad nákladů na tokeny:
-python3 scan.py /path/to/repo --estimate</code></pre>
+    <section class="section" id="how">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Jak to funguje</h2>
         </div>
 
-        <!-- Card 2: Hard Budget Caps in CLI / CI -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">Krok 2 &bull; Běhové stropy</span>
-            <span style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono);">Pevný strop</span>
-          </div>
-          <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main);">Tvrdé stropy na rozpočet i čas běhu</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-            V našem buildu pro raný přístup hlídá budget governor útratu i reálný čas běhu. Když se blíží časový limit, přestane plánovat novou práci a uloží částečný report bez zdržování CI:
-          </p>
-          <pre style="background: var(--bg-dark-section); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin: 0; font-family: var(--font-mono); font-size: 0.82rem; color: #e2e8f0; overflow-x: auto;"><code># Audit se stropem $5.00 a maximální dobou běhu 5 minut:
-python3 scan.py /path/to/repo \
-  --budget-usd 5.00 --deadline 5m --triage-rounds 3</code></pre>
-        </div>
-
-        <!-- Card 3: Pull Request Command Automation -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.05em;">Krok 3 &bull; Bot v PR komentářích</span>
-            <span style="background: rgba(245, 158, 11, 0.15); color: #fde68a; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono);">Raný přístup</span>
-          </div>
-          <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main);">Spouštění přímo z Merge Requestu</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-            Vývojáři a revieweři řídí hloubku auditu a termín přímo v komentáři; z týmového kreditního fondu se odečte pouze skutečně spotřebovaná částka:
-          </p>
-          <pre style="background: var(--bg-dark-section); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin: 0; font-family: var(--font-mono); font-size: 0.82rem; color: #e2e8f0; overflow-x: auto;"><code># Komentář v GitLab MR nebo GitHub PR:
-@budgetscan $0.50 --max-delay 5m</code></pre>
+        <div class="how">
+          <ol class="how-steps">
+            <li><strong>Analýza</strong>Zmapujeme váš kód a naplánujeme revizi tak, aby se vešla do rozpočtu.</li>
+            <li><strong>Revize</strong>Každý soubor se čte s bezpečnostním kontextem a hledají se v něm možné chyby.</li>
+            <li><strong>Ověření</strong>Skeptičtí recenzenti se snaží každý nález vyvrátit; nerozhodné případy rozsoudí arbitr.</li>
+            <li><strong>Report</strong>Dostanete nálezy, které obstály, s opravami a s přehledem, co se prošlo a kolik to stálo.</li>
+          </ol>
+          <figure class="diagram">
+            <a href="../img/aisle-nano-analyzer.png" target="_blank" rel="noopener"><img src="../img/aisle-nano-analyzer.png" width="1574" height="1072" loading="lazy" alt="Schéma: zdrojový soubor prochází generováním kontextu, detekcí zranitelností, koly skeptické triáže a arbitrem; zůstane jeden platný nález."></a>
+            <figcaption>Průběh revize. Schéma: AISLE. Kliknutím zvětšíte.</figcaption>
+          </figure>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Internal Workflow: Lineage & What We Built on nano-analyzer -->
-  <section class="section" id="workflow">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Interní workflow &amp; Open-Source původ</h2>
-        <p class="section-subtitle">
-          BudgetScan staví na open-source skeneru <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a> od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představeném na jejich blogu</a>). Zde je původní architektura a přehled toho, jak ji rozšiřujeme o řízení rozpočtu a termínu.
-        </p>
-      </div>
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Co umí</h2>
+          <p class="section-subtitle">BudgetScan najde bezpečnostní chyby ve vašem kódu a napíše opravy. Optimalizujeme jedinou věc: kvalitu patchů, které dostanete za každý dolar.</p>
+        </div>
 
-      <!-- Original Schema Image Container -->
-      <div class="schema-container">
-        <img src="../img/aisle-nano-analyzer.png" alt="Architektura pipeline skeneru nano-analyzer od AISLE" class="schema-img" loading="lazy">
-        <p class="schema-caption">
-          <strong>Původní schéma nano-analyzer</strong> (autor: <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">AISLE</a>): Rozklad zdrojového repozitáře &rarr; kontext a sken &rarr; vícekolový filtr triáže &rarr; markdown report.
-        </p>
-      </div>
-
-      <!-- Comparison Grid: What BudgetScan Adds -->
-      <div style="margin-top: 32px;">
-        <h3 style="font-size: 1.25rem; color: var(--text-main); margin-bottom: 16px; text-align: center;">Co stavíme nad původním open-source jádrem</h3>
-        <div class="arch-grid">
-          <div class="arch-card">
-            <h4><span>💰</span> Předběžný odhad nákladů (`budget.py`)</h4>
-            <p>Změří skenovatelné zdrojové soubory, odhadne vstupní a výstupní tokeny pro kontext, sken i triáž a spočítá cenu ještě před spuštěním.</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            <h3>Víc za každý dolar</h3>
+            <p>Nastavte rozpočet revize. Práci naplánujeme tak, aby z něj vzešlo co nejvíc ověřených nálezů, a limit nepřekročíme.</p>
           </div>
-          <div class="arch-card">
-            <h4><span>⚖️</span> Běhový Budget Governor (`--budget-usd`)</h4>
-            <p>Před každým LLM voláním rezervuje horní odhad, drží rozpočet na triáž přijatých souborů a po volání zaúčtuje skutečnou spotřebu.</p>
+          <div class="feature-card">
+            <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg></span>
+            <h3>Ověřené nálezy</h3>
+            <p>Každý nález projde několika koly kontroly, která prohledávají i zbytek vašeho kódu. Většina šumu zmizí dřív, než ho uvidíte.</p>
           </div>
-          <div class="arch-card">
-            <h4><span>⏱️</span> Vynucení časového limitu (`--deadline`)</h4>
-            <p>Předchází timeoutům v CI pipeline sledováním reálného času běhu a včasným vygenerováním částečného reportu s pokrytými soubory.</p>
+          <div class="feature-card">
+            <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.300a1 1 0 0 0 0 1.400l1.6 1.600a1 1 0 0 0 1.4 0l3.8-3.800a6 6 0 0 1-7.9 7.900l-6.9 6.900a2.1 2.1 0 0 1-3-3l6.9-6.900a6 6 0 0 1 7.9-7.900z"/></svg></span>
+            <h3>Opravy, nejen nálezy</h3>
+            <p>Ke každému nálezu dostanete návrh opravy. Pokud chcete, ručně ho ověříme a pošleme vám otestovaný patch.</p>
           </div>
-          <div class="arch-card">
-            <h4><span>🔍</span> Vícekolová skeptická triáž (Kola 1–5)</h4>
-            <p>Nálezy střední a vyšší závažnosti procházejí vícekolovou skeptickou oponenturou s prohledáváním kódu (`rg`) a rozhodčím kolem.</p>
+          <div class="feature-card">
+            <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6M12 19h8"/></svg></span>
+            <h3>Běží po vašem</h3>
+            <p>Příkazová řádka, GitHub Action nebo desktopová aplikace. Vyberte si, co sedí vašemu týmu.</p>
           </div>
-          <div class="arch-card">
-            <h4><span>⚡</span> Přeskakování nezměněných souborů (Plán)</h4>
-            <p>Přeskočení nezměněných souborů mezi commity, abyste za stejný kód neplatili dvakrát, dnes existuje v komunitním Go portu a plánujeme ho i do hlavního skeneru.</p>
+          <div class="feature-card">
+            <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            <h3>Časový limit</h3>
+            <p>Nastavte časový limit. Když se blíží, revize se uzavře a ohlásí, co stihla projít, takže nezdržuje CI.</p>
           </div>
-          <div class="arch-card">
-            <h4><span>🛡️</span> Integrace do GitLab MR &amp; GitHub Actions</h4>
-            <p>CI úlohy, které skenují změněné soubory v merge/pull requestu a udržují jeden aktualizovaný komentář s výsledky (v privátním testování; viz <a href="how-to/">návod</a>).</p>
+          <div class="feature-card">
+            <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><path d="M6 7h.01M6 17h.01"/></svg></span>
+            <h3>Na vašich serverech</h3>
+            <p>Provozujte ho na vlastní infrastruktuře s vlastním modelem, takže váš kód neopustí vaši síť.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CI/CD Quickstart Section -->
-  <section class="section section-dark" id="cicd">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Spuštění z příkazové řádky nebo CI pipeline</h2>
-        <p class="section-subtitle">Běží všude, kde běží Python a Git. Podrobný postup a aktuální stav najdete v <a href="how-to/">návodu k použití</a>.</p>
-      </div>
-
-      <div class="ci-tabs">
-        <div class="ci-tabs-nav">
-          <button type="button" class="ci-tab-btn active" data-citab="tab-cli">Lokální CLI (scan.py)</button>
-          <button type="button" class="ci-tab-btn" data-citab="tab-gitlab">GitLab CI (.gitlab-ci.yml)</button>
-          <button type="button" class="ci-tab-btn" data-citab="tab-github">GitHub Actions (workflow)</button>
+    <section class="section" id="fixes">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Opravy, které správci přijali</h2>
         </div>
 
-        <div id="tab-cli" class="ci-tab-pane active">
-          <pre><code># Naklonování veřejného open-source skeneru:
-git clone https://github.com/Huge/nano-analyzer.git
-cd nano-analyzer
+        <ul class="chips">
+          <li><a href="stories/tmux-copy-mode-null-dereference/">tmux</a></li>
+          <li><a href="stories/dnsmasq-slaac-stale-hostname/">dnsmasq</a></li>
+          <li><a href="stories/proftpd-mod-sftp-pam-response-index/">ProFTPD</a></li>
+          <li><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect</a></li>
+          <li><a href="stories/oauth2-ruby-credential-leaks/">oauth2 (Ruby)</a></li>
+          <li><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya</a></li>
+          <li><a href="stories/windmill-s3-ai-attachment-size-limit/">Windmill</a></li>
+          <li><a href="stories/mise-aqua-template-unterminated-string/">mise</a></li>
+          <li><a href="stories/orca-ssh-identity-file-read/">Orca</a></li>
+          <li><a href="stories/yopass-oidc-email-verified/">Yopass</a></li>
+          <li><a href="stories/ai-job-search-robots-and-gitignore-guards/">ai-job-search</a></li>
+          <li><a href="https://github.com/curl/curl/commit/705b02e4160bead0f274791bc446fae5d2b2b717" target="_blank" rel="noopener">curl</a></li>
+          <li><a href="https://github.com/ghostty-org/ghostty/pull/14595" target="_blank" rel="noopener">ghostty</a></li>
+          <li><a href="https://github.com/nextcloud/news/pull/3953" target="_blank" rel="noopener">Nextcloud News</a></li>
+          <li><a href="https://github.com/nextcloud/desktop/pull/10997" target="_blank" rel="noopener">Nextcloud Desktop</a></li>
+          <li><a href="https://github.com/rustic-rs/rustic_core/pull/590" target="_blank" rel="noopener">rustic</a></li>
+          <li><a href="https://github.com/duesee/imap-codec/pull/734" target="_blank" rel="noopener">imap-codec</a></li>
+          <li><a href="https://github.com/celzero/rethink-app/pull/3157" target="_blank" rel="noopener">Rethink DNS</a></li>
+          <li><a href="https://github.com/OpenMontageInc/OpenMontage/pull/711" target="_blank" rel="noopener">OpenMontage</a></li>
+          <li><a href="https://github.com/vtereshkov/umka-lang/pull/626" target="_blank" rel="noopener">Umka</a></li>
+          <li><a href="https://github.com/fork-maintainers/iceraven-browser/pull/1090" target="_blank" rel="noopener">Iceraven</a></li>
+          <li><a href="https://github.com/cjpais/Handy/pull/2199" target="_blank" rel="noopener">Handy</a></li>
+          <li><a href="https://github.com/altfresh/redactor/pull/358" target="_blank" rel="noopener">Redactor</a></li>
+          <li><a href="https://github.com/storytold/vectorcraft/pull/3163" target="_blank" rel="noopener">VectorCraft</a></li>
+          <li><a href="https://github.com/lukabudik/alza-mcp-community/pull/109" target="_blank" rel="noopener">alza-mcp-community</a></li>
+        </ul>
 
-# Spuštění skenu se 3 koly skeptické triáže:
-export OPENROUTER_API_KEY=sk-or-...
-python3 scan.py /path/to/src --model qwen/qwen3-32b --triage-rounds 3</code></pre>
+        <div class="stories-grid">
+          <a class="mini-story" href="stories/tmux-copy-mode-null-dereference/">
+            <span><span class="story-badge">Opraveno v OpenBSD</span></span>
+            <h3>tmux: pád serveru při copy-mode -S</h3>
+            <blockquote>„Applied to OpenBSD now, will be in GitHub later. Thanks!“</blockquote>
+            <cite>Nicholas Marriott, autor tmuxu</cite>
+          </a>
+          <a class="mini-story" href="stories/kdeconnect-bluetooth-packet-size/">
+            <span><span class="story-badge">Vydáno ve v1.36.0</span></span>
+            <h3>KDE Connect: neomezený Bluetooth buffer</h3>
+            <blockquote>„Thanks for catching this!“</blockquote>
+            <cite>Albert Vaca Cintora, autor KDE Connect</cite>
+          </a>
+          <a class="mini-story" href="stories/himalaya-terminal-injection-sanitization/">
+            <span><span class="story-badge">Začleněno do upstreamu</span></span>
+            <h3>Himalaya: injekce escape sekvencí do terminálu</h3>
+            <blockquote>„Thanks for the report and the clear write-up, the problem is real.“</blockquote>
+            <cite>Clément Douin, správce Himalaya</cite>
+          </a>
         </div>
 
-        <div id="tab-gitlab" class="ci-tab-pane">
-          <pre><code># .gitlab-ci.yml (integrace pro MR v privátním testování):
-include:
-  - local: gitlab/.gitlab-ci.yml
-
-variables:
-  NANO_GITLAB_IMAGE: registry.gitlab.com/&lt;group&gt;/&lt;project&gt;/nano-analyzer:latest
-  NANO_GITLAB_SCAN_MODE: changed
-  NANO_GITLAB_TRIAGE_ROUNDS: "3"</code></pre>
-        </div>
-
-        <div id="tab-github" class="ci-tab-pane">
-          <pre><code># .github/workflows/nano-analyzer.yml: sken změněných souborů při pull_request
-name: nano-analyzer
-on: pull_request
-permissions:
-  contents: read
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - uses: actions/checkout@v4
-        with: { repository: Huge/nano-analyzer, path: .nano-analyzer }
-      - name: Scan changed source files
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        run: |
-          git diff --name-only --diff-filter=AMRT "origin/${{ github.base_ref }}...HEAD" \
-            | grep -E '\.(c|h|cc|cpp|go|py|js|ts|rs|java)$' &gt; changed.txt || true
-          [ -s changed.txt ] || exit 0
-          xargs -a changed.txt python3 .nano-analyzer/scan.py \
-            --model qwen/qwen3-32b --repo-dir . --output-dir scan-results</code></pre>
+        <div class="section-foot">
+          <a href="stories/#fixes" class="btn btn-outline">Všechny opravy v upstreamu</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Core Pillars & Attrition Section -->
-  <section class="section" id="features">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Proč platit za sken, a ne za licenci</h2>
-        <p class="section-subtitle">Žádné nevyužité licence. Platíte za skeny, které skutečně proběhnou.</p>
+    <section class="section" id="contact">
+      <div class="container contact">
+        <h2>Ozvěte se nám</h2>
+        <p>Napište, co byste chtěli zkontrolovat. Zařídíme vám raný přístup, nebo revizi uděláme za vás.</p>
+        <a href="mailto:dev@ehlas.cz,safeAIwork@gmail.com?subject=BudgetScan" class="btn btn-primary btn-lg">Napsat e-mail</a>
+        <ul class="contact-mails">
+          <li><a href="mailto:dev@ehlas.cz">dev@ehlas.cz</a></li>
+          <li><a href="mailto:safeAIwork@gmail.com">safeAIwork@gmail.com</a></li>
+        </ul>
+        <p class="contact-who">Matej Vrzala &amp; Martin Vlach</p>
       </div>
+    </section>
+  </main>
 
-      <div class="features-grid">
-        <div class="feature-card highlight-border">
-          <div class="feature-badge">Kontrola Rozpočtu</div>
-          <div class="feature-icon icon-cyan">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <h3>Odečet Kreditu Pouze Při Skenu</h3>
-          <p>Žádné licence pro vývojáře, kteří PR otevřou jednou za čas. Kredit se odečte jen tehdy, když sken proběhne, a to podle toho, kolik skutečně stál. Selhání jsou vzácná, a když už k nějakému dojde, nic vám nestrhneme.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-badge">Přesnost</div>
-          <div class="feature-icon icon-purple">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Skeptická vícekolová triáž</h3>
-          <p>AI skenery generují šum, pokud nejsou korigovány. Nálezy se střední a vyšší závažností procházejí skeptickou vícekolovou triáží, která falešné poplachy výrazně omezuje. Berte výsledky jako silná vodítka pro lidského revidenta, ne jako rozsudek.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-badge">Ohled na termín</div>
-          <div class="feature-icon icon-emerald">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </div>
-          <h3>Skeny s ohledem na termín (--max-delay)</h3>
-          <p>S parametrem <code class="code-tag">--max-delay 5m</code> je BudgetScan navržen tak, aby CI pipeline nezdržoval: když se blíží termín, přestane spouštět novou práci a zveřejní částečný report s přehledem pokrytých souborů.</p>
-        </div>
-      </div>
-
-      <!-- Multi-Round Attrition Funnel -->
-      <div style="margin-top: 36px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-        <h3 style="margin: 0 0 8px; font-size: 1.15rem; color: var(--text-main);">Vícekolová filtrace nálezů</h3>
-        <p style="margin: 0 0 16px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-          Každé podezření prochází několika koly skeptické oponentury, než se dostane k lidskému revidentovi:
-        </p>
-        <div class="funnel-grid">
-          <div class="funnel-card">
-            <div class="funnel-num">Fáze 1–2</div>
-            <div class="funnel-label">Kontext a úvodní sken</div>
-          </div>
-          <div class="funnel-card">
-            <div class="funnel-num">Kolo 1</div>
-            <div class="funnel-label">Skeptická kontrola kódu</div>
-          </div>
-          <div class="funnel-card">
-            <div class="funnel-num">Kola 2–5</div>
-            <div class="funnel-label">Hledání v repozitáři (rg)</div>
-          </div>
-          <div class="funnel-card">
-            <div class="funnel-num">Arbiter</div>
-            <div class="funnel-label">Rozhodnutí sporných hlasů</div>
-          </div>
-          <div class="funnel-card highlight">
-            <div class="funnel-num">Výstup</div>
-            <div class="funnel-label">Silné podněty pro člověka</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Proven Upstream Track Record (Featured Showcase) -->
-  <section class="section section-dark" id="stories">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Příběhy úspěchu: Ověřené výsledky v upstreamu</h2>
-        <p class="section-subtitle">Skutečné výsledky na skutečných open-source projektech, s odkazy, které si můžete ověřit. Nálezy slouží správcům jako podněty; před nahlášením je vždy prověří člověk.</p>
-      </div>
-
-      <div class="stories-grid">
-        <!-- Card 1: tmux -->
-        <article class="story-card" style="margin: 0; display: flex; flex-direction: column;">
-          <span class="story-badge">Opraveno v CVS OpenBSD &bull; říjen 2026</span>
-          <h3 style="font-size: 1.1rem;"><a href="stories/tmux-copy-mode-null-dereference/">tmux: pád serveru při copy-mode -S</a></h3>
-          <p style="font-size: 0.88rem; flex-grow: 1;">Dereference NULL ukazatele na klienta v <code class="code-tag">copy-mode -S</code> shodila celý server tmuxu. Autor a hlavní správce Nicholas Marriott zprávu přijal a opravu začlenil do OpenBSD.</p>
-          <div class="maintainer-quote" style="margin: 12px 0;">
-            <em>„Applied to OpenBSD now, will be in GitHub later. Thanks!“</em>
-            <span class="author-tag">&mdash; Nicholas Marriott</span>
-          </div>
-          <p class="story-caveat" style="margin: 0; font-size: 0.82rem;"><strong>Jak to číst.</strong> Skener upozornil na nechráněný ukazatel jako na podnět; člověk izoloval spuštění přes hooky, napsal regresní test a odeslal opravu.</p>
-        </article>
-
-        <!-- Card 2: KDE Connect -->
-        <article class="story-card" style="margin: 0; display: flex; flex-direction: column;">
-          <span class="story-badge">Vydáno ve v1.36.0 &bull; říjen 2026</span>
-          <h3 style="font-size: 1.1rem;"><a href="stories/kdeconnect-bluetooth-packet-size/">KDE Connect: neomezený Bluetooth buffer</a></h3>
-          <p style="font-size: 0.88rem; flex-grow: 1;">Bluetooth backend pro Android ukládal příchozí pakety bez limitu velikosti, takže spárované zařízení mohlo vyčerpat paměť. Správce Albert Vaca Cintora začlenil naši opravu v MR !696.</p>
-          <div class="maintainer-quote" style="margin: 12px 0;">
-            <em>„Thanks for catching this!“</em>
-            <span class="author-tag">&mdash; Albert Vaca Cintora</span>
-          </div>
-          <p class="story-caveat" style="margin: 0; font-size: 0.82rem;"><strong>Jak to číst.</strong> Triáž označila útočníka za vzdáleného; čtení kódu to zúžilo na volitelný beta backend a už spárované zařízení.</p>
-        </article>
-
-        <!-- Card 3: Himalaya -->
-        <article class="story-card" style="margin: 0; display: flex; flex-direction: column;">
-          <span class="story-badge">Začleněno do upstreamu &bull; říjen 2026</span>
-          <h3 style="font-size: 1.1rem;"><a href="stories/himalaya-terminal-injection-sanitization/">Himalaya: terminal injection a BiDi spoofing</a></h3>
-          <p style="font-size: 0.88rem; flex-grow: 1;">Neošetřená metadata umožňovala přepsání schránky přes OSC 52. Správce Clément Douin vyčlenil sanitizaci do sdílené knihovny <code class="code-tag">pimalaya-cli</code> 0.2.6 se spoluautorstvím.</p>
-          <div class="maintainer-quote" style="margin: 12px 0;">
-            <em>„Thanks for the report and the clear write-up, the problem is real.“</em>
-            <span class="author-tag">&mdash; Clément Douin</span>
-          </div>
-          <p class="story-caveat" style="margin: 0; font-size: 0.82rem;"><strong>Jak to číst.</strong> Spolupráce se správcem proměnila opravu jedné chyby ve sdílenou funkci pro sesterské CLI nástroje.</p>
-        </article>
-      </div>
-
-      <div style="text-align: center; margin-top: 32px;">
-        <a href="stories/" class="btn btn-outline btn-lg">Zobrazit všech 11 případových studií &rarr;</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Data Handling Section -->
-  <section class="section" id="privacy">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Kam putuje můj kód?</h2>
-        <p class="section-subtitle">Stručně: jen k poskytovateli LLM, kterého si zvolíte. U hostovaných skenů je to evropská inference s nulovou retencí dat, při provozu u vás s vlastním endpointem nikam mimo vaši infrastrukturu.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon icon-emerald">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Nulová retence dat ve výchozím nastavení</h3>
-          <p>Hostovaný BudgetScan spouští skeny na inferenci našeho partnera <a href="https://koscompute.com/" target="_blank" rel="noopener">Kosmik Compute</a>, který pracuje s nulovou retencí dat: prompty a výstupy se neukládají a nikdy se nepoužívají k trénování modelů. Uchovávají se jen provozní metadata (například záznamy požadavků), nejdéle 30 dní. <a href="https://koscompute.com/#privacy" target="_blank" rel="noopener">Jejich zásady soukromí</a>.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-cyan">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
-          </div>
-          <h3>Servery v Praze, pod GDPR</h3>
-          <p>Servery Kosmiku stojí v Praze a provozuje je česká společnost podléhající GDPR. Inferenční API je kompatibilní s OpenAI: viz <a href="https://api.koscompute.com/docs/" target="_blank" rel="noopener">dokumentace API</a>.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon icon-amber">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>
-          </div>
-          <h3>Nebo celé u vás (on-prem)</h3>
-          <p>Skener je open source (Apache-2.0) a můžete ho provozovat na vlastní infrastruktuře. Napojení na vlastní LLM endpoint (vLLM, Ollama nebo jiný server kompatibilní s OpenAI), díky kterému kód vaši síť vůbec neopustí, funguje v našem buildu pro raný přístup a chystáme ho i do open-source skeneru. Ten dnes volá OpenAI nebo OpenRouter.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing Summary Teaser -->
-  <section class="section section-dark" id="pricing-teaser">
-    <div class="container">
-      <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px 32px; text-align: center;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 12px; color: var(--text-main);">Přehledné kreditové účtování</h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 620px; margin: 0 auto 24px;">
-          Žádné paušály ani poplatky za vývojáře. Předplatíte si kredit pro celý tým, nastavíte strop na pull request a platíte jen za proběhlé audity. Selhané skeny neúčtujeme.
-        </p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <a href="pricing/" class="btn btn-primary btn-lg">Zobrazit ceník a kalkulačku úspor</a>
-          <a href="privacy/" class="btn btn-outline btn-lg">Soukromí a provozovatel</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="privacy/">Soukromí a provozovatel</a>.</p>
+      <p>&copy; 2026 BudgetScan. Postaveno na skeneru <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a> od AISLE (Apache-2.0). S AISLE&trade; nejsme nijak propojeni.</p>
+      <nav class="footer-nav" aria-label="Patička">
+        <a href="stories/">Novinky</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
     </div>
   </footer>
 </body>
