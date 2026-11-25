@@ -67,19 +67,20 @@
     .pats-heading { margin-bottom: 16px; }
     .pats-heading .section-title { display: inline; margin: 0; }
     .pats-anchor-tools { display: inline-block; width: 0; white-space: nowrap; }
-    .pats-anchor, .pats-copy { opacity: 0; transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease; }
-    .pats-anchor { margin-left: 10px; font-size: 1.5rem; font-weight: 600; color: var(--text-dim); text-decoration: none; }
-    .pats-copy { margin-left: 2px; padding: 4px; display: inline-flex; background: none; border: 0; border-radius: 6px; color: var(--text-dim); cursor: pointer; opacity: 0.45; }
+    .pats-anchor, .pats-copy { transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease; }
+    .pats-anchor { margin-left: 10px; font-size: 1.5rem; font-weight: 600; color: var(--text-dim); text-decoration: none; opacity: 0; }
+    /* --text-dim gives the resting icon about 4:1 against both section backgrounds. */
+    .pats-copy { margin-left: 2px; padding: 4px; display: inline-flex; background: none; border: 0; border-radius: 6px; color: var(--text-dim); cursor: pointer; }
     .pats-copy svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .pats-copy .i-ok, .pats-copy[data-done] .i-copy { display: none; }
     .pats-copy[data-done] .i-ok { display: block; }
-    .pats-heading:hover .pats-anchor, .pats-heading:hover .pats-copy, .pats-anchor:focus-visible, .pats-copy:focus-visible, .section:target .pats-anchor { opacity: 1; }
+    .pats-heading:hover .pats-anchor, .pats-anchor:focus-visible, .section:target .pats-anchor { opacity: 1; }
     .pats-anchor:hover, .section:target .pats-anchor { color: #a5b4fc; }
     .pats-copy:hover { background: rgba(255, 255, 255, 0.08); color: #c7d2fe; }
-    .pats-copy[data-done] { opacity: 1; color: var(--accent-emerald); }
+    .pats-copy[data-done] { color: var(--accent-emerald); }
     .pats-anchor:focus-visible, .pats-copy:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; border-radius: 4px; }
     .pats-copy-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
-    @media (hover: none) { .pats-anchor { opacity: 0.55; } }
+    @media (hover: none) { .pats-anchor { opacity: 1; } }
     /* On narrow screens a long last line could push the zero-width tools off-screen: give them real width so they wrap instead. */
     @media (max-width: 640px) { .pats-anchor-tools { width: auto; } }
     @media (max-width: 640px) {
@@ -162,7 +163,7 @@
   <section class="section section-dark" id="now">
     <div class="container">
       <div class="section-header">
-        <div class="pats-heading"><h2 class="section-title">Kde jsme dnes</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#now" aria-label="Odkaz na sekci: Kde jsme dnes" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="now" data-done-title="Odkaz zkopírován" aria-label="Zkopírovat odkaz na: Kde jsme dnes" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
+        <div class="pats-heading"><h2 class="section-title">Kde jsme dnes</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#now" aria-label="Odkaz na sekci: Kde jsme dnes" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="now" data-done-title="Odkaz zkopírován" data-fail-title="Odkaz se nepodařilo zkopírovat. Najdete ho teď v adresním řádku." aria-label="Zkopírovat odkaz na: Kde jsme dnes" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
         <p class="section-subtitle">Malý začátek, celý ověřitelný.</p>
       </div>
 
@@ -222,7 +223,7 @@
   <section class="section" id="how">
     <div class="container">
       <div class="section-header">
-        <div class="pats-heading"><h2 class="section-title">Jak vzniká oprava</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#how" aria-label="Odkaz na sekci: Jak vzniká oprava" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="how" data-done-title="Odkaz zkopírován" aria-label="Zkopírovat odkaz na: Jak vzniká oprava" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
+        <div class="pats-heading"><h2 class="section-title">Jak vzniká oprava</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#how" aria-label="Odkaz na sekci: Jak vzniká oprava" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="how" data-done-title="Odkaz zkopírován" data-fail-title="Odkaz se nepodařilo zkopírovat. Najdete ho teď v adresním řádku." aria-label="Zkopírovat odkaz na: Jak vzniká oprava" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
         <p class="section-subtitle">Skener je levný a hlučný. Lidé a správci ne. Celý postup je postavený kolem toho.</p>
       </div>
 
@@ -260,7 +261,7 @@
   <section class="section section-dark" id="principles">
     <div class="container">
       <div class="section-header">
-        <div class="pats-heading"><h2 class="section-title">Pravidla hry</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#principles" aria-label="Odkaz na sekci: Pravidla hry" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="principles" data-done-title="Odkaz zkopírován" aria-label="Zkopírovat odkaz na: Pravidla hry" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
+        <div class="pats-heading"><h2 class="section-title">Pravidla hry</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#principles" aria-label="Odkaz na sekci: Pravidla hry" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="principles" data-done-title="Odkaz zkopírován" data-fail-title="Odkaz se nepodařilo zkopírovat. Najdete ho teď v adresním řádku." aria-label="Zkopírovat odkaz na: Pravidla hry" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
         <p class="section-subtitle">&bdquo;Všechen software&ldquo; jde jen tehdy, když nás správci rádi slyší.</p>
       </div>
 
@@ -294,7 +295,7 @@
   <section class="section" id="roadmap">
     <div class="container">
       <div class="section-header">
-        <div class="pats-heading"><h2 class="section-title">Od 25 ke všem</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#roadmap" aria-label="Odkaz na sekci: Od 25 ke všem" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="roadmap" data-done-title="Odkaz zkopírován" aria-label="Zkopírovat odkaz na: Od 25 ke všem" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
+        <div class="pats-heading"><h2 class="section-title">Od 25 ke všem</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#roadmap" aria-label="Odkaz na sekci: Od 25 ke všem" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="roadmap" data-done-title="Odkaz zkopírován" data-fail-title="Odkaz se nepodařilo zkopírovat. Najdete ho teď v adresním řádku." aria-label="Zkopírovat odkaz na: Od 25 ke všem" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
         <p class="section-subtitle">Co existuje, co plánujeme a kam míříme.</p>
       </div>
 
@@ -349,7 +350,7 @@
   <section class="section section-dark" id="supporters">
     <div class="container">
       <div class="section-header">
-        <div class="pats-heading"><h2 class="section-title">Podporovatelé</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#supporters" aria-label="Odkaz na sekci: Podporovatelé" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="supporters" data-done-title="Odkaz zkopírován" aria-label="Zkopírovat odkaz na: Podporovatelé" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
+        <div class="pats-heading"><h2 class="section-title">Podporovatelé</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#supporters" aria-label="Odkaz na sekci: Podporovatelé" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="supporters" data-done-title="Odkaz zkopírován" data-fail-title="Odkaz se nepodařilo zkopírovat. Najdete ho teď v adresním řádku." aria-label="Zkopírovat odkaz na: Podporovatelé" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
         <p class="section-subtitle">Lidé a organizace, kteří pro-bono skenování open-source projektů podporují svou infrastrukturou.</p>
       </div>
 
@@ -370,7 +371,7 @@
   <section class="section" id="help">
     <div class="container">
       <div class="section-header">
-        <div class="pats-heading"><h2 class="section-title">Pomozte nám opravovat víc</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#help" aria-label="Odkaz na sekci: Pomozte nám opravovat víc" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="help" data-done-title="Odkaz zkopírován" aria-label="Zkopírovat odkaz na: Pomozte nám opravovat víc" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
+        <div class="pats-heading"><h2 class="section-title">Pomozte nám opravovat víc</h2><span class="pats-anchor-tools"><a class="pats-anchor" href="#help" aria-label="Odkaz na sekci: Pomozte nám opravovat víc" title="Odkaz na tuto sekci">#</a><button type="button" class="pats-copy" data-id="help" data-done-title="Odkaz zkopírován" data-fail-title="Odkaz se nepodařilo zkopírovat. Najdete ho teď v adresním řádku." aria-label="Zkopírovat odkaz na: Pomozte nám opravovat víc" title="Zkopírovat odkaz"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></span></div>
         <p class="section-subtitle">Úzkým hrdlem není hledání chyb. Jsou to lidé, kteří je ověří, a výpočetní výkon, který je najde.</p>
       </div>
 
@@ -419,26 +420,39 @@
       b.addEventListener('click', function () {
         var url = location.href.split('#')[0] + '#' + b.dataset.id;
         var status = document.querySelector('.pats-copy-status');
-        function done() {
-          b.dataset.done = '';
-          b.title = b.dataset.doneTitle;
-          if (status) status.textContent = b.dataset.doneTitle;
+        function say(msg, title) {
+          b.title = title;
+          if (status) status.textContent = msg;
           clearTimeout(b._t);
-          b._t = setTimeout(function () { delete b.dataset.done; b.title = copyTitle; if (status) status.textContent = ''; }, 1600);
+          b._t = setTimeout(function () { delete b.dataset.done; b.title = copyTitle; if (status) status.textContent = ''; }, 4000);
+        }
+        function done() { b.dataset.done = ''; say(b.dataset.doneTitle, b.dataset.doneTitle); }
+        function failed() {
+          // Nothing could be copied: put the link where the reader can copy it by hand.
+          try { history.replaceState(null, '', url); } catch (e) {}
+          say(b.dataset.failTitle, b.dataset.failTitle);
         }
         function fallback() {
-          var t = document.createElement('textarea');
+          var t = document.createElement('textarea'), ok = false;
           t.value = url; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
           document.body.appendChild(t); t.select();
-          try { if (document.execCommand('copy')) done(); } catch (e) {}
+          try { ok = document.execCommand('copy'); } catch (e) {}
           t.remove();
+          if (ok) { done(); } else { failed(); }
+        }
+        function copy() {
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url).then(done, fallback);
+          } else {
+            fallback();
+          }
         }
         if (matchMedia('(pointer: coarse)').matches && navigator.share) {
-          navigator.share({ title: document.title, url: url }).catch(function () {});
-        } else if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(url).then(done, fallback);
+          navigator.share({ title: document.title, url: url }).catch(function (e) {
+            if (!e || e.name !== 'AbortError') copy();  // a closed share sheet is not an error
+          });
         } else {
-          fallback();
+          copy();
         }
       });
     });
