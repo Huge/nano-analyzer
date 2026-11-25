@@ -1208,3 +1208,23 @@ h2:target .h-anchor {
 @media (hover: none) {
   .h-anchor { opacity: 1; }
 }
+
+/* Updates hub: posts and upstream fixes are separate sections */
+.hero-slim {
+  padding: 64px 0 48px;
+}
+
+.hub-header {
+  max-width: 820px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+#updates .story-card {
+  border-color: var(--border-strong);
+}
+
+#fixes,
+#updates {
+  scroll-margin-top: 60px;
+}

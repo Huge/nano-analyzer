@@ -39,15 +39,17 @@
       </div>
     </div>
   </header>
-  <section class="hero">
+  <section class="hero hero-slim">
     <div class="container hero-container">
-      <h1 class="hero-title">Updates</h1>
-      <p class="hero-subtitle">Findings on open-source projects, with links you can verify. A person checked each one before we reported it.</p>
+      <h1 class="hero-title">Updates and fixes</h1>
     </div>
   </section>
 
-  <section class="section" id="stories-list">
+  <section class="section" id="updates">
     <div class="container">
+      <div class="section-header hub-header">
+        <h2 class="section-title">Updates</h2>
+      </div>
 
       <article class="story-card">
         <span class="story-badge">Pro-bono initiative</span>
@@ -58,7 +60,30 @@
         </ul>
       </article>
 
-      <!-- Story 1: ai-job-search -->
+      <article class="story-card">
+        <span class="story-badge">Benchmark Report &bull; Hacktoberfest 2026</span>
+        <h3><a href="gemma-armv9-65k-vulnerability-triage/">The ARMv9 Speed Paradox: Auditing Real-World Code with Gemma 4 on Bare Metal</a></h3>
+        <p>What happens when you audit real-world codebases with a 65,536-token context window on bare-metal ARM64 CPUs? We benchmarked Google's Gemma 4 family across 7 model configurations on Neoverse-V2 silicon, uncovering an unexpected SIMD unpacking paradox where 4-bit runs twice as fast as 2-bit, and evaluating 3-round skeptical triage against verified ground-truth zero-days.</p>
+        <ul class="story-timeline">
+          <li><strong>24 Oct 2026.</strong> Headless execution of 7 local model configurations and Google Vertex AI MaaS on real-world targets (yopass and curlie).</li>
+          <li><strong>25 Oct.</strong> Published for the DEV Hacktoberfest 2026 Open-Source AI Challenge (Best Use of Gemma).</li>
+        </ul>
+        <ul class="story-links">
+          <li><a href="gemma-armv9-65k-vulnerability-triage/"><strong>Read the full benchmark report &rarr;</strong></a></li>
+          <li><a href="https://dev.to/huge/the-armv9-speed-paradox-auditing-real-world-code-with-gemma-4-on-bare-metal-5056" target="_blank" rel="noopener">DEV.to submission</a></li>
+          <li><a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">Scanner source code</a></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="fixes">
+    <div class="container">
+      <div class="section-header hub-header">
+        <h2 class="section-title">Upstream fixes</h2>
+        <p class="section-subtitle">Findings on open-source projects, with links you can verify. A person checked each one before we reported it.</p>
+      </div>
+
       <article class="story-card">
         <span class="story-badge">Fixed upstream &bull; October 2026</span>
         <h3><a href="ai-job-search-robots-and-gitignore-guards/">ai-job-search: a slow robots.txt rule, a loose curl call and a gitignore guard git disagreed with</a></h3>
@@ -80,7 +105,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The maintainer rated each finding lower than our triage did: a local check that hangs, a blind request on direct calls, and a bypass that shows up in a reviewed diff. These are fixes to the project's own safety tools, not remote holes. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 2: oauth2 for Ruby -->
       <article class="story-card">
         <span class="story-badge">Released upstream &bull; October 2026</span>
         <h3><a href="oauth2-ruby-credential-leaks/">oauth2 for Ruby: secrets followed redirects and leaked into errors</a></h3>
@@ -103,23 +127,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The redirect leak needs a compromised or misconfigured token endpoint or proxy, and the error leak needs a token-less response, so these are hardening fixes, not remote exploits. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 3: Gemma 4 Benchmark -->
-      <article class="story-card">
-        <span class="story-badge">Benchmark Report &bull; Hacktoberfest 2026</span>
-        <h3><a href="gemma-armv9-65k-vulnerability-triage/">The ARMv9 Speed Paradox: Auditing Real-World Code with Gemma 4 on Bare Metal</a></h3>
-        <p>What happens when you audit real-world codebases with a 65,536-token context window on bare-metal ARM64 CPUs? We benchmarked Google's Gemma 4 family across 7 model configurations on Neoverse-V2 silicon, uncovering an unexpected SIMD unpacking paradox where 4-bit runs twice as fast as 2-bit, and evaluating 3-round skeptical triage against verified ground-truth zero-days.</p>
-        <ul class="story-timeline">
-          <li><strong>24 Oct 2026.</strong> Headless execution of 7 local model configurations and Google Vertex AI MaaS on real-world targets (yopass and curlie).</li>
-          <li><strong>25 Oct.</strong> Published for the DEV Hacktoberfest 2026 Open-Source AI Challenge (Best Use of Gemma).</li>
-        </ul>
-        <ul class="story-links">
-          <li><a href="gemma-armv9-65k-vulnerability-triage/"><strong>Read the full benchmark report &rarr;</strong></a></li>
-          <li><a href="https://dev.to/huge/the-armv9-speed-paradox-auditing-real-world-code-with-gemma-4-on-bare-metal-5056" target="_blank" rel="noopener">DEV.to submission</a></li>
-          <li><a href="https://github.com/Huge/nano-analyzer" target="_blank" rel="noopener">Scanner source code</a></li>
-        </ul>
-      </article>
-
-      <!-- Story 4: Orca -->
       <article class="story-card">
         <span class="story-badge">Fixed upstream &bull; October 2026</span>
         <h3><a href="orca-ssh-identity-file-read/">Orca: reading an SSH identity file could freeze the app</a></h3>
@@ -142,7 +149,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The key paths come from the user&rsquo;s own SSH configuration, so this is a robustness fix, not a vulnerability. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 5: mise -->
       <article class="story-card">
         <span class="story-badge">Released upstream &bull; October 2026</span>
         <h3><a href="mise-aqua-template-unterminated-string/">mise: unterminated string in an aqua template hung the lexer</a></h3>
@@ -164,7 +170,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> Triage imagined a malicious registry; in practice the templates come from the bundled or user-chosen registries, so it is a hang on a broken entry. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 6: KDE Connect -->
       <article class="story-card">
         <span class="story-badge">Released upstream &bull; October 2026</span>
         <h3><a href="kdeconnect-bluetooth-packet-size/">KDE Connect: unbounded Bluetooth packet buffer on Android</a></h3>
@@ -187,7 +192,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage called the attacker remote; reading the code narrowed it to an opt-in backend and an already paired device. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 7: ProFTPD -->
       <article class="story-card">
         <span class="story-badge">Merged upstream &bull; October 2026</span>
         <h3><a href="proftpd-mod-sftp-pam-response-index/">ProFTPD: keyboard-interactive answers matched to the wrong PAM prompts</a></h3>
@@ -210,7 +214,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The scanner&rsquo;s triage overstated the reach; reading the receiving code narrowed it to PAM stacks that mix messages and prompts. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 8: Windmill -->
       <article class="story-card">
         <span class="story-badge">Released upstream &bull; October 2026</span>
         <h3><a href="windmill-s3-ai-attachment-size-limit/">Windmill: unbounded S3 downloads for AI attachments</a></h3>
@@ -234,7 +237,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> Our patch was only a partial mitigation; the maintainer&rsquo;s fix is better. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 9: Himalaya -->
       <article class="story-card">
         <span class="story-badge">Merged &bull; Shared library hardening &bull; October 2026</span>
         <h3><a href="himalaya-terminal-injection-sanitization/">Himalaya: terminal escape injection and BiDi spoofing defense in Rust email tables</a></h3>
@@ -260,7 +262,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> Automated scanning detected an input-sanitization gap, and close collaboration with the maintainer turned a single bug fix into a shared function the other Pimalaya CLI tools can adopt. Findings are actionable leads for humans, not unquestioned verdicts.</p>
       </article>
 
-      <!-- Story 10: tmux -->
       <article class="story-card">
         <span class="story-badge">Fixed in OpenBSD and tmux upstream &bull; October 2026</span>
         <h3><a href="tmux-copy-mode-null-dereference/">tmux: server crash on copy-mode -S without attached client</a></h3>
@@ -284,7 +285,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The scanner flagged the unguarded pointer as an actionable lead, and an engineer confirmed the control flow, isolated the hook trigger, wrote the test, and reported the fix. Upstream maintainer Nicholas Marriott validated and committed it to OpenBSD. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 11: dnsmasq -->
       <article class="story-card">
         <span class="story-badge">Fixed upstream &bull; October 2026</span>
         <h3><a href="dnsmasq-slaac-stale-hostname/">dnsmasq: stale SLAAC name records after a DHCP lease loses its hostname</a></h3>
@@ -308,7 +308,6 @@
         <p class="story-caveat"><strong>How to read this.</strong> The scanner found a symptom; the maintainer found the cause. Findings are leads for people, not verdicts.</p>
       </article>
 
-      <!-- Story 12: Yopass -->
       <article class="story-card">
         <span class="story-badge">First hit on open source &bull; September 2026</span>
         <h3><a href="yopass-oidc-email-verified/">Yopass: unverified emails could pass OIDC domain restrictions</a></h3>

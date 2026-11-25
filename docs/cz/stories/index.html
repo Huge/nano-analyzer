@@ -39,15 +39,17 @@
       </div>
     </div>
   </header>
-  <section class="hero">
+  <section class="hero hero-slim">
     <div class="container hero-container">
-      <h1 class="hero-title">Novinky</h1>
-      <p class="hero-subtitle">Nálezy v open-source projektech, s odkazy, které si můžete ověřit. Každý před nahlášením prověřil člověk.</p>
+      <h1 class="hero-title">Novinky a opravy</h1>
     </div>
   </section>
 
-  <section class="section" id="stories-list">
+  <section class="section" id="updates">
     <div class="container">
+      <div class="section-header hub-header">
+        <h2 class="section-title">Novinky</h2>
+      </div>
 
       <article class="story-card">
         <span class="story-badge">Pro-bono iniciativa</span>
@@ -57,8 +59,16 @@
           <li><a href="patch-all-the-software/"><strong>Přečíst článek &rarr;</strong></a></li>
         </ul>
       </article>
+    </div>
+  </section>
 
-      <!-- Story 1: ai-job-search -->
+  <section class="section" id="fixes">
+    <div class="container">
+      <div class="section-header hub-header">
+        <h2 class="section-title">Opravy v upstreamu</h2>
+        <p class="section-subtitle">Nálezy v open-source projektech, s odkazy, které si můžete ověřit. Každý před nahlášením prověřil člověk.</p>
+      </div>
+
       <article class="story-card">
         <span class="story-badge">Opraveno v upstreamu &bull; říjen 2026</span>
         <h3><a href="ai-job-search-robots-and-gitignore-guards/">ai-job-search: pomalé pravidlo v robots.txt, volné volání curl a gitignore guard, se kterým git nesouhlasil</a></h3>
@@ -80,7 +90,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Správce ohodnotil každý nález níž než naše triáž: zaseknutá lokální kontrola, slepý požadavek při přímém volání a obejití, které je vidět v revidovaném diffu. Jde o opravy bezpečnostních nástrojů projektu, ne o díry zneužitelné na dálku. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 2: oauth2 pro Ruby -->
       <article class="story-card">
         <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
         <h3><a href="oauth2-ruby-credential-leaks/">oauth2 pro Ruby: tajemství šla za přesměrováním a unikala do chyb</a></h3>
@@ -103,7 +112,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Únik přes přesměrování vyžaduje kompromitovaný nebo špatně nastavený token endpoint či proxy a únik do chyby odpověď bez tokenu, jde tedy o zpevnění, ne o vzdáleně zneužitelné díry. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 3: Orca -->
       <article class="story-card">
         <span class="story-badge">Opraveno v upstreamu &bull; říjen 2026</span>
         <h3><a href="orca-ssh-identity-file-read/">Orca: čtení SSH identity souboru mohlo zmrazit aplikaci</a></h3>
@@ -126,7 +134,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Cesty ke klíčům pocházejí z uživatelovy vlastní SSH konfigurace, jde tedy o opravu robustnosti, ne o zranitelnost. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 4: mise -->
       <article class="story-card">
         <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
         <h3><a href="mise-aqua-template-unterminated-string/">mise: neukončený řetězec v aqua šabloně zacyklil lexer</a></h3>
@@ -148,7 +155,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Triáž počítala se škodlivou registry; ve skutečnosti šablony pocházejí z dodávané nebo uživatelem zvolené registry, jde tedy o zaseknutí na vadné položce. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 5: KDE Connect -->
       <article class="story-card">
         <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
         <h3><a href="kdeconnect-bluetooth-packet-size/">KDE Connect: neomezený buffer pro pakety přes Bluetooth na Androidu</a></h3>
@@ -171,7 +177,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Triáž skeneru označila útočníka za vzdáleného; čtení kódu to zúžilo na volitelný backend a už spárované zařízení. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 6: ProFTPD -->
       <article class="story-card">
         <span class="story-badge">Začleněno do upstreamu &bull; říjen 2026</span>
         <h3><a href="proftpd-mod-sftp-pam-response-index/">ProFTPD: odpovědi keyboard-interactive přiřazené ke špatným výzvám PAM</a></h3>
@@ -194,7 +199,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Triáž skeneru přecenila dosah; čtení přijímacího kódu ho zúžilo na konfigurace PAM, které míchají zprávy a výzvy. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 7: Windmill -->
       <article class="story-card">
         <span class="story-badge">Vydáno v upstreamu &bull; říjen 2026</span>
         <h3><a href="windmill-s3-ai-attachment-size-limit/">Windmill: neomezené stahování z S3 u příloh pro AI</a></h3>
@@ -218,7 +222,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Náš patch byl jen částečná ochrana; oprava správce je lepší. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 8: Himalaya -->
       <article class="story-card">
         <span class="story-badge">Začleněno &bull; Zodolnění sdílené knihovny &bull; říjen 2026</span>
         <h3><a href="himalaya-terminal-injection-sanitization/">Himalaya: ochrana před terminal injection a BiDi spoofingem v Rust tabulkách e-mailů</a></h3>
@@ -244,7 +247,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Automatizované skenování zachytilo mezeru v sanitizaci vstupů a spolupráce se správcem proměnila opravu jedné chyby ve sdílenou funkci, kterou mohou převzít i další CLI nástroje Pimalaya. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 9: tmux -->
       <article class="story-card">
         <span class="story-badge">Opraveno v upstreamu OpenBSD i tmuxu &bull; říjen 2026</span>
         <h3><a href="tmux-copy-mode-null-dereference/">tmux: pád serveru při copy-mode -S bez připojeného klienta</a></h3>
@@ -268,7 +270,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Skener upozornil na nechráněný ukazatel jako na konkrétní podnět, člověk ověřil řídicí tok, izoloval spuštění přes hooky, napsal test a odeslal opravu. Správce Nicholas Marriott ji ověřil a začlenil do OpenBSD. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 10: dnsmasq -->
       <article class="story-card">
         <span class="story-badge">Opraveno v upstreamu &bull; říjen 2026</span>
         <h3><a href="dnsmasq-slaac-stale-hostname/">dnsmasq: zastaralé záznamy SLAAC po ztrátě jména DHCP lease</a></h3>
@@ -292,7 +293,6 @@
         <p class="story-caveat"><strong>Jak to číst.</strong> Skener našel symptom, správce příčinu. Nálezy jsou podněty pro lidi, ne rozsudky.</p>
       </article>
 
-      <!-- Story 11: Yopass -->
       <article class="story-card">
         <span class="story-badge">První zásah v open source &bull; září 2026</span>
         <h3><a href="yopass-oidc-email-verified/">Yopass: neověřené e-maily mohly projít omezením domén v OIDC</a></h3>
