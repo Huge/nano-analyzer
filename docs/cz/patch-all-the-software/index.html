@@ -48,16 +48,19 @@
     .pats-sources a { color: #a5b4fc; }
     .tag-moonshot { color: #f0abfc; background: rgba(217, 70, 239, 0.12); border-color: rgba(217, 70, 239, 0.4); }
     .pats-supporters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
-    .pats-supporter { display: flex; flex-direction: column; gap: 8px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px 24px; transition: border-color 0.2s ease, transform 0.2s ease; }
-    .pats-supporter:hover { border-color: rgba(99, 102, 241, 0.55); transform: translateY(-2px); }
+    .pats-supporter { display: flex; flex-direction: column; gap: 8px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 22px 24px; position: relative; transition: border-color 0.2s ease, transform 0.2s ease; }
+    .pats-supporter:hover, .pats-supporter:focus-within { border-color: rgba(99, 102, 241, 0.55); transform: translateY(-2px); }
     .pats-supporter-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .pats-supporter-name { margin: 0; font-size: 1.15rem; font-weight: 700; color: var(--text-main); }
     .pats-supporter-name a { color: inherit; text-decoration: none; }
-    .pats-supporter-name a:hover { color: #c7d2fe; text-decoration: underline; text-underline-offset: 3px; }
+    .pats-supporter-name a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-md); }
+    .pats-supporter-name a:focus-visible { outline: none; }
+    .pats-supporter-name a:focus-visible::after { outline: 2px solid #a5b4fc; outline-offset: 3px; }
+    .pats-supporter:hover .pats-supporter-name a, .pats-supporter-name a:focus-visible { color: #c7d2fe; text-decoration: underline; text-underline-offset: 3px; }
     .pats-supporter-role { display: inline-block; padding: 3px 10px; border-radius: var(--radius-full); border: 1px solid rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.12); color: #c7d2fe; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; }
     .pats-supporter p { margin: 0; color: var(--text-muted); font-size: 0.92rem; line-height: 1.55; }
-    .pats-supporter-link { margin-top: 4px; font-family: var(--font-mono); font-size: 0.85rem; color: #a5b4fc; text-decoration: none; align-self: flex-start; }
-    .pats-supporter-link:hover { color: #c7d2fe; text-decoration: underline; text-underline-offset: 3px; }
+    .pats-supporter-url { margin-top: 4px; font-family: var(--font-mono); font-size: 0.85rem; color: #a5b4fc; }
+    .pats-supporter:hover .pats-supporter-url, .pats-supporter:focus-within .pats-supporter-url { color: #c7d2fe; }
     @media (max-width: 640px) {
       .pats-road-item { grid-template-columns: 1fr; gap: 8px; }
     }
@@ -332,11 +335,11 @@
       <div class="pats-supporters">
         <article class="pats-supporter">
           <div class="pats-supporter-head">
-            <h3 class="pats-supporter-name"><a href="https://cogeanu.com/" target="_blank" rel="noopener">Marius Cogeanu</a></h3>
+            <h3 class="pats-supporter-name"><a href="https://cogeanu.com/" target="_blank" rel="noopener" aria-describedby="supporter-cogeanu-url">Marius Cogeanu</a></h3>
             <span class="pats-supporter-role">Sponzor infrastruktury</span>
           </div>
           <p>Ofenzivní bezpečnost a řízení kybernetické bezpečnosti. Sponzoruje infrastrukturní kapacitu, díky které se fronta pro-bono skenování open-source projektů hýbe kupředu.</p>
-          <a class="pats-supporter-link" href="https://cogeanu.com/" target="_blank" rel="noopener">cogeanu.com &rarr;</a>
+          <div class="pats-supporter-url"><span id="supporter-cogeanu-url">cogeanu.com</span> <span aria-hidden="true">&rarr;</span></div>
         </article>
       </div>
     </div>
