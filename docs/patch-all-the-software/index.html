@@ -415,7 +415,13 @@
   <span class="pats-copy-status" role="status" aria-live="polite"></span>
   <script>
     // Copy (or, on touch devices, share) a link straight to one section.
+    var T = { shareLabel: 'Share link to: ', shareTitle: 'Share link', shared: 'Link shared' };
+    var canShare = matchMedia('(pointer: coarse)').matches && !!navigator.share;
     document.querySelectorAll('.pats-copy').forEach(function (b) {
+      if (canShare) {  // the button opens the share sheet here, so say so
+        b.setAttribute('aria-label', T.shareLabel + b.closest('.pats-heading').querySelector('.section-title').textContent);
+        b.title = T.shareTitle;
+      }
       var copyTitle = b.title;
       b.addEventListener('click', function () {
         var url = location.href.split('#')[0] + '#' + b.dataset.id;
@@ -447,8 +453,10 @@
             fallback();
           }
         }
-        if (matchMedia('(pointer: coarse)').matches && navigator.share) {
-          navigator.share({ title: document.title, url: url }).catch(function (e) {
+        if (canShare) {
+          navigator.share({ title: document.title, url: url }).then(function () {
+            b.dataset.done = ''; say(T.shared, T.shared);
+          }, function (e) {
             if (!e || e.name !== 'AbortError') copy();  // a closed share sheet is not an error
           });
         } else {
