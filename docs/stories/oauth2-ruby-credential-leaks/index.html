@@ -16,7 +16,7 @@
   <meta property="og:url" content="https://huge.github.io/nano-analyzer/stories/oauth2-ruby-credential-leaks/">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary">
-  <meta name="theme-color" content="#07090e">
+  <meta name="theme-color" content="#0b0b0d">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
 
 
@@ -24,37 +24,19 @@
   <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
-  <div class="bg-glow bg-glow-1"></div>
-  <div class="bg-glow bg-glow-2"></div>
-  <div class="bg-grid"></div>
 
   <header class="navbar">
     <div class="container nav-container">
       <a href="../../" class="brand-logo">
-        <div class="logo-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#6366f1"/>
-                <stop offset="1" stop-color="#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+        <span class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v5c0 5.5 3.8 10.5 9 12 5.2-1.5 9-6.5 9-12V7z"/><path d="M12 17V8M8.5 11.5 12 8l3.5 3.5"/></svg></span>
+        <span class="brand-name">BudgetScan</span>
       </a>
-
-      <nav class="nav-links">
-        <a href="../../">Overview</a>
-        <a href="../">Success Stories</a>
-        <a href="../../how-to/">How-to Guide</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="../../stories/" aria-current="page">Updates</a>
       </nav>
-
       <div class="nav-actions">
-        <a href="../../cz/stories/oauth2-ruby-credential-leaks/" class="btn btn-secondary lang-btn">🌐 Český jazyk</a>
-        <a href="../" class="btn btn-primary">All stories</a>
+        <a href="../../cz/stories/oauth2-ruby-credential-leaks/" class="lang-btn" lang="cs" hreflang="cs" aria-label="Česká verze">CZ</a>
+        <a href="../../#contact" class="btn btn-primary">Contact us</a>
       </div>
     </div>
   </header>
@@ -117,13 +99,17 @@ end</code></pre>
         <li><a href="https://github.com/ruby-oauth/oauth2/blob/v2.1.0/CHANGELOG.md" target="_blank" rel="noopener">oauth2 changelog, v2.1.0</a></li>
         <li><a href="https://rubygems.org/gems/oauth2" target="_blank" rel="noopener">oauth2 on RubyGems</a></li>
       </ul>
-      <p><a href="../">&larr; Back to Success Stories</a></p>
+      <p><a href="../">&larr; Back to Updates</a></p>
     </div>
   </main>
 
   <footer class="footer">
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, the open-source scanner by AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">introduced on their blog</a>), extended by us. BudgetScan was inspired by, but is not connected in any business way with, AISLE&trade;. <a href="../../privacy/">Privacy &amp; operator</a>.</p>
+      <p>&copy; 2026 BudgetScan. Built on <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a> by AISLE (Apache-2.0). Not affiliated with AISLE&trade;.</p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="../../stories/">Updates</a>
+        <a href="../../#contact">Contact</a>
+      </nav>
     </div>
   </footer>
 </body>

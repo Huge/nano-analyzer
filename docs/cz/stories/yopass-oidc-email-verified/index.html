@@ -16,7 +16,7 @@
   <meta property="og:url" content="https://huge.github.io/nano-analyzer/cz/stories/yopass-oidc-email-verified/">
   <meta property="og:locale" content="cs_CZ">
   <meta name="twitter:card" content="summary">
-  <meta name="theme-color" content="#07090e">
+  <meta name="theme-color" content="#0b0b0d">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z' fill='%236366f1' fill-opacity='.35' stroke='%236366f1' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
 
 
@@ -24,37 +24,19 @@
   <link rel="stylesheet" href="../../../style.css">
 </head>
 <body>
-  <div class="bg-glow bg-glow-1"></div>
-  <div class="bg-glow bg-glow-2"></div>
-  <div class="bg-grid"></div>
 
   <header class="navbar">
     <div class="container nav-container">
       <a href="../../" class="brand-logo">
-        <div class="logo-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#6366f1"/>
-                <stop offset="1" stop-color="#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <path d="M12 2L3 7V12C3 17.52 6.84 22.48 12 24C17.16 22.48 21 17.52 21 12V7L12 2Z" fill="url(#logo-grad)" fill-opacity="0.2" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M12 6V18M8 10L12 6L16 10" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="brand-name">BudgetScan<span class="badge-v">Pay-Per-Scan</span></span>
+        <span class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v5c0 5.5 3.8 10.5 9 12 5.2-1.5 9-6.5 9-12V7z"/><path d="M12 17V8M8.5 11.5 12 8l3.5 3.5"/></svg></span>
+        <span class="brand-name">BudgetScan</span>
       </a>
-
-      <nav class="nav-links">
-        <a href="../../">Přehled</a>
-        <a href="../">Příběhy úspěchu</a>
-        <a href="../../how-to/">Návod</a>
+      <nav class="nav-links" aria-label="Hlavní">
+        <a href="../../stories/" aria-current="page">Novinky</a>
       </nav>
-
       <div class="nav-actions">
-        <a href="../../../stories/yopass-oidc-email-verified/" class="btn btn-secondary lang-btn">🌐 English</a>
-        <a href="../" class="btn btn-primary">Všechny příběhy</a>
+        <a href="../../../stories/yopass-oidc-email-verified/" class="lang-btn" lang="en" hreflang="en" aria-label="English version">EN</a>
+        <a href="../../#contact" class="btn btn-primary">Napište nám</a>
       </div>
     </div>
   </header>
@@ -133,13 +115,17 @@
         <li><a href="https://github.com/jhaals/yopass/pull/3973/changes/265ba138f717fe8ab82c47f2ee2b0a0472925d9e" target="_blank" rel="noopener">Naše záplata jako jeho první commit</a></li>
         <li><a href="https://github.com/jhaals/yopass/blob/master/docs/openid-connect.md" target="_blank" rel="noopener">Dokumentace OpenID Connect v Yopass</a></li>
       </ul>
-      <p><a href="../">&larr; Zpět na příběhy úspěchu</a></p>
+      <p><a href="../">&larr; Zpět na novinky</a></p>
     </div>
   </main>
 
   <footer class="footer">
     <div class="container footer-bottom">
-      <p>&copy; 2026 BudgetScan. Postaveno na <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a>, open-source skeneru od AISLE (Apache-2.0, <a href="https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier" target="_blank" rel="noopener">představení na jejich blogu</a>), který dále rozšiřujeme. BudgetScan je inspirován AISLE&trade;, ale není s ním nijak obchodně spojen. <a href="../../privacy/">Soukromí a provozovatel</a>.</p>
+      <p>&copy; 2026 BudgetScan. Postaveno na skeneru <a href="https://github.com/weareaisle/nano-analyzer" target="_blank" rel="noopener">nano-analyzer</a> od AISLE (Apache-2.0). S AISLE&trade; nejsme nijak propojeni.</p>
+      <nav class="footer-nav" aria-label="Patička">
+        <a href="../../stories/">Novinky</a>
+        <a href="../../#contact">Kontakt</a>
+      </nav>
     </div>
   </footer>
 </body>
